@@ -1,6 +1,7 @@
 # Electron
 ## [Electron](https://electronjs.org)是什么 ?
 > 官方给出的解释：使用 JavaScript, HTML 和 CSS 构建跨平台的桌面应用。讲的再通俗一点就是 node + **Chromium(没有自带功能的chrome)** + 前端三巨头组成的**开发工具**。
+![electron](./electron.png 'electron')
 ## 为什么要用Electron?
 >官网： Electron 是一个使用 JavaScript, HTML 和 CSS 等 Web 技术创建原生程序的框架，它负责比较难搞的部分，你只需把精力放在你的应用的**核心**上即可。 对我们来说Electron 的核心就是我们的表现层（HTML + CSS + Javascript）。 最重要的一点：**前端工程师可以直接进入GUI开发领域** 所有的调试就可以有pc网站一样的体验,而且无视任何兼容性问题，只需要针对chrome开发。
 ## Electron入门
