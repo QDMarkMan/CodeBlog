@@ -214,5 +214,117 @@ HOME=~/.electron-gyp node-gyp rebuild --target=1.2.3 --arch=x64 --dist-url=https
 目前Electron程序的更新方式还是很开发的
 
 1. 替换html文件更新，这个比较节约资源，但是并不适用我们用builder打包出来的程序
-2. 替换asar文件,这个也比较小众
-3. electron-builder + [autoUpdater](https://electronjs.org/docs/api/auto-updater) 实现全量更新，我们主要讲一讲这个部分
+2. 替换asar文件,这个比较小众
+3. electron-builder + electron-updater 实现全量更新，我们主要讲一讲这个部分。**这个更新的机制按照我的理解是生成一个新的安装包然后和一个last.yml配置文件，触发更新事件之后读取线上的包的配置文件，然后比对当当前程序中的程序的版本号，然后再选择更新不更新。**
+  - electron-builder配置模块
+    
+    这个配置主要是在打包前在*package.json*中配置
+    ``` bash
+    "build": {
+        "productName": "项目名",
+        "appId": "org.simulatedgreg.ymhy-aiis-exe", // 这个用处不大
+        "directories": {
+          "output": "build"
+        },
+        "publish": [ // 这个配置会生成latest.yml文件，用于自动更新的配置信息；
+          {
+            "provider": "generic",
+            "url": "http://appupdate.ymhy.net.cn/winclient/" // 更新地址 这个很重要
+          }
+        ]
+      },
+    ```
+  - 代码模块
+  
+    主进程中代码
+    ``` bash
+    // 注意这个autoUpdater不是electron中的autoUpdater
+    import { autoUpdater } from 'electron-updater'
+    import config from '../renderer/config/index'
+    const uploadUrl = process.env.NODE_ENV === 'development' ? config.dev.env.UPLOAD_URL : config.build.env.UPLOAD_URL
+    // 检测更新，在你想要检查更新的时候执行，renderer事件触发后的操作自行编写
+    function updateHandle() {
+      let message = {
+        appName:'农业投入品系统',
+        error: {
+          key:"0",//更新出错
+          msg:"更新出错"
+        },
+        checking: {
+          key:"1",//检查更新中
+          msg:"检查更新中..."
+        },
+        updateAva: {
+          key:"2",//更新可用
+          msg:"有新版本可用"
+        },
+        updateNotAva: {
+          key:"3",//已是最新版本
+          msg:"已是最新版本"
+        },
+        updated:{
+          key:"4",//安装包已下载完成
+          msg:"安装包已下载完成"
+        }
+      }
+      autoUpdater.setFeedURL(uploadUrl)
+      autoUpdater.autoDownload = false // 取消自动下载更新 如果不设置的话 发现新版本会自动进行下载 体验很不好
+      autoUpdater.on('error', function(error){
+          sendUpdateMessage(message.error)
+      })
+      //当开始检查更新的时候触发
+      autoUpdater.on('checking-for-update', function() {
+          sendUpdateMessage(message.checking)
+      })
+      //当发现一个可用更新的时候触发，更新包下载会自动开始
+      autoUpdater.on('update-available', function(info) {
+          console.log(info.version)
+          sendUpdateMessage(message.updateAva)
+          return false
+      })
+      //开始下载
+      ipcMain.on('begin-download',(event,arg) => {
+        console.log('begin download')
+        autoUpdater.downloadUpdate()
+      })
+      //当没有可用更新的时候触发
+      autoUpdater.on('update-not-available', function(info) {
+          sendUpdateMessage(message.updateNotAva)
+      })
+    // 更新下载进度事件
+      autoUpdater.on('download-progress', function(progressObj) {
+            mainWindow.webContents.send('downloadProgress', progressObj)
+        })
+        /**
+        *  event Event
+        *  releaseNotes String - 新版本更新公告
+        *  releaseName String - 新的版本号  在Windows中只有这个可用
+        *  releaseDate Date - 新版本发布的日期
+        *  updateURL String - 更新地址
+        * */
+        autoUpdater.on('update-downloaded', function (event, releaseNotes, releaseName, releaseDate, updateUrl, quitAndUpdate) {
+          // 发送已存在安装包的信息
+          mainWindow.webContents.send('downloaded', message.updated) 
+          // 离开并安装
+          ipcMain.on('bengin-install',()=>{
+            autoUpdater.quitAndInstall()
+          })
+      })
+      ipcMain.on("checkForUpdate",() =>{
+          //执行自动更新检查
+          autoUpdater.checkForUpdates()
+      })
+    }
+    // 通过main进程发送事件给renderer进程，提示更新信息
+    function sendUpdateMessage(text) {
+      mainWindow.webContents.send('update_msg', text) 
+    }
+
+    ```
+    然后在渲染进程中触发事件，再多次进行通信就可以完成
+
+    整个的过程如下图（网友总结，非原创）
+
+    ![update](./update.png 'electron')
+
+    
