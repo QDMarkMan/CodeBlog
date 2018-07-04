@@ -14,8 +14,8 @@
 - node-gyp错误：这个一般是系统上的构建工具(Python,VisualStudio)的问题，我建议windows用户都安装一下这个东西。
 - npm版本问题：保证npm一定要是最新的版本，推荐使用yarn
 - 构建工具打包处理：windows-build-tools 来为我们完成大部分烦人的工作。全局安装此工具将依次设置 Visual C++ 软件包、Python 等等。
-``` bash
 该弄的都弄完了，就可以敲代码了
+``` bash
 # 安装 vue-cli 和 脚手架样板代码
 npm install -g vue-cli
 vue init simulatedgreg/electron-vue my-project
@@ -85,6 +85,7 @@ console.log(require('remote').getGlobal('sharedObject').someProperty);
 - 不同页面间共享数据: Storage IndexDB都可以
 
 - Electron的通信: 主要是通过发布/监听的模式来实现的，和vue中父子组件通信的emit和on有点类似
+
 **[ipcMain](https://electronjs.org/docs/api/ipc-main)**: ipcMain模块是EventEmitter类的一个实例。 当在主进程中使用时，它处理从渲染器进程（网页）发送出来的异步和同步信息。 从渲染器进程发送的消息将被发送到该模块。
 
       发送消息时，事件名称为channel。
@@ -105,7 +106,7 @@ ipcMain.on('synchronous-message', (event, arg) => {
   event.returnValue = 'pong'
 })
 ```
-**[ipcMain](https://electronjs.org/docs/api/ipc-renderer)**：ipcRenderer 是一个 EventEmitter 的实例。 你可以使用它提供的一些方法从渲染进程 (web 页面) 发送同步或异步的消息到主进程。 也可以接收主进程回复的消息。  这个是在渲染进程中使用得通信模块
+**[ipcRender](https://electronjs.org/docs/api/ipc-renderer)**：ipcRenderer 是一个 EventEmitter 的实例。 你可以使用它提供的一些方法从渲染进程 (web 页面) 发送同步或异步的消息到主进程。 也可以接收主进程回复的消息。  这个是在渲染进程中使用得通信模块
 
 ```
 // 主进程中监听事件 'maximize'
