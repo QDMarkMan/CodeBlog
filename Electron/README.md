@@ -34,13 +34,13 @@ yarn run dev # 或者 npm run dev
 
 ### 主进程
 使用 BrowserWindow 实例创建页面。 每个 BrowserWindow 实例都在自己的渲染进程里运行页面。 当一个 BrowserWindow 实例被销毁后，相应的渲染进程也会被终止。所谓的主进程在程序中直接的表现就是我们的入口文件，启动程序的时候首先在package.json中找到入口文件的地址
-```
+``` bash
 {
   "main": "./dist/electron/main.js",
 }
 ```
 然后执行具体的代码,主进程主要是负责调用沙盒环境内也就是计算机或者是Node层面的东西
-```
+``` js
 var app = require('app');  // 控制应用生命周期的模块。
 var BrowserWindow = require('browser-window');  // 创建原生浏览器窗口的模块
 // 保持一个对于 window 对象的全局引用，不然，当 JavaScript 被 GC，
@@ -72,7 +72,7 @@ app.on('ready', function() {
 > 在任何一个框架或者语言中通信都是相对重要的部分。ELectron也不例外
 - 进程间共享数据：在主程序和渲染程序中都可以使用得数据。
 Electron提供IPC系统共享数据
-```
+``` js
 // 在主进程里
 global.sharedObject = {
   someProperty: 'default value'
@@ -96,7 +96,7 @@ console.log(require('remote').getGlobal('sharedObject').someProperty);
       回复同步信息时，需要设置event.returnValue。
 
       将异步消息发送回发件人，需要使用event.sender.send(...)。
-```
+``` js
 // 在主进程中.
 const {ipcMain} = require('electron')
 ipcMain.on('asynchronous-message', (event, arg) => {
@@ -111,7 +111,7 @@ ipcMain.on('synchronous-message', (event, arg) => {
 ```
 **[ipcRender](https://electronjs.org/docs/api/ipc-renderer)**：ipcRenderer 是一个 EventEmitter 的实例。 你可以使用它提供的一些方法从渲染进程 (web 页面) 发送同步或异步的消息到主进程。 也可以接收主进程回复的消息。  这个是在渲染进程中使用得通信模块
 
-```
+``` js
 // 主进程中监听事件 'maximize'
 mainWindow.on('maximize',(event,arg) => {
     event.sender.send('maxPage', 'max')
@@ -229,7 +229,7 @@ HOME=~/.electron-gyp node-gyp rebuild --target=1.2.3 --arch=x64 --dist-url=https
   - 代码模块
   
     主进程中代码
-    ``` bash
+    ``` js
     // 注意这个autoUpdater不是electron中的autoUpdater
     import { autoUpdater } from 'electron-updater'
     import config from '../renderer/config/index'
