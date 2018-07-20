@@ -68,8 +68,6 @@ rules:  规则
             no-null-keyword: true, //不允许使用null关键字
             no-object-literal-type-assertion：true, //禁止objext出现在类型断言表达式中
             no-return-await：true, //不允许return await
-
             arrow-parens： true, //箭头函数定义的参数需要括号
-
     }
 ```
