@@ -320,4 +320,4 @@ HOME=~/.electron-gyp node-gyp rebuild --target=1.2.3 --arch=x64 --dist-url=https
     ![update](./update.png 'electron')
 
 # 总结 
-> 上面讲的那些只是ELectron的冰山一角，还有很多的东西例如进程检测，系统通知等等模块等着我们去探索。前路漫漫，共同努力。
+> 上面讲的那些只是ELectron的冰山一角，还有很多的模块等着我们去探索和发现。前路漫漫，共同努力。
