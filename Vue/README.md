@@ -122,7 +122,7 @@
 
 一图胜千言
 
-![electron](./vue-life.jpg '生命周期')
+![生命周期](./vue-life.jpg '生命周期')
 
 根据生命周期可以得出进入一个keep-alive组件之后钩子正确的触发顺序
 1. ```beforeRouteLeave```: 路由组件的组件离开路由前钩子，可取消路由离开。
@@ -139,5 +139,73 @@
 12. ```activated```:进入缓存组件，进入a的嵌套子组件(如果有的话)。
 13. 执行```beforeRouteEnter```回调函数next。
 
+---
 
 ## Vuex
+
+---
+
+## VueRouter
+- 监听路由变化
+  
+  1. **使用watch监听**
+  ```js
+  // 监听,当路由发生变化的时候执行
+  // 1
+  watch:{
+    $route(to,from){
+      console.log(to.path);
+    }
+  },
+  // 2
+  watch: {
+    $route: {
+      handler: function(val, oldVal){
+        console.log(val);
+      },
+      // 深度观察监听
+      deep: true
+    }
+  },
+
+  // 3
+  watch: {
+    '$route':'getPath'
+  },
+  methods: {
+    getPath(){
+      console.log(this.$route.path);
+    }
+  }
+  ```
+  2. **用key来阻止“复用”(不太能算是监听变化)**
+  > Vue 为你提供了一种方式来声明“这两个元素是完全独立的——不要复用它们”。只需添加一个具有唯一值的 key 属性即可
+
+  ``` html
+  <router-view :key="key"></router-view>
+  ```
+  ``` js
+  computed: {
+    key() {
+      return this.$route.name !== undefined? this.$route.name +new Date(): this.$route +new Date()
+    }
+  }
+  ```
+  3. **通过路由独享钩子**
+  ``` js
+  beforeRouteEnter (to, from, next) {
+    // 在渲染该组件的对应路由被 confirm 前调用
+    // 不！能！获取组件实例 `this`
+    // 因为当钩子执行前，组件实例还没被创建
+  },
+  beforeRouteUpdate (to, from, next) {
+    // 在当前路由改变，但是该组件被复用时调用
+    // 举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，
+    // 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。
+    // 可以访问组件实例 `this`
+  },
+  beforeRouteLeave (to, from, next) {
+    // 导航离开该组件的对应路由时调用
+    // 可以访问组件实例 `this`
+  },
+  ```
