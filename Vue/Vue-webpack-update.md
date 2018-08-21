@@ -129,6 +129,7 @@ yarn add babel-loader babel-core babel-preset-env url-loader file-loader less-lo
     ```
   - html-webpack-plugin： 其实这个可以不需要升级，但是如果升级至15.x版本以上，在使用中需要执行VueLoaderPlugin插件方法，其他用法跟之前保持一致。
 
+  - 还有一些懒加载等等优化的东西没有写，下次再写
 ## 注意事项
   - html-webpack-include-assets-plugin： 在做项目优化的时候用到了这个插件，但是更新之后死活就是不起作用了。经过再三的尝试之后发现是这个好像是依赖```html-webpack-plugin```,需要先出来页面才能往页面中插入cdn资源，所以我就把```html-webpack-plugin```集中到```webpack.base.conf.js```中之后解决。
   ```js
