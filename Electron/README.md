@@ -3,12 +3,14 @@
 > 官方给出的解释：使用 JavaScript, HTML 和 CSS 构建跨平台的桌面应用。讲的再通俗一点就是 node + **Chromium(没有自带功能的chrome)** + 前端三巨头组成的**开发工具**。
 
 ![electron](./electron.png 'electron')
+<small>图片非原创，取自网络</small>
 ## 为什么要用Electron?
 >官网： Electron 是一个使用 JavaScript, HTML 和 CSS 等 Web 技术创建原生程序的框架，它负责比较难搞的部分，你只需把精力放在你的应用的**核心**上即可。 对我们来说Electron 的核心就是我们的表现层（HTML + CSS + Javascript）。 最重要的一点：**前端工程师可以直接进入GUI开发领域** 所有的调试就可以有pc网站一样的体验,而且无视任何兼容性问题，只需要针对chrome开发。
 ## Electron入门
 > Electron入门非常的简单，就算你从来没有过任何客户端开发的经验。只要你会用NPM，会前端，都可以非常快速的新建一个ELectron,[教程传送门](https://electron.org.cn/demo.html)。
 
 ![electron](./electron-builder.png 'electron')
+<small>图片非原创，取自网络</small>
 ## Electron-vue
 > 这是一个基于Electron + Vue的框架，他的作用是其实是让我们能够用vue去开发前端部分。我们自己就省去了框架融合的这一部分，起步也很简单。
 
@@ -198,7 +200,7 @@ HOME=~/.electron-gyp node-gyp rebuild --target=1.2.3 --arch=x64 --dist-url=https
   }
 
 ```
-<font face="微软雅黑" color="yellow">注意：在程序打包得这一项中复杂得不是代码量，是在我们环境的配置中，有一部分的包我们要科学上网之后才能下载，例如nsis-resources-3.3.0：翻墙后下载两次才成功，这个过程中一定耐性</font>
+<font face="微软雅黑" color="yellow">注意：在程序打包得这一项中复杂得地方不在代码，是在我们环境的配置中，有一部分的包我们要科学上网之后才能下载，例如nsis-resources-3.3.0：翻墙后下载两次才成功，这个过程中一定耐性</font>
 
 
 ## 程序更新
