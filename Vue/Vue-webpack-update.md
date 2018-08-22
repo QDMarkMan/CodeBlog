@@ -28,6 +28,7 @@ yarn add webpack-cli mini-css-extract-plugin -D
 yarn add babel-loader babel-core babel-preset-env url-loader file-loader less-loader vue-style-loader vue-template-compiler css-loader eslint-loader inject-loader postcss-loader vue-loader -D
 ```
 在这里有一个小小的坑 vue-template-compiler 和 vue的版本号一定要对应起来，要不然会一致报错找不到vue-template-compiler模块
+
 4. 还有一个更加快捷的方法 ```npm outdated``` 列出所以可以更新的包。免得再一个个去npm找相对于的可用版本了。如果你够熟练了，推荐你这么干。
 ## 开始升级
 ### 主要部分升级
