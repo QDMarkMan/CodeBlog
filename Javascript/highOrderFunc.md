@@ -1,4 +1,4 @@
-# JavaScript种高阶函数的魅力
+# JavaScript中高阶函数的魅力
 > 高阶函数是指至少满足下列条件之一的函数 1：函数可以作为参数被传递 2：函数可以作为返回值输出
 
     JavaScript语言中的函数显然的是满足了高阶函数的条件，下面我们一起来探寻JavaScript种高阶函数的魅力。
@@ -52,7 +52,7 @@
   ```
 
 ## currying（柯里化）
- 关于**curring**我们首先要聊的是**函数柯里化**。
+ 关于**curring**我们首先要聊的是什么是**函数柯里化**。
  > **curring**又称部分求值。一个**curring**的函数首先会接受一些参数，接受了这些参数之后，该函数并不会立即求值，二十继续返回另外一个函数，刚才传入的参数在函数形成的闭包中被保存起来。待到函数中被真正的需要求值的时候，之前传入的所有参数被一次性用于求值。
 
  生硬的看概念不太好理解，我们来看接下来的例子
@@ -70,7 +70,7 @@ cost(2000, 2) // 第2个月的花销
 // ...
 cost(3000, 12) // 第12个月的花销
  ```
- 总结一下不难发现，如果我们要计算一年的总消费，没必要执行12次。只需要在年底执行一次计算就行，接下来我们对这个函数进行部分柯里化的函数帮助我们理解
+ 总结一下不难发现，如果我们要计算一年的总消费，没必要计算12次。只需要在年底执行一次计算就行，接下来我们对这个函数进行部分柯里化的函数帮助我们理解
  ```js
 // 部分柯里化完的函数
 const curringPartCost = (function() {
@@ -101,7 +101,7 @@ curringPartCost(1000,1)
 curringPartCost(100,2)
 curringPartCost()
  ```
- 接下来我们编写一个通用的curring， 节后一个即将被curring的函数。代码如下
+ 接下来我们编写一个通用的curring， 以及一个即将被curring的函数。代码如下
  ```js
  // 通用curring函数
 const curring = function(fn) {
@@ -281,5 +281,8 @@ addEventLazy(document.getElementById('eventLazy'), 'click', function() {
 
 # 总结
  
- JavaScript高阶函数主要是借助了闭包来实现这些扫操作。
- 文中出现的[代码地址](https://github.com/QDMarkMan/usually-accumulated/blob/master/src/highOrderFunc.js)
+ 该文章主要是读《Javascript设计模式》的总结。
+
+ [代码地址](https://github.com/QDMarkMan/usually-accumulated/blob/master/src/highOrderFunc.js)
+
+ [原文地址](https://github.com/QDMarkMan/CodeBlog/blob/master/Javascript/highOrderFunc.md)
