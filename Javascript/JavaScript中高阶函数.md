@@ -285,4 +285,4 @@ addEventLazy(document.getElementById('eventLazy'), 'click', function() {
 
  [代码地址](https://github.com/QDMarkMan/usually-accumulated/blob/master/src/highOrderFunc.js)
 
- [原文地址](https://github.com/QDMarkMan/CodeBlog/blob/master/Javascript/highOrderFunc.md)
+ [原文地址](https://github.com/QDMarkMan/CodeBlog/blob/master/Javascript/highOrderFunc.md) 如果觉得有用得话给个⭐吧
