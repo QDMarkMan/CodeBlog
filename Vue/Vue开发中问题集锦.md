@@ -4,7 +4,7 @@
 
 ## Vue
 
-- **keep-alive**(借鉴大佬博客)
+### **keep-alive**(借鉴大佬博客)
 
   有的项目大部分组件是没必要多次渲染的，所以 Vue 提供了一个内置组件 keep-alive 来缓存组件内部状态，避免重新渲染，[文档](https://cn.vuejs.org/v2/api/#keep-alive)。
 
@@ -118,7 +118,7 @@
             <router-view></router-view>
         </keep-alive>
       ```
-- **关于组件的生命周期**
+### **关于组件的生命周期**
 
 一图胜千言
 
@@ -140,6 +140,34 @@
 13. 执行```beforeRouteEnter```回调函数next。
 
 ---
+
+### **关于组件通信中的.sync修饰符**
+
+这个修饰符是2.3.0 新增的,主要用于组件间的双向通信
+> 在有些情况下，我们可能需要对一个 prop 进行“双向绑定”。不幸的是，真正的双向绑定会带来维护上的问题，因为子组件可以修改父组件，且在父组件和子组件都没有明显的改动来源。
+
+因此Vue推荐使用```update:myPropName``` 的模式触发事件取而代之。在我理解这样就和现有的emit系统保持了抛出数据的一致性。而且同时保证了数据的单向流通。这也符合Vue一贯的设计风格 
+
+**值 ==> (接收数据)** **事件(emit) => (传播数)** 
+
+示例代码如下：
+```js
+// 子组件手动emit事件 => 这就是一个传播值得过程
+this.$emit('update:title', newTitle)
+```
+``` html
+<!-- 父组件接收 -->
+<!-- 1 -->
+<text-document v-bind:title="doc.title" v-on:update:title="doc.title = $event"></text-document>
+<!-- 2简写 -->
+<text-document :title.sync="doc.title"></text-document>
+```
+注意：<span color="red">
+  将 v-bind.sync 用在一个字面量的对象上，例如 v-bind.sync=”{ title: doc.title }”，是无法正常工作的，因为在解析一个像这样的复杂表达式的时候，有很多边缘情况需要考虑。
+</span>
+
+这样得设计很大得提高了组件得可维护性和扩展性。使得组件之间得通讯非常得清除，降低了很大得维护成本
+
 
 ## Vuex
 

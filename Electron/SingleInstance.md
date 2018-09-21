@@ -12,7 +12,7 @@
       app.makeSingleInstance(callback)
         argv String[] // 第二个实例的命令行参数数组
         workingDirectory String // 第二个实例的工作目录
-       // 返回 Boolean.
+      // 返回 Boolean.
     ```
     
     上面是官方文档给出的解释，这个API就是为了生成单个实例而存在的。实际上更主要的用处是用来处理在命令行打开应用是的限制，其实在mac上通过图标打开尝试启动第二个实例的时候，系统会自动强制执行单个实例。并且发出 open-file 和 open-url 事件。但是当用户在命令行中启动应用程序时, 系统的单实例机制将被绕过, 所以我们要用这个方法来保证单实例。
