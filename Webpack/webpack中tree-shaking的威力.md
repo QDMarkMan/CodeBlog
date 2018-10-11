@@ -1,4 +1,4 @@
-#Webpack 中tree-shaking的威力
+# Webpack 中tree-shaking的威力
 > tree shaking 是一个术语，通常用于描述移除 JavaScript 上下文中的未引用代码(dead-code)。它依赖于 ES2015 模块系统中的静态结构特性，例如 import 和 export。这个术语和概念实际上是兴起于 ES2015 模块打包工具 rollup。
 
 **tree-shaking**语义上来解释就是摇树，理解起来就像是摇树，把无用的树叶（代码）全部都清除掉。以达到减少体积的目的。
