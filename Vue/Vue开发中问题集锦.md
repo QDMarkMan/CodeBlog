@@ -168,6 +168,98 @@ this.$emit('update:title', newTitle)
 
 这样得设计很大得提高了组件得可维护性和扩展性。使得组件之间得通讯非常得清除，降低了很大得维护成本
 
+### **Vue复用大法Mixin(混入)**
+> 混入 (mixins) 是一种分发 Vue 组件中可复用功能的非常灵活的方式。混入对象可以包含任意组件选项。当组件使用混入对象时，所有混入对象的选项将被混入该组件本身的选项。
+
+从定义中不难看出来，混入就是把一个vue对象混入到另一个vue实例中。在被混入的组件和混入中共享this，最终合并为一个Vue组件。这样就大大的提高了模块间的可复用性。通用的data以及methods我们只需要在mixins中声明，在组件中直接就可以调用了。
+
+#### 基础
+- 定义一个混入对象就像定义一个Vue对象一样，声明一个对象包括了data，methods，声明周期等等
+```js
+// 定义一个混入对象
+var myMixin = {
+  created: function () {
+    this.hello()
+  },
+  methods: {
+    hello: function () {
+      console.log('hello from mixin!')
+    }
+  }
+}
+
+// 定义一个使用混入对象的组件
+var Component = Vue.extend({
+  mixins: [myMixin]
+})
+
+var component = new Component() // => "hello from mixin!"
+```
+#### 需要注意的部分
+1. **声明顺序**
+
+混入对象的声明周期会并入组件的周期，而且要早于组件的钩子运行。
+```js
+var mixin = {
+  created: function () {
+    console.log('混入对象的钩子被调用')
+  }
+}
+
+new Vue({
+  mixins: [mixin],
+  created: function () {
+    console.log('组件钩子被调用')
+  }
+})
+
+// => "混入对象的钩子被调用"
+// => "组件钩子被调用"
+```
+
+2. **选项的合并**
+
+当组件的数据对象和混入对象的数据对象重复的时候，组件的数据对象优先。
+值为对象的选项，例如 ```methods, components ```和 ```directives，```将被混合为同一个对象。<font color="yellow">两个对象键名冲突时，取组件对象的键值对。</font>
+
+
+3. **局部混入和全局混入**
+
+  1. **局部混入（推荐使用）**
+  
+  大部分的情况下我们是使用局部混入的，在组件的```mixins```数组中声明就是传统的局部混入。
+  ```js
+  var vm = new Vue({
+    mixins: [mixin], // 局部混入
+    methods: {
+      bar: function () {
+        console.log('bar')
+      },
+      conflicting: function () {
+        console.log('from self')
+      }
+    }
+  })
+  ```
+  2. **全局混入（谨慎使用）**
+
+  Vue也为我们提供了全局混入，但是<font color="red">一旦使用了全局的混入，就会影响到之后创建的所有的Vue实例</font>。下面是创建方式
+  ```js
+  // 为自定义的选项 'myOption' 注入一个处理器。
+  Vue.mixin({
+    created: function () {
+      var myOption = this.$options.myOption
+      if (myOption) {
+        console.log(myOption)
+      }
+    }
+  })
+  new Vue({
+    myOption: 'hello!'
+  })
+  // => "hello!"
+  ```
+  
 
 ## Vuex
 
