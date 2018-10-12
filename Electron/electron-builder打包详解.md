@@ -5,6 +5,7 @@
 ## 基本概念
 [官网](https://www.electron.build/)的定义
 > A complete solution to package and build a ready for distribution Electron app for macOS, Windows and Linux with “auto update” support out of the box.
+
 关于```electron```和```electron-builder```的基础部分这篇文章就跳过了，有兴趣的话可以看[这篇文章](https://github.com/QDMarkMan/CodeBlog/tree/master/Electron)
 
 ## 如何使用
@@ -16,7 +17,7 @@ builder配置有两种方式
 
 下面是一个简单的```package.json```中带注释的配置
 1. 基础配置
-``` json
+``` js
 "build": {  // 这里是electron-builder的配置
     "productName":"xxxx",//项目名 这也是生成的exe文件的前缀名
     "appId": "com.leon.xxxxx",//包名  
