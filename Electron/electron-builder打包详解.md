@@ -12,10 +12,10 @@
 
 builder的使用和配置都是很简单的
 builder配置有两种方式
-- ```package.json```中直接配置使用（比较常用，我们下面着重来讲这个）
+- ```package.js```中直接配置使用（比较常用，我们下面着重来讲这个）
 - 指定```electron-builder.yml```文件
 
-下面是一个简单的```package.json```中带注释的配置
+下面是一个简单的```package.js```中带注释的配置
 1. 基础配置
 ``` js
 "build": {  // 这里是electron-builder的配置
@@ -36,7 +36,7 @@ builder配置有两种方式
 要打包成**安装程序**的话我们有两种方式，
   1. 使用NSIS工具对我们的文件夹再进行一次打包，打包成exe
   2. 通过electron-builder的nsis直接打包成exe，配置如下
-```json
+```js
 "win": {  // 更改build下选项
     "icon": "build/icons/aims.ico",
     "target": [
@@ -47,7 +47,7 @@ builder配置有两种方式
   },
 ```
 3. 其他平台配置
-```json
+```js
   "dmg": { // macOSdmg
     "contents": [
       ...
@@ -66,7 +66,7 @@ builder配置有两种方式
 这个要详细的讲一下，这个nsis的配置指的是安装过程的配置，其实还是很重要的，如果不配置nsis那么应用程序就会自动的安装在C盘。没有用户选择的余地，这样肯定是不行的
 
 关于nsis的配置是在build中nsis这个选项中进行配置，下面是部分nsis配置
-```json
+```js
 "nsis": {
   "oneClick": false, // 是否一键安装
   "allowElevation": true, // 允许请求提升。 如果为false，则用户必须使用提升的权限重新启动安装程序。
@@ -92,7 +92,7 @@ electron-builder --ia32 // 32位
 electron-builder        // 64位(默认)
 ```
 nsis中配置
-```json
+```js
 "win": {
   "icon": "build/icons/aims.ico",
   "target": [
@@ -109,7 +109,7 @@ nsis中配置
 6. 更新配置
 
 下面这个是给更新用的配置，主要是为了生成```lastest.yaml```配置文件
-```json
+```js
 "publish": [
   {
     "provider": "generic", // 服务器提供商 也可以是GitHub等等
@@ -119,7 +119,7 @@ nsis中配置
 ```
 ## 完整配置
 基本上可用的完整的配置
-```json
+```js
 "build": {
     "productName":"xxxx",//项目名 这也是生成的exe文件的前缀名
     "appId": "com.leon.xxxxx",//包名  
@@ -204,7 +204,7 @@ Building(构建参数):
   --dir                    Build unpacked dir. Useful to test.           [boolean]
   --prepackaged, --pd      预打包应用程序的路径（以可分发的格式打包）
   --projectDir, --project  项目目录的路径。 默认为当前工作目录。
-  --config, -c             配置文件路径。 默认为`electron-builder.yml`（或`json`，或`json5`)
+  --config, -c             配置文件路径。 默认为`electron-builder.yml`（或`js`，或`js5`)
 
 ```
 Publishing(发布):
@@ -230,12 +230,12 @@ Examples(例子):
 ```bash
   electron-builder -mwl                        为macOS，Windows和Linux构建（同时构建）
   electron-builder --linux deb tar.xz          为Linux构建deb和tar.xz
-  electron-builder -c.extraMetadata.foo=bar    将package.json属性`foo`设置为`bar`
+  electron-builder -c.extraMetadata.foo=bar    将package.js属性`foo`设置为`bar`
   electron-builder --config.nsis.unicode=false 为NSIS配置unicode选项
     
 ```
 TargetConfiguration(构建目标配置):
-```json
+```js
 target:  String - 目标名称，例如snap.
 arch “x64” | “ia32” | “armv7l” | “arm64”> | “x64” | “ia32” | “armv7l” | “arm64”  -arch支持列表
 ```
