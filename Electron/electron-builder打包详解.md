@@ -3,6 +3,8 @@
 开发electron客户端程序，打包是绕不开的问题。下面就我在工作中的经验以及目前对```electron-builder```的了解来分享一些心得。
 
 ## 基本概念
+[官网](https://www.electron.build/)的定义
+> A complete solution to package and build a ready for distribution Electron app for macOS, Windows and Linux with “auto update” support out of the box.
 关于```electron```和```electron-builder```的基础部分这篇文章就跳过了，有兴趣的话可以看[这篇文章](https://github.com/QDMarkMan/CodeBlog/tree/master/Electron)
 
 ## 如何使用
@@ -231,8 +233,13 @@ Examples(例子):
   electron-builder --config.nsis.unicode=false 为NSIS配置unicode选项
     
 ```
+TargetConfiguration(构建目标配置):
+```json
+target:  String - 目标名称，例如snap.
+arch “x64” | “ia32” | “armv7l” | “arm64”> | “x64” | “ia32” | “armv7l” | “arm64”  -arch支持列表
+```
 
 # 总结
-electron-builder是一个简单又强大的库，如果解决了源代码加密的问题。我相信Electron会更加好
+electron-builder是一个简单又强大的库。反正我是很服
 
 [原文地址](https://github.com/QDMarkMan/CodeBlog/tree/master/Electron/electron-builder打包详解.md)  如果觉得有用得话给个⭐吧
