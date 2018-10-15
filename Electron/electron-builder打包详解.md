@@ -20,7 +20,7 @@ builder配置有两种方式
 ``` js
 "build": {  // 这里是electron-builder的配置
     "productName":"xxxx",//项目名 这也是生成的exe文件的前缀名
-    "appId": "com.leon.xxxxx",//包名  
+    "appId": "com.xxx.xxxxx",//包名  
     "copyright":"xxxx",//版权  信息
     "directories": { // 输出文件夹
       "output": "build"
