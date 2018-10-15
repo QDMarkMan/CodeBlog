@@ -12,7 +12,7 @@
 
 builder的使用和配置都是很简单的
 builder配置有两种方式
-- ```package.js```中直接配置使用（比较常用，我们下面着重来讲这个）
+- ```package.json```中直接配置使用（比较常用，我们下面着重来讲这个）
 - 指定```electron-builder.yml```文件
 
 下面是一个简单的```package.js```中带注释的配置
