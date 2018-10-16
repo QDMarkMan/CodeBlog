@@ -79,10 +79,21 @@ demo地址会在文章末尾给出（demo项目中`electron`使用得是`V2.0.7`
   "createDesktopShortcut": true, // 创建桌面图标
   "createStartMenuShortcut": true,// 创建开始菜单图标
   "shortcutName": "xxxx", // 图标名称
-  "include": "build/script/installer.nsh", // 包含的自定义nsis脚本
-  "script" : "build/script/installer.nsh" // NSIS脚本的路径，用于自定义安装程序。 默认为build / installer.nsi
+  "include": "build/script/installer.nsh", // 包含的自定义nsis脚本 这个对于构建需求严格得安装过程相当有用。
+  "script" : "build/script/installer.nsh" // NSIS脚本的路径，用于自定义安装程序。 默认为build / installer.nsi  
 },
 ```
+关于`include` 和 `script` 到底选择哪一个 ？
+
+在对个性化安装过程需求并不复杂，只是需要修改一下安装位置，卸载提示等等的简单操作建议使用`include`配置,如果你需要炫酷的安装过程，建议使用`script`进行完全自定义。
+
+`NSIS`对于处理安装包这种东西，功能非常的强大。但是学习起来并不比一门高级语言要容易。其中的奥秘还要各位大佬自行探索
+
+这里上一些学习资源
+- [NSIS初级篇](https://blog.csdn.net/ddjj_1980/article/details/7843944)
+- [NSIS 打包脚本基础](http://www.cnblogs.com/jingmoxukong/p/5033622.html)
+- [示例脚本](http://www.cppblog.com/momoxiao/archive/2010/02/06/107326.html)
+- [NSIS论坛](http://www.nsisfans.com/forum-2-1.html)
 
 5. 关于操作系统的配置
 
