@@ -80,7 +80,6 @@ demo地址会在文章末尾给出（demo项目中`electron`使用得是`V2.0.7`
   "createStartMenuShortcut": true,// 创建开始菜单图标
   "shortcutName": "xxxx", // 图标名称
   "include": "build/script/installer.nsh", // 包含的自定义nsis脚本 这个对于构建需求严格得安装过程相当有用。
-  "script" : "build/script/installer.nsh" // NSIS脚本的路径，用于自定义安装程序。 默认为build / installer.nsi  
 },
 ```
 关于`include` 和 `script` 到底选择哪一个 ？
