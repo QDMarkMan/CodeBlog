@@ -58,3 +58,35 @@ DocumentRoot "/usr/local/apache/demo"
 
 
 ## 2：Nginx服务器
+
+## 3：Tomcat下SpringMVC中发布
+
+这个发布到SpringMVC中的配置相对来说就比较简单了。
+只需要在发布的文件夹中新增`WEB-INF`配置文件夹中就行。如下图
+![tomcat中配置](tomcat.png 'tomcat中文件')
+
+`WEB-INF` 文件夹放在项目中那么`tomcat`会自动扫描文件夹中的`web.xml`然后重写web配置
+![tomcat中配置](webxml.png 'xml')
+
+```xml
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+  version="3.0"
+  metadata-complete="true">
+  
+  <!-- <display-name>webapp</display-name> -->
+  <description>
+     webapp
+  </description>
+  <error-page>  
+    <!-- 重写404页面 -->
+    <error-code>404</error-code>  
+    <location>/index.html</location>
+  </error-page>  
+</web-app>
+```
+
+这就配置完了，可以说是贼简单了。
