@@ -188,6 +188,7 @@ getArea(symbolType.triangle, {width: 100, height: 100})
 
 ### Map
 - `Map`基础
+
 `Map`的出现是为了解决传统`Object`只支持`字符串-值`的`hash`结构。`Map`类似于对象。但是`键`的值不仅限于字符串。
 > `Map` 结构提供了`值—值`的对应，是一种更完善的 `Hash` 结构实现。如果你需要“键值对”的数据结构，Map 比 Object 更合适。
 
@@ -341,7 +342,37 @@ console.log(refMap.get(b)) // 指向同一地址
   }
   console.log(mapToJson(jsonMap)) // [[true,7],[{"foo":3},["abc"]]]
   ```
+- `weakMap`
+这个稍微的说一点点吧。`WeakMap`的专用场合就是，它的键所对应的对象，可能会在将来消失。`WeakMap`结构有助于防止内存泄漏。
 
+`WeakMap`和`Map`的数据结构是一样的，但是区别有如下:
+  1. `WeakMap`只接受对象作为键名（`null`除外），不接受其他类型的值作为键名。基础类型数据作为键的时候会报错。
+  2. `WeakMap`的键名所指向的对象，不计入垃圾回收机制。意思就是它的键都是**弱引用**。只要所引用的对象的其他引用都被清除，垃圾回收机制就会释放该对象所占用的内存。也就是说，一旦不再需要，WeakMap 里面的键名对象和所对应的键值对会自动消失，不用手动删除引用。
+  ```js
+  // weakMap
+  let weakObj = {
+    a: 1
+  }
+  const weakMap = new WeakMap()
+  weakMap.set(weakObj, 1)
+  console.log(weakMap.get(weakObj)) //  1
+  weakObj = null
+  console.log(weakMap.get(weakObj)) //  undefined 这个key会跟着weakObj的销毁而销毁
+  //但是值却不被影响
+  let valueObj = {
+    a: '我是 value object key'
+  }
+  let value = {
+    a: 'value '
+  }
+  weakMap.set(valueObj, value)
+  console.log(weakMap.get(valueObj)) // {a: "value "}
+  value = null
+  console.log(weakMap.get(valueObj)) // {a: "value "} 
+  ```
+  注意： **`WeakMap`中只有键是弱引用，值不受影响**
+  
+  3. `WeakMap`没有遍历操作也没有size属性。只有4个方法可用`get()、set()、has()、delete()`。
 
 ## Proxy
 
