@@ -252,6 +252,28 @@ target:  String - 目标名称，例如snap.
 arch “x64” | “ia32” | “armv7l” | “arm64”> | “x64” | “ia32” | “armv7l” | “arm64”  -arch支持列表
 ```
 
+## 常见的错误
+
+- `NPM`下载的问题
+  
+  因为`NPM`在国内比较慢。导致`electron-V.xxxx.zip`下载失败。这些东西如果是第一次打包的话是需要下载对应`electron`版本的支持文件。解决办法有两个
+  1. 设置镜像：在C盘User中找到`.npmrc`文件。然后加入下面这句代码,但是这个有时候也不是很好用
+  ```
+  ELECTRON_MIRROR=http://npm.taobao.org/mirrors/electron/
+  ```
+  2. 直接去淘宝镜像文件库找到对应的文件并下载，放到指定的目录下，electron的淘宝[镜像地址](https://npm.taobao.org/mirrors/electron/)。下载完之后放到指定的文件。一般文件得地址在`C:\Users\Administrator\AppData\Local\electron\Cache`。例如我要下载1.8.4版本的`electron`，那么找到镜像下得文件然后放到指定文件夹中。
+  ![electron](./error1.png 'electron')
+  ![electron](./error2.png 'electron')
+
+  这就解决了这个问题，简单又暴力。
+
+- `NSIS`下载问题
+
+  如果你要打`NSIS`得包还需要西再下载`nsis-resources-xxx`等等包。经过上面得经验这下我们知道缺什么就填什么呗，通过错误日志我们可以得到我们要下载得版本，一般错误中通常会展示`github`下载地址，直接点开连接去下载。但是位置这次不一样了。因为这是`electron-builder`的支持环境所以我们要放在`C:\Users\Administrator\AppData\Local\electron-builder\cache\nsis\`下了。
+  ![electron](./nsiserror.png 'electron')
+
+一般情况下解决这些问题的思路就是，缺什么拿什么😄。
+
 # 总结
 electron-builder是一个简单又强大的库。反正我是很服
 
