@@ -178,13 +178,121 @@ getArea(symbolType.triangle, {width: 100, height: 100})
   console.log(Reflect.ownKeys(allKeys)) // ["num", Symbol(key)]
   ```
 
-
-
-
 ## Set And Maps
 
 ### Set
+- `Set`基础
 
+>ES6 提供了新的数据结构 Set。ES6 提供了新的数据结构 `Set`。**它类似于数组**，但是成员的值都是**唯一**的，没有重复的值。
+
+`Set`是一个构造函数。它用来生成`Set`结构。
+```js
+// set
+const set1 = new Set([1,2,2,3,3,3,3])
+console.log(set1) // Set(3)
+```
+`Set` 函数可以接受一个数组（或者具有 `iterable` 接口的其他数据结构）作为参数，用来初始化。类数组对象也可以用来作为参数。也可以先创建一个`Set`对象，然后通过`add`方法向对象中新增值。
+```js
+// 数组对象
+const arrayLikes = document.getElementsByTagName('div')
+console.log(arrayLikes) // HTMLCollection
+const set2 = new Set(arrayLikes)
+console.log(set2.size) // 27
+// 先创建set
+const setFirst = new Set()
+const setArr = [1,2,3,1,12,3,4,3,4,3,4]
+setArr.forEach(element => {
+  setFirst.add(element)
+})
+console.log(setFirst) //  Set(5) {1, 2, 3, 12, 4}
+```
+
+- `Set`内置属性和方法
+
+  `Set`属性：
+  - `Set.prototype.constructor`: 构造函数，默认就是`Set`函数
+  - `Set.prototype.size`: 返回`Set`对象得成员总数
+
+- `Set`方法
+  
+**操作方法（操作数据）**
+  - `add(value)`: 新增数据,返回`Set`
+  - `delete(value)`: 删除某个值，返回一个布尔值，表示删除是否成功。
+  - `has(value)`: 这个值是否是`Set`的成员
+  - `clear`: 清除所有的成员
+  ```js
+  let setMethod = new Set()
+  setMethod.add(1).add(2).add(2) // Set(2) {1, 2}
+  console.log(setMethod) // 
+  setMethod.has(1) // true
+  setMethod.delete(1) //
+  console.log(setMethod) // Set(1) {2}
+  setMethod.clear() 
+  console.log(setMethod) // Set(0) {}
+  ```
+**遍历方法**
+  1. `keys()` => 返回键名的遍历器。
+  2. `values()` => 返回键值的遍历器 因为`Set`结构没有键名，只有键值（或者说键名和键值是同一个值），所以keys方法和values方法的行为完全一致。
+  3. `entries()` => 返回所有成员的遍历器
+  4. `forEach` => 遍历 `Map` 的所有成员
+  ```js
+  // 遍历方法
+  let setFor = new Set(['red', 'green', 'blue'])
+  console.log(setFor.keys()) // SetIterator {"red", "green", "blue"}
+  for (const iterator of setFor.keys()) {
+    console.log(iterator) // red green blue
+  }
+  console.log(setFor.values()) // SetIterator {"red", "green", "blue"}
+  for (const iterator of setFor.values()) {
+    console.log(iterator) // red green blue
+  }
+  console.log(setFor.entries())
+  for (const iterator of setFor.entries()) {
+    // entries方法返回的遍历器，同时包括键名和键值，所以每次输出一个数组，它的两个成员完全相等。
+    console.log(iterator) //  ["red", "red"] ["green", "green"] ["blue", "blue"]
+  }
+  // forEach 方法
+  setFor.forEach((value, key) => console.log(key + ' : ' + value))  
+  ```
+- `Set`实际使用
+  1. 数组转化：
+    
+    `Array.from`方法可以将 `Set` 结构转为数组。
+    ```js
+    const setArrays = new Set([1, 2, 3, 4, 5])
+    let arraySets = Array.from(setArrays)
+    console.log(arraySets) // [1, 2, 3, 4, 5]
+    ```
+  2. 数组快速去重：
+  
+    配合`...`展开运算符快速去重。
+    ```js
+    // 配合`...`展开运算符快速去重。
+    let numbers = [1,2,1,1,23,4,12,1,1]
+    console.log([...new Set(numbers)])// [1, 2, 23, 4, 12]
+    ```
+  3. 并集（Union）、交集（Intersect）和差集（Difference）实现：
+    ```js
+    //求两个数组的集合
+    const arrayA = [1,2,3], arrayB= [2,3,4]
+    let setA = new Set(arrayA), setB = new Set(arrayB)
+    // 并集
+    const union = new Set(arrayA.concat(arrayB))
+    console.log(union) //  Set(4) {1, 2, 3, 4}
+    // 交集
+    const intersect = new Set(arrayA.filter(x => setB.has(x)))
+    console.log(intersect) // Set(2) {2, 3}
+    // 差集
+    const differenceA = arrayA.filter(x => !setB.has(x))
+    const diefferenceB = arrayB.filter(x => !setA.has(x))
+    const difference = new Set([...differenceA, ...diefferenceB])
+    console.log(difference) // set(2) {1, 4}
+    ```
+
+- `WeakSet`
+> WeakSet 结构与 Set 类似，也是不重复的值的集合。但是，它与 Set 有两个区别。首先，WeakSet 的成员只能是对象，而不能是其他类型的值。 
+
+区别的和特点都和下面的`WeakMap`是一样的。
 
 ### Map
 - `Map`基础
@@ -268,7 +376,11 @@ console.log(refMap.get(b)) // 指向同一地址
   5. `delete(key)` => 删除某个key，成功返回`true`,失败返回`fasle`
   6. `clear()` => 清除所有成员，没有返回值。
 
+  `Map`相对于`Set`来讲，仅仅是多了个`get`方法
+
 - 遍历
+  `Map`和`Set`的遍历方法都是一致的
+
   1. `keys()` => 返回键名的遍历器。
   2. `values()` => 返回键值的遍历器
   3. `entries()` => 返回所有成员的遍历器
