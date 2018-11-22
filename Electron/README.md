@@ -323,3 +323,6 @@ HOME=~/.electron-gyp node-gyp rebuild --target=1.2.3 --arch=x64 --dist-url=https
 
 # 总结 
 > 上面讲的那些只是ELectron的冰山一角，还有很多的模块等着我们去探索和发现。前路漫漫，共同努力。
+## 其他相关文章
+- [Electron单例检测](https://github.com/QDMarkMan/CodeBlog/blob/master/Electron/SingleInstance.md)
+- [Electron-builder打包详解](https://github.com/QDMarkMan/CodeBlog/blob/master/Electron/electron-builder%E6%89%93%E5%8C%85%E8%AF%A6%E8%A7%A3.md)

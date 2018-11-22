@@ -487,6 +487,87 @@ console.log(refMap.get(b)) // 指向同一地址
   3. `WeakMap`没有遍历操作也没有size属性。只有4个方法可用`get()、set()、has()、delete()`。
 
 ## Proxy
+> Proxy 用于修改某些操作的默认行为，等同于在语言层面做出修改，所以属于一种“元编程”（meta programming），即对编程语言进行编程。
+
+听说`VUE3.0`会抛弃`Object.defineProperty()`转向`Proxy`的怀抱。这就能看出来`Proxy`的强大了。那我们一起来揭开`Proxy`的神秘面纱。但是要注意，**`Proxy`现在的兼容性及其的差，而且没有垫片支持。**
+
+### 基本概念
+
+`Proxy: 代理` 通过中文意思我们不难这个东西主要是代理某种操作，所以可以成为`代理器`。他的目的是**在目标对象架设一层代理对操作进行“拦截”**。意思大概就是：想动我对象大哥可以，你得先过了我`Proxy`这一关。下面我们来实现一个代理：
+
+通过`Proxy` 构造函数来生成一个`Proxy`对象：`Proxy(target: {}, handler: ProxyHandler<{}>): {}`
+
+`target`: 表示要拦截的对象
+`handler`: handler参数也是一个`ProxyHandler`对象，用来定制拦截行为。 包括了`get`，`set`方法。
+```js
+var proxy = new Proxy(target, handler);
+```
+```js
+// 下面代码对一个空对象架设了一层拦截，重定义了属性的读取（get）和设置（set）行为
+const proxyObj = new Proxy({}, {
+  /**
+   * 读取行为
+   * @param {*目标对象} target
+   * @param {*目标key} key 
+   * @param {*接收对象(Symbol值)} receiver 
+   */
+  get (target, key, receiver) {
+    console.log(target) // {count: 1}
+    console.log(`getting ${key}!`); // getting count!
+    return Reflect.get(target, key, receiver);
+  },
+  /**
+   * 设置行为
+   * @param {*} target 
+   * @param {*} key 
+   * @param {*设置value} value 
+   * @param {*} receiver 
+   */
+  set (target, key, value, receiver) {
+    console.log(target) // {}
+    console.log(receiver) // Proxy {}
+    console.log(`getting ${key} ${value}!`);
+    return Reflect.set(target, key, value, receiver);
+  }
+})
+proxyObj.count = 1 // getting count 1!
+console.log(proxyObj.count) // 1
+```
+### 基本使用
+下面我们来定义更实际的拦截。
+```js
+// 更实际的拦截
+const objForPro1 = {
+  a: 1
+}
+const proxyObj1 = new Proxy(objForPro1, {
+  set (target, key) {
+    return 1
+  }
+})
+// 拦截针对的是Proxy对象！
+proxyObj1.a = 4
+proxyObj1.a = 5
+console.log(proxyObj1.a)
+```
+看上面的情况就可以看出来，无论怎么改都无法修改属性的值。简简单单的实现了一个只读属性。多强大阿朋友们。
+
+注意：**其中的拦截是针对`Proxy`对象，不是target对象！**
+
+如果handler没有设置任何拦截，那就等同于直接通向原对象。
+```js
+const proxyObj2 = new Proxy(objForPro1, {})
+proxyObj2.a = 2
+console.log(proxyObj2.a) // 2
+```
+
+`Proxy`实例也可以作为其他对象的原型对象
+```js
+// Proxy 实例也可以作为其他对象的原型对象。
+const objByProxy = Object.create(proxyObj2)
+console.log(objByProxy.a) // 2
+```
+
 
 ## Promise
 

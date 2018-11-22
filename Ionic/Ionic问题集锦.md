@@ -1,5 +1,5 @@
 # Ionic集锦
-
+## 3.0
 ## 01 Ionic页面跳转以及传参
 1. 跳转页面（在home.ts跳转为例）
    
@@ -56,5 +56,7 @@ ionic g page NewPage
 ```
 > 对应四个 new-page.html（html模板）、new-page.module.ts（ionic3中懒加载文件）、new-page.scss（样式）、new-page.ts（控制器） 这种生成后的页面不需要在app.module.ts中引用（懒加载模式）
 
+
+## 4.0
 
 
