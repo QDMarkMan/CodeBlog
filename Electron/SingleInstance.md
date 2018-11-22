@@ -3,7 +3,7 @@
 
 - 首先 我们需要了解Electron的基本知识，<small> [点击看基础](https://github.com/QDMarkMan/CodeBlog/tree/master/Electron) </small>。这里就不赘述了，然后我们就需要知道我们用Elenton中提供的API了。
 
-- 接下来我们的主角 <font face="微软雅黑" color="red">app.makeSingleInstance(callback)</font> 就粉墨登场了
+- 接下来我们的主角 <font face="微软雅黑" color="red">`app.makeSingleInstance(callback)`</font> 就粉墨登场了
     > 此方法使应用程序成为单个实例应用程序, 而不是允许应用程序的多个实例运行, 这将确保只有一个应用程序的实例正在运行, 其余的实例全部会被终止并退出。          当执行第二个实例时, 第一个实例将使用 callback (argv，workingDirectory) 调用 callback。 argv 是第二个实例的命令行参数的数组, workingDirectory 是这个实例当前工作目录。 通常, 应用程序会激活窗口并且取消最小化来响应。
     ``` js
       /*
