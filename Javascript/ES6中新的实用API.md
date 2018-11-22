@@ -517,11 +517,11 @@ const proxyObj = new Proxy({}, {
     return Reflect.get(target, key, receiver);
   },
   /**
-   * 设置行为
-   * @param {*} target 
-   * @param {*} key 
+   * 拦截设置值
+   * @param {*目标对象} target 
+   * @param {*属性名} key 
    * @param {*设置value} value 
-   * @param {*} receiver 
+   * @param {*proxy实例本身(Symbol)} receiver 
    */
   set (target, key, value, receiver) {
     console.log(target) // {}
@@ -534,7 +534,7 @@ proxyObj.count = 1 // getting count 1!
 console.log(proxyObj.count) // 1
 ```
 ### 基本使用
-下面我们来定义更实际的拦截。
+- 下面我们来定义更实际的拦截。
 ```js
 // 更实际的拦截
 const objForPro1 = {
@@ -554,20 +554,240 @@ console.log(proxyObj1.a)
 
 注意：**其中的拦截是针对`Proxy`对象，不是target对象！**
 
-如果handler没有设置任何拦截，那就等同于直接通向原对象。
+- 如果handler没有设置任何拦截，那就等同于直接通向原对象。
 ```js
 const proxyObj2 = new Proxy(objForPro1, {})
 proxyObj2.a = 2
 console.log(proxyObj2.a) // 2
 ```
 
-`Proxy`实例也可以作为其他对象的原型对象
+- `Proxy`实例也可以作为其他对象的原型对象
 ```js
 // Proxy 实例也可以作为其他对象的原型对象。
-const objByProxy = Object.create(proxyObj2)
+const objByProxy = Object.create(proxyObj2) // objByProxy 本身没有a这个属性 但是proxyObj2有
 console.log(objByProxy.a) // 2
 ```
+- 同一个拦截器函数，可以设置**拦截多个操作**。
+```js
+// 同一个拦截器函数，设置拦截多个操作。
+const mutiHandle = {
+  get (target, name) {
+    if (name === 'prototype') {
+      return Object.prototype
+    }
+    console.log(`Hello ${name}`);
+    return `Hello ${name}`
+  },
+  /**
+   * 自定义apply 函数
+   * @param {*} target 
+   * @param {*} thisBinding 
+   * @param {*} args 
+   */
+  apply (target,thisBinding, args) {
+    console.log(`rewrite call && args  = ${[...args]}`);
+    return args[0]
+  },
+  /**
+   * 自定义构造器函数
+   * @param {*} target 
+   * @param {*} args 
+   */
+  construct (target, args) {
+    console.log(`rewrite construct && args  = ${[...args]}`);
+    return {value: args[1]}
+  }
+}
+let proxyObj3 = new Proxy(function(x, y) {
+  return x + y
+}, mutiHandle)
+console.log(proxyObj3(1,2))// call： 调用函数被拦截 rewrite call && args  = 1,2
+console.log(new proxyObj3(1, 2)) // {value: 2}  rewrite construct && args  = 1,2
+console.log(proxyObj3.prototype === Object.prototype) // true 因为我们拦截了get 
+console.log(proxyObj3.a === "Hello a") // true 因为我们同时也拦截了value
+```
 
+### `Proxy支持拦截得属性和实例内置方法`
+**Proxy 支持的拦截操作一览，一共 13 种。**
+- `get(target, propKey, receiver)`：拦截对象属性的读取，比如proxy.foo和proxy['foo']。
+- `set(target, propKey, value, receiver)`：拦截对象属性的设置，比如proxy.foo = v或proxy['foo'] = v，返回一个布尔值。
+- `has(target, propKey)`：拦截propKey in proxy的操作，返回一个布尔值。
+- `deleteProperty(target, propKey)`：拦截delete proxy[propKey]的操作，返回一个布尔值。
+- `ownKeys(target)`：拦截`Object.getOwnPropertyNames(proxy)、Object.getOwnPropertySymbols(proxy)、Object.keys(proxy)、for...in`循环，返回一个数组。该方法返回目标对象所有自身的属性的属性名，而Object.keys()的返回结果仅包括目标对象自身的可遍历属- 性。
+- `getOwnPropertyDescriptor(target, propKey)`：拦截Object.getOwnPropertyDescriptor(proxy, propKey)，返回属性的描述对象。
+- `defineProperty(target, propKey, propDesc)`：拦截Object.defineProperty(proxy, propKey, propDesc）、- Object.defineProperties(proxy, propDescs)，返回一个布尔值。
+- `preventExtensions(target)`：拦截Object.preventExtensions(proxy)，返回一个布尔值。
+- `getPrototypeOf(target)`：拦截Object.getPrototypeOf(proxy)，返回一个对象。
+- `isExtensible(target)`：拦截Object.isExtensible(proxy)，返回一个布尔值。
+- `setPrototypeOf(target, proto)`：拦截Object.setPrototypeOf(proxy, proto)，返回一个布尔值。如果目标对象是函数，那么还有两种额- 外操作可以拦截。
+- `apply(target, object, args)`：拦截 Proxy 实例作为函数调用的操作，比如proxy(...args)、proxy.call(object, ...args)、- proxy.apply(...)。
+- `construct(target, args)`：拦截 Proxy 实例作为构造函数调用的操作，比如`new proxy(...args)`。
+**Proxy内置方法，一共 14 个。**
+- `proxy.get(target, key, receiver)`: 拦截某个属性的**读取操作**
+```js
+/**
+ * 读取行为
+ * @param {*目标对象} target
+ * @param {*目标key} key 
+ * @param {*接收对象(Symbol值)} receiver 
+ */
+get (target, key, receiver) {
+
+}
+```
+`get`方法是可以继承的。
+```js
+// get方法的继承
+let proto = new Proxy({}, {
+  get (target, key) {
+    console.log('GET ' + key)
+    return target[key]
+  }
+})
+let proxyObj4 = Object.create(proto) // proxyObj4直接继承了proto中的get 方法
+proxyObj4.foo // foo 
+```
+`get()`实际用在对数组复索引的取值
+```js
+// get 根据复索引取值
+function createArr (...args) {
+  let handler = {
+    get (target, key, receiver) {
+      const index = Number(key)
+      // 构建真实的key
+      if (key < 0) {
+        key = String(target.length + index);
+      }
+      // Reflect以后再说
+      return Reflect.get(target, key, receiver)
+    }
+  }
+  let target = []
+  target.push(...args)
+  // 返回一个被proxy拦截的数组对象
+  return new Proxy(target, handler);
+}
+const proxyArr = createArr('a','b', 'c', 'd')
+console.log(proxyArr[-1]) // d 
+```
+- `proxy.set(target, key, value, receiver)`: 拦截某个属性的**赋值操作**
+这个方法用得最多，接受4个参数
+```js
+/**
+ * 设置行为
+ * @param {*目标对象} target 
+ * @param {*属性名} key 
+ * @param {*设置value} value 
+ * @param {*proxy实例本身(Symbol)} receiver 
+ */
+set (target, key, value, receiver) {
+  
+}
+```
+注意：**如果目标对象自身的某个属性，不可写且不可配置，那么`set()`将不起作用。**
+```js
+// 如果目标对象自身的某个属性，不可写且不可配置，那么set方法将不起作用。
+const readObj = {}
+// 又是一种设置只读属性的方法
+Object.defineProperty(readObj, 'name', {
+  value: 'readOnly',
+  writable: false,
+})
+const uselessHandle = {
+  set (target, key, value, receiver) {
+    target[key] = 'set by proxy'
+  }
+}
+const uselessProxy = new Proxy(readObj, uselessHandle)
+// uselessProxy.name = 'proxy' // Cannot assign to read only property 'name' of object '#<Object>
+console.log(uselessProxy.name)// readOnly
+```
+- `proxy.apply(target, targetThis, args)`: 拦截函数的**调用、call和apply操作**\
+`apply`方法可以接受三个参数，分别是目标对象、目标对象的上下文对象（this）和目标对象的参数数组。说简单一点就是你这个函数执行之前呀先执行被我拦截的东西。因为函数也是对象，所有函数也是可以被当作是`Proxy`对象。
+```js
+/**
+ * 自定义apply 函数
+ * @param {*目标对象} target 
+ * @param {*目标this} thisBinding 
+ * @param {*参数数组} args 
+ */
+apply (target,thisBinding, args) {
+  console.log(`rewrite call && args  = ${[...args]}`);
+  return args[0]
+}
+```
+下main来看一个简单的例子。**被拦截了之后函数原本的内容就不会存在了**，`Proxy`就是这么的为所欲为。
+```js
+// 简单的apply()
+let applyFunc = function() {console.log(`I am target function`)}
+const applyProxy = new Proxy(applyFunc, {
+  /**
+   * @param {*} target 
+   * @param {*} targetThis 
+   * @param {*} args 
+   */
+  apply (target, targetThis, args) {
+    console.log(`i am proxy`)  
+  }
+})
+applyProxy() // i am proxy
+```
+- `proxy.has(target, key)`：拦截**`HasProperty`**操作
+判断对象是否具有某个属性时，这个方法会生效。典型的操作就是`in`运算符。这也是一个魔术一样的方法。下面我们开始变魔术，隐藏部分属性
+```js
+// 使用has() 隐藏部分属性
+const hasHandle = {
+  /**
+   * 隐藏“_”开头的属性
+   * @param {*} target 
+   * @param {*} key 
+   */
+  has (target, key) {
+    // 变魔术开始了
+    if (key[0] === '_') {
+      return false
+    }
+    return key in target
+  }
+}
+let hasObj = {name: 'has', _age: 'private'}
+let hasProxy = new Proxy(hasObj, hasHandle)
+console.log('_age' in hasProxy) // false
+```
+如果原对象不可配置或者禁止扩展，这时`has`拦截会报错。
+```js
+// 不可扩展的时候使用has会报错
+let noHasObj = {a: 1}
+Object.preventExtensions(noHasObj) // 禁止扩展
+const noHasProxy = new Proxy(noHasObj, {
+  has: function(target, prop) {
+    return false
+  }
+})
+// console.log('a' in noHasProxy) // Uncaught TypeError: 'has' on proxy: trap returned falsish for property 'a' but the proxy target is not extensible
+```
+值得注意的是，**has方法拦截的是HasProperty操作，而不是HasOwnProperty操作，即has方法不判断一个属性是对象自身的属性，还是继承的属性。虽然for...in循环也用到了in运算符，`但是has拦截对for...in循环不生效。`**
+```js
+// has对for in 循环是不起作用的
+for (const key in hasProxy) {
+  console.log(key)// name _age
+}
+```
+- `proxy.construct()`
+- `proxy.deleteProperty()`
+- `proxy.defineProperty()`
+- `proxy.getOwnPropertyDescriptor()`
+- `proxy.getPrototypeOf()`
+- `proxy.isExtensible()`
+- `proxy.ownKeys()`
+- `proxy.preventExtensions()`
+- `proxy.setPrototypeOf()`
+- `proxy.revocable()`
+
+### 实际用途
+- 结合`get`和`set`方法，就可以做到防止这些内部属性被外部读写。
+- 实现双向绑定
+- 通过`set()`对赋值进行过滤
 
 ## Promise
 
