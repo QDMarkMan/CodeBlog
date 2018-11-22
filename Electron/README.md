@@ -216,14 +216,14 @@ HOME=~/.electron-gyp node-gyp rebuild --target=1.2.3 --arch=x64 --dist-url=https
     ``` bash
     "build": {
         "productName": "项目名",
-        "appId": "org.simulatedgreg.ymhy-aiis-exe", // 这个用处不大
+        "appId": "org.simulatedgreg.xxx.xxx-exe", // appID
         "directories": {
           "output": "build"
         },
         "publish": [ // 这个配置会生成latest.yml文件，用于自动更新的配置信息；
           {
             "provider": "generic",
-            "url": "http://appupdate.ymhy.net.cn/winclient/" // 更新地址 这个很重要
+            "url": "http://appupdate.xxx.xxx.cn/" // 更新地址 这个很重要
           }
         ]
       },
@@ -239,7 +239,7 @@ HOME=~/.electron-gyp node-gyp rebuild --target=1.2.3 --arch=x64 --dist-url=https
     // 检测更新，在你想要检查更新的时候执行，renderer事件触发后的操作自行编写
     function updateHandle() {
       let message = {
-        appName:'农业投入品系统',
+        appName:'XXXX',
         error: {
           key:"0",//更新出错
           msg:"更新出错"
