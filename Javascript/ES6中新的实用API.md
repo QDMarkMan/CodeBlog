@@ -817,12 +817,96 @@ delete deleteProxy._no //报错
 ```
 注意：**目标对象自身的不可配置（configurable）的属性，不能被`deleteProperty`方法删除，否则报错。**
 
-- `proxy.defineProperty()`
-- `proxy.getOwnPropertyDescriptor()`
-- `proxy.getPrototypeOf()`
-- `proxy.isExtensible()`
+- `proxy.defineProperty()`: 拦截了`Object.defineProperty`操作
+```js
+// 拦截Object.defineProperty
+const defineHandle = {
+  /**
+   * @param {*} target 
+   * @param {*} key 
+   * @param {*修饰符} descriptor 
+   */
+  defineProperty  (target, key, descriptor) {
+    console.log(descriptor) // {value: "demo", writable: true, enumerable: true, configurable: true}
+    return false
+  }
+}
+const defineProxy = new Proxy({}, defineHandle)
+defineProxy.demo = 'demo' // 不会生效
+```
+注意：**如果目标对象不可扩展（non-extensible），则defineProperty不能增加目标对象上不存在的属性，否则会报错。另外，如果目标对象的某个属性不可写（writable）或不可配置（configurable），则defineProperty方法不得改变这两个设置。**
+- `proxy.getOwnPropertyDescriptor()`：拦截`getOwnPropertyDescriptor`操作
+```js
+// 拦截getOwnPropertyDescriptor
+const getOwn = {
+  getOwnPropertyDescriptor (target, key) {
+    if (key[0] === '_') {
+      return;
+    }
+    return Object.getOwnPropertyDescriptor(target, key)
+  }
+}
+let ownTaget = {
+  _foo: 'foo',
+  bar: 'bar'
+}
+const ownProxy = new Proxy(ownTaget, getOwn)
+console.log(Object.getOwnPropertyDescriptor(ownProxy, '_foo'))// undefined
+console.log(Object.getOwnPropertyDescriptor(ownProxy, 'bar'))// {value: "bar", writable: true, enumerable: true, configurable: true}
+```
+  
+- `proxy.getPrototypeOf()`: 拦截一系列获取`prototype`得操作
+
+具体主要是拦截以下得操作
+- `Object.prototype.__proto__`
+- `Object.prototype.isPrototypeOf()`
+- `Object.getPrototypeOf()`
+- `Reflect.getPrototypeOf()`
+- `instanceof`
+```js
+// getPrototypeOf()拦截
+let protoObj = {
+  name: 'protoObj'
+}
+const protoProxy = new Proxy({}, {
+  getPrototypeOf (target) {
+    console.log('protoObj be proxyed')
+    return protoObj
+  }
+})
+console.log(Object.getPrototypeOf(protoProxy) === protoObj)// true
+```
+- `proxy.isExtensible()`：拦截`Object.isExtensible（检测对象是否可扩展）`操作。
+```js
+// 拦截Object.isExtensible（检测对象是否可扩展）
+let extendObj = {}
+const extendProxy = new Proxy(extendObj, {
+  isExtensible (target) {
+    console.log("call isExtensible proxy")
+    return true
+  }
+})
+Object.isExtensible(extendProxy)
+```
+注意：**该方法只能返回布尔值，否则返回值会被自动转为布尔值。**
+
+- `proxy.preventExtensions()`：拦截`Object.preventExtensions(取消对象得可扩展性)`操作
+```js
+// 拦截preventExtensions操作
+const preventExtHandle = {
+  preventExtensions(target) {
+    console.log('you will preventExtensions target')
+    Object.preventExtensions(target)
+    return true
+  }
+}
+let preventExtPro = new Proxy({}, preventExtHandle)
+Object.preventExtensions(preventExtPro)
+```
+注意：**该方法只能返回布尔值，否则返回值会被自动转为布尔值。**
+
+
 - `proxy.ownKeys()`
-- `proxy.preventExtensions()`
 - `proxy.setPrototypeOf()`
 - `proxy.revocable()`
 
