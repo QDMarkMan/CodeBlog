@@ -773,8 +773,50 @@ for (const key in hasProxy) {
   console.log(key)// name _age
 }
 ```
-- `proxy.construct()`
-- `proxy.deleteProperty()`
+- `proxy.construct(target, args, newTarget)`：拦截构造器方法，但是它拦截的主要是`new`操作符
+```js
+// construct 拦截
+let newProxy = new Proxy(function () {
+  console.log(`old construct`)
+}, {
+  /**
+   * @param {*目标对象} target 
+   * @param {*参数列表} args 
+   * @param {*new命令作用的构造函数（例子中的newProxy）} newTarget 
+   */
+  construct: function(target, args, newTarget) {
+    console.log(target)
+    console.log('proxy construct called: ' + args.join(', '));
+    console.log(newTarget)
+    return { value: args[0] * 10 } // 这个地方一定要但会对象，否则会报错。
+  }
+})
+let proxyValue = new newProxy(1)
+console.log(proxyValue.value) // 10
+```
+- `proxy.deleteProperty(target, key) `：用于拦截`delete`操作符
+一旦检测到非法操作，需要抛出异常来终止当前执行。
+```js
+// delete操作符拦截
+let deleteObj = {
+  ok: 'ok',
+  _no: 'no'
+}
+const deleteProxy = new Proxy(deleteObj, {
+  /**
+   * @param {*} target 
+   * @param {*} key 
+   */
+  deleteProperty (target, key) {
+    if (key[0] === '_') {
+      throw new Error(`Invalid attempt to private "${key}" property`);
+    }
+  }
+})
+delete deleteProxy._no //报错
+```
+注意：**目标对象自身的不可配置（configurable）的属性，不能被`deleteProperty`方法删除，否则报错。**
+
 - `proxy.defineProperty()`
 - `proxy.getOwnPropertyDescriptor()`
 - `proxy.getPrototypeOf()`
