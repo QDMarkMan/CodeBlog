@@ -906,9 +906,66 @@ Object.preventExtensions(preventExtPro)
 注意：**该方法只能返回布尔值，否则返回值会被自动转为布尔值。**
 
 
-- `proxy.ownKeys()`
-- `proxy.setPrototypeOf()`
-- `proxy.revocable()`
+- **`proxy.ownKeys(target)`**： 用来拦截对象自身属性的`读取操作`。
+
+从这个ownKeys我们其实就能知道这个方法是干什么的，具体来说，拦截以下操作。
+- `Object.getOwnPropertySymbols()`
+- `Object.getOwnPropertyNames()`
+- `Object.keys()`
+- `for...in循环`
+```js
+// 拦截ownKeys
+let keysObj = {
+  a: 'a',
+  b: 'b',
+  c: 'c',
+  _d: 'd'
+}
+let keysProxy = new Proxy(keysObj, {
+  /**
+   * 拦截只返回a
+   * @param {*} target 
+   */
+  ownKeys(target) {
+    return ['a']
+  }
+})
+for (const key in keysProxy) {
+  console.log(key) // a
+}
+```
+
+  
+- `proxy.setPrototypeOf(target)`：用来拦截`Object.setPrototypeOf`方法。
+```js
+// 拦截setPrototypeOf 
+let setProtObj = {
+  foo: 'foo'
+}
+const setProtProxy = new Proxy(setProtObj, {
+  setPrototypeOf (target) {
+    console.log(`called setPrototypeOf`)
+    return true // 只能返回boolean值
+  }
+})
+Object.setPrototypeOf(setProtProxy, Array)
+```
+通过这个方法我们可以不允许修改`proxy`实例的`prototype`。
+  
+- `Proxy.revocable(target, handler)`: 这个就比较特殊了，他不是用来拦截的。他返回一个`可取消的 Proxy 实例`。
+```js
+// 返回一个可取消的 Proxy 实例
+
+let {proxy, revoke} = Proxy.revocable({bar: 'bar'}, {})
+console.log(proxy) // Proxy {} proxy实例
+console.log(revoke) // 取消proxy的函数
+proxy.foo = 'foo'
+console.log(proxy.bar)
+console.log(proxy.foo)
+revoke()
+// console.log(proxy.bar) // Cannot perform 'get' on a proxy that has been revoked 此时代理被取消，所以proxy实例对象中已经没有不存在了
+```
+`Proxy.revocable`的一个使用场景是，目标对象不允许直接访问，必须通过代理访问，一旦访问结束，就收回代理权，不允许再次访问。
 
 ### 实际用途
 - 结合`get`和`set`方法，就可以做到防止这些内部属性被外部读写。
