@@ -264,7 +264,8 @@ arch “x64” | “ia32” | “armv7l” | “arm64”> | “x64” | “ia32�
   ![electron](./error1.png 'electron')
   ![electron](./error2.png 'electron')
 
-  <small>(如果是在执行`npm install`时下载不下来)直接在https://npm.taobao.org/mirrors/electron下载对应版本的zip 直接扔到C:\Users\YourUserName\.electron就行</small>
+  <small>**(如果是在执行`npm install`时下载不下来)直接在https://npm.taobao.org/mirrors/electron下载对应版本的zip 直接扔到C:\Users\YourUserName\.electron就行**</small>
+
   这就解决了这个问题，简单又暴力。
 
 - `NSIS`下载问题
