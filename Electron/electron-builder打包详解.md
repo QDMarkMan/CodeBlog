@@ -276,7 +276,7 @@ arch “x64” | “ia32” | “armv7l” | “arm64”> | “x64” | “ia32�
 一般情况下解决这些问题的思路就是，缺什么拿什么😄。
 
 # 总结
-electron-builder是一个简单又强大的库。反正我是很服
+`electron-builder`是一个简单又强大的库。解决了打包这个棘手的问题，而且可以应对大部分的打包需求。
 
 [Demo地址](https://github.com/QDMarkMan/electron-builder-start)
 
