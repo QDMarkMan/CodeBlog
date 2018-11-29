@@ -622,6 +622,8 @@ console.log(proxyObj3.a === "Hello a") // true 因为我们同时也拦截了val
 - `setPrototypeOf(target, proto)`：拦截Object.setPrototypeOf(proxy, proto)，返回一个布尔值。如果目标对象是函数，那么还有两种额- 外操作可以拦截。
 - `apply(target, object, args)`：拦截 Proxy 实例作为函数调用的操作，比如proxy(...args)、proxy.call(object, ...args)、- proxy.apply(...)。
 - `construct(target, args)`：拦截 Proxy 实例作为构造函数调用的操作，比如`new proxy(...args)`。
+
+
 **Proxy内置方法，一共 14 个。**
 - `proxy.get(target, key, receiver)`: 拦截某个属性的**读取操作**
 ```js
@@ -933,9 +935,34 @@ let keysProxy = new Proxy(keysObj, {
 for (const key in keysProxy) {
   console.log(key) // a
 }
+// ownKeys拦截getOwnPropertyNames 方法返回一个由指定对象的所有自身属性的属性名（包括不可枚举属性但不包括Symbol值作为名称的属性）组成的数组。
+console.log(Object.getOwnPropertyNames(keysFilteProxy)) // ["name", "enumerabled"]
 ```
-
-  
+注意：**使用`Object.keys`方法时，下面这三类属性时会被ownKeys方法自动过滤的**
+1. 目标对象上不存在的属性
+2. 属性名为 `Symbol` 值
+3. 不可遍历（`enumerable`）的属性  
+```js
+// Object.keys的特殊情况
+let keySymbol = Symbol('symbol')
+let keysFilterObj = {
+  name: 'name',
+  [keySymbol]: 'symbol'
+}
+// 不可枚举属性
+Object.defineProperty(keysFilterObj, 'enumerabled', {
+  enumerable: false,
+  configurable: true,
+  writable: true,
+  value: 'enumerabled'
+})
+let keysFilteProxy = new Proxy(keysFilterObj, {
+  ownKeys (target) {
+    return ['name', keySymbol, 'enumerabled']
+  }
+})
+console.log(Object.keys(keysFilteProxy)) // ["name"]
+```
 - `proxy.setPrototypeOf(target)`：用来拦截`Object.setPrototypeOf`方法。
 ```js
 // 拦截setPrototypeOf 
@@ -967,13 +994,125 @@ revoke()
 ```
 `Proxy.revocable`的一个使用场景是，目标对象不允许直接访问，必须通过代理访问，一旦访问结束，就收回代理权，不允许再次访问。
 
-### 实际用途
-- 结合`get`和`set`方法，就可以做到防止这些内部属性被外部读写。
-- 实现双向绑定
-- 通过`set()`对赋值进行过滤
+### 注意点
+- `this`指向问题，`Proxy`它不是目标对象的透明代理，所以`this`的指向其实是指向`proxy`
+
+## Relfact
+> Reflect对象与Proxy对象一样，也是 ES6 为了操作对象而提供的新 API。Reflect对象的设计目的有这样几个。这也算是对object开始改善的第一步，以及对Object的补充。
+
+### 基础知识
+官方解释`Relfact`有以下的作用
+1. 将一些**明显属于语言内部的方法**(例如`Object.defineProperty`)部署到`Relfact`对象上，我觉得是为了解耦以及更加纯粹得对象和方法管理。现在`Object`和`Relfact`上都有某些方法，以后得新方法将只部署到`Relfact`上。也就是说，从`Reflect`对象上可以拿到语言内部的方法。
+2. 修改某些`Object`方法的返回结果，让其变得更合理
+```js
+// Relfact
+//Object.defineProperty(obj, name, desc)在无法定义属性时，会抛出一个错误，而Reflect.defineProperty(obj, name, desc)则会返回false。
+// 没有 Relfact
+try {
+  Object.defineProperty(target, property, attributes);
+} catch (error) {
+  console.log(error)
+} 
+// 使用Relfact Reflect.defineProperty() 返回true或者fasle
+if ( Reflect.defineProperty(target, property, attributes)) { 
+  console.log(true)
+} else {
+  console.log(false)
+}
+```
+3.  让`Object`操作都变成函数行为。
+```js
+// 让Object操作都变成函数行为。
+// 某些Object操作是命令式，比如name in obj和delete obj[name]，而Reflect.has(obj, name)和Reflect.deleteProperty(obj, name)让它们变成了函数行为。
+let relfactObj = {
+  name: 'Reflect'
+}
+// old 
+console.log('name' in relfactObj)
+// Reflect
+console.log(Reflect.has(relfactObj, 'name'));
+```
+4. 与`Proxy`天衣无缝的融合。`Reflect`对象的方法与`Proxy`对象的方法一一对应，只要是`Proxy`对象的方法，就能在`Reflect`对象上找到对应的方法。下面是一个例子
+```js
+// 与proxy配合
+let logObj = new Proxy(relfactObj, {
+  get (target, name) {
+    console.log('get ', target, name)
+    return Reflect.get(target, name)
+  },
+  deleteProperty (target, name) {
+    console.log('delete ', target, name)
+    return Reflect.deleteProperty(target, name)
+  },
+  has(target, name) {
+    console.log('has ' + name)
+    return Reflect.has(target, name)
+  }
+})
+
+console.log('name' in logObj)// true  has name
+console.log(logObj.name)// get  {name: "Reflect"} name  Reflect
+```
+这样的操作是为了保证原生行为能够正常执行。
+
+### 静态方法
+下面的这些静态方法， 大都是和`Proxy`中的是一一对应的而且用处也都基本相同。这些基本是为了统一`API`，因为在`Object`中的这些操作都是稍微有点混乱的。基本上都是`Object`的替代方法。那下面我们就来进行新旧对比
+
+- `Reflect.apply(target, thisArg, args)`： 等同于`Function.prototype.apply.call(func, thisArg, args)`
+- `Reflect.construct(target, args)`：替代`new`来生成一个实例，`args`是一个数组
+```js
+let ReflectCons = function (name) {
+  this.name = name
+}
+// old
+// const consReflect = new ReflectCons('ReflectCons')
+// new
+const consReflect = Reflect.construct(ReflectCons, ['ReflectCons'])
+console.log(consReflect.name)
+```
+- `Reflect.get(target, name, receiver)`: 查找并返回`target`对象的`name`属性，如果没有该属性，则返回`undefined`。
+- `Reflect.set(target, name, value, receiver)`： 设置`target`对象的`name`属性等于`value`。可以取代默认的赋值行为
+注意，**如果 Proxy对象和 Reflect对象联合使用，前者拦截赋值操作，后者完成赋值的默认行为，而且传入了receiver，那么Reflect.set会触发Proxy.defineProperty拦截。**
+```js
+// Reflect.set
+// 如果 Proxy对象和 Reflect对象联合使用，前者拦截赋值操作，后者完成赋值的默认行为，而且传入了receiver，那么Reflect.set会触发Proxy.defineProperty拦截。
+let setReObj = {
+  name: 'setReObj'
+}
+const setReProxy = new Proxy (setReObj, {
+  set (target, name, value, receiver) {
+    console.log('set')
+    Reflect.set(target, name, value, receiver)
+    return true
+  },
+  defineProperty (target, key , attribute) {
+    console.log('defineProperty');
+    Reflect.defineProperty(target, key, attribute);
+  }
+})
+setReProxy.name = 'aaa'
+```
+- `Reflect.defineProperty(target, name, desc)`: 基本等同`Object.defineProperty`
+- `Reflect.deleteProperty(target, name)`:基本等同`Object.deleteProperty`
+- `Reflect.has(target, name)`: 等同于`in`
+- `Reflect.ownKeys(target)`: 用于返回对象的所有属性，基本等同于`Object.getOwnPropertyNames`与`Object.getOwnPropertySymbols`之和。
+```js
+// Reflect.ownKeys(target)
+const keysReflect = {
+  [Symbol('key')] : 'key',
+  key: 'keykey'
+}
+console.log(Reflect.ownKeys(keysReflect)) // ["key", Symbol(key)]
+```
+- `Reflect.isExtensible(target)`: 对应`Object.isExtensible` 返回布尔值
+- `Reflect.preventExtensions(target)`: 对应`Object.preventExtensions`方法,让一个对象不可扩展
+- `Reflect.getOwnPropertyDescriptor(target, name)`：基本等同于`Object.getOwnPropertyDescriptor`
+- `Reflect.getPrototypeOf(target)`: 基本等同于`Object.getPrototypeOf`
+- `Reflect.setPrototypeOf(target, prototype)`: 基本等同于`Object.setPrototypeOf`,它返回一个布尔值
 
 ## Promise
 
 ## Iterator
 
-## Relfact
+
+## Decorator

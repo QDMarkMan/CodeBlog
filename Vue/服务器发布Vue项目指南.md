@@ -56,6 +56,10 @@ DocumentRoot "/usr/local/apache/demo"
 ```
 ![.htacces文件](htac.png '.htacces文件')
 
+### Apache开启Gzip压缩
+```bash
+/usr/local/apache/bin/apxs -i -c -n -a mod_deflate.so
+```
 
 ## 2：Nginx服务器
 
