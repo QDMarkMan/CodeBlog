@@ -998,7 +998,7 @@ revoke()
 - `this`指向问题，`Proxy`它不是目标对象的透明代理，所以`this`的指向其实是指向`proxy`
 
 ## Relfact
-> Reflect对象与Proxy对象一样，也是 ES6 为了操作对象而提供的新 API。Reflect对象的设计目的有这样几个。这也算是对object开始改善的第一步，以及对Object的补充。
+> Reflect对象与Proxy对象一样，也是 ES6 **为了操作对象**而提供的新 API。Reflect对象的设计目的有这样几个。这也算是对object开始改善的第一步，以及对Object的补充。
 
 ### 基础知识
 官方解释`Relfact`有以下的作用
@@ -1114,5 +1114,10 @@ console.log(Reflect.ownKeys(keysReflect)) // ["key", Symbol(key)]
 
 ## Iterator
 
-
 ## Decorator
+> 许多面向对象的语言都有修饰器（`Decorator`）函数，用来修改类的行为。目前，有一个`提案`将这项功能，引入了 ECMAScript。
+注意：`Decorator`其实是个函数。 而且目前在`ES`中这只是个提案。
+
+基本用处
+```js
+```
