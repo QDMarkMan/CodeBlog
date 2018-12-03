@@ -941,6 +941,8 @@ defaultConfig.dev.resolve.alias = {
 ```html
 <!-- html中的img标签直接引用图片处理   -->
 <img src="./assets/xxx.jpg"/>
+<!-- 或者这样 -->
+<img src="assets/imgs/timeicon.png" style="width: 1rem;">
 ```
 ```css
 /*scss文件中要使用绝对路径*/
