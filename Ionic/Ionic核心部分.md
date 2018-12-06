@@ -901,7 +901,11 @@ cordova add plugin plugin-name -D
 import { StatusBar } from '@ionic-native/status-bar';
 constructor(private statusBar: StatusBar) {
     //沉浸式并且悬浮透明
-    this.statusBar.overlaysWebView(true);
+    statusBar.overlaysWebView(true);
+    // 设置状态栏颜色为默认得黑色 适合浅色背景
+    statusBar.styleDefault() 
+    // 浅色状态栏 适合深色背景
+    // statusBar.styleLightContent() 
 }
 ```
 
@@ -932,6 +936,39 @@ defaultConfig.dev.resolve.alias = {
   "@config": path.resolve(configPath('dev'))
 }
 ```
+## App真机调试
+
+说实在的，`Hybird`真机调试是真的痛苦。目前比较流行的方式是以下两种调试方式
+- `Chrome Inspect`调试
+依靠`chrome`的强大能力，我们可以把`App`中的`WebView`中的内容完全的显示在chrome端。可以在web端控制我们的app中的网页，还是先当的炫酷的。以下是操作步骤
+  1. 在chrome中打开`chrome://inspect/#devices`
+  ![Ionic](./step1.png 'ionic')
+  2. 连接设备，注意**第一次连接的话，是需要fan墙的，否则会出现`404`等等的问题**
+  ![Ionic](./step2.png 'ionic')
+  3. 在连接的设备中安装需要调试的App，接着`Chrome`会自动找到需要调试的`WebView`
+  4. 愉快的开始调试
+  ![Ionic](./step3.png 'ionic')
+
+- 使用`VConsole`进行调试
+
+  这个就更简单了，直接`npm install vconsole`这个库， 然后在`app.component.ts`进行引用
+  ```ts
+  import VConsole from 'vconsole'
+  export class MyApp {
+  constructor() {
+      platform.ready().then(() => {
+        console.log(APP_ENV)
+        // 调试程序
+        APP_ENV === 'debug' && new VConsole()
+      })
+    }
+  }
+  ```
+
+  效果如下
+
+  ![Ionic](./vconsole.png 'ionic')
+  
 ## App打包部分
 
 ## Ionic中的特殊部分(坑)
@@ -950,4 +987,12 @@ defaultConfig.dev.resolve.alias = {
   background-image: url("../assets/xxx.jpg")
 
 }
+```
+- `Android API版本修改`
+Ionic中现在默认的SDK版本太高了，有些低版本的机器没发安装需要修改的有以下这么几个部分
+```xml
+<!-- platforms/android/project.properties  -->
+target=android-26
+<!-- 和platforms/android/CordovaLib/project.properties  -->
+target=android-26
 ```
