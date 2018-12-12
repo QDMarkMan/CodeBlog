@@ -418,7 +418,7 @@ export default {
 有什么东西一目了然。
 
 ### 无状态组件
-最容易勾起我们封装欲望的就是无状态`HTML`组件，例如我们出去`header`, `menu`之后的`content`部分。没有什么需要复杂的交互，但是我们每个页面又都得写。你说不拿它开刀拿谁开🔪
+最容易勾起我们封装欲望的就是无状态`HTML`组件，例如我们除去`header`, `menu`之后的`content`部分。没有什么需要复杂的交互，但是我们每个页面又都得写。你说不拿它开刀拿谁开🔪
 ```html
 <template>
   <div class="container-fluid" :class="[contentClass]">
