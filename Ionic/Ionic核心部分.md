@@ -5,8 +5,75 @@
 
 既然是基于`Angular`那我们也是需要很重视的，这个地方会积累起来`Angular`中零散的部分。<small>如果内容多的话后期会拆分为单独的部分</small>
 
-### Angular中内容映射
-- `<ng-content></ng-content>`
+### Angular中内容映射(插槽)的实现
+
+- `<ng-content></ng-content>`默认映射
+  这个内容映射方向是`由父组件映射到子组件中`这个就相当于`vue`中的slot，用法也都是一样的：
+  ```html
+  <!-- 父组件 -->
+  <child-component>
+    我是父组件中的内容默认映射过来的
+  </child-component>
+  <!-- 子组件 -->
+  <!-- 插槽 -->
+    <ng-content>
+      
+    </ng-content>
+  ```
+  上面是最简单的默认映射使用方式
+- 针对性映射（具名插槽）
+  我们也可以通过<ng-content>的`select`属性实现我们的具名插槽。这个是可以根据条件进行填充。`select`属性支持根据`CSS`选择器(ELement, Class, [attribute]...)来匹配你的元素，如果不设置就全部接受，就像下面这样：
+  ```html
+  <!-- 父组件 -->
+  <child-component>
+    我是父组件中的内容默认映射过来的
+    <header>
+      我是根据header来映射的
+    </header>
+    <div class="class">
+      我是根据class来映射的
+    </div>
+    <div name="attr">
+      我是根据attr来映射的
+    </div>
+  </child-component>
+
+  <!-- 子组件 -->
+  <!-- 具名插槽 -->
+  <ng-content select="header"></ng-content>
+  <ng-content select=".class"></ng-content>
+  <ng-content select="[name=attr]"></ng-content>
+  ```
+- `ngProjectAs`
+  上面那些都是映射都是作为直接子元素进行的映射，那要不是呢？ 我想在外面再套一层呢？
+  ```html
+  <!-- 父组件 -->
+  <child-component>
+    <!-- 这个时不是直接子节点了 这肯定是不行的 那我们就用到ngProjectAs了-->
+    <div>
+      <header>
+        我是根据header来映射的
+      </header>
+    </div>
+  </child-component>
+  ```
+  使用`ngProjectAs`,它可以作用于任何元素上。
+  ```html
+  <!-- 父组件 -->
+  <child-component>
+    <div ngProjectAs="header">
+      <header>
+        我是根据ngProjectAs header来映射的
+      </header>
+    </div>
+  </child-component>
+  ```
+
+- `ng-content`有一个`@ContentChild`装饰器，可以用来调用和投影内容。但是要注意：只有在`ngAfterContentInit`声明周期中才能成功获取到通过`ContentChild`查询的元素。
+
+既然提到了<ng-content>那我们就来聊一聊<ng-template>和<ng-container>
+- `ng-template`
+- `ng-container`
   
 ### Angular指令
 `Angular`中的指令分为`组件`,`属性指令`和`结构形指令`。`属性型指令`用于改变一个 `DOM` 元素的外观或行为，例如`NgStyle`。`结构型指令`的职责是 `HTML` 布局。 它们塑造或重塑 `DOM` 的结构，比如添加、移除或维护这些元素，例如`NgFor`和`NgIf`。
