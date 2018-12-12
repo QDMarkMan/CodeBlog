@@ -5,6 +5,9 @@
 
 既然是基于`Angular`那我们也是需要很重视的，这个地方会积累起来`Angular`中零散的部分。<small>如果内容多的话后期会拆分为单独的部分</small>
 
+### Angular中内容映射
+- `<ng-content></ng-content>`
+  
 ### Angular指令
 `Angular`中的指令分为`组件`,`属性指令`和`结构形指令`。`属性型指令`用于改变一个 `DOM` 元素的外观或行为，例如`NgStyle`。`结构型指令`的职责是 `HTML` 布局。 它们塑造或重塑 `DOM` 的结构，比如添加、移除或维护这些元素，例如`NgFor`和`NgIf`。
 
@@ -936,6 +939,9 @@ defaultConfig.dev.resolve.alias = {
   "@config": path.resolve(configPath('dev'))
 }
 ```
+## App打包
+> 还没时间写
+
 ## App真机调试
 
 说实在的，`Hybird`真机调试是真的痛苦。目前比较流行的方式是以下两种调试方式
@@ -969,8 +975,6 @@ defaultConfig.dev.resolve.alias = {
 
   ![Ionic](./vconsole.png 'ionic')
   
-## App打包部分
-
 ## Ionic中的特殊部分(坑)
 - 静态资源路径问题
 
