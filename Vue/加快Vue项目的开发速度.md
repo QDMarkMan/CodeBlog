@@ -3,7 +3,7 @@
 > 现如今的开发，比如是内部使用的管理平台这种项目大都时间比较仓仓促。实际上来说在使用了webpack + vue 这一套来开发的话已经大大了提高了效率。但是对于我们的开发层面。还是有很多地方可以再次提高我们的项目开发效率，让我们更加专注于业务。毕竟时间就是生命，下面我们挨个来探讨。
 
 ## 巧用Webpack
-`Webpack`是实现我们恰前端项目工程化的基础，但其实她的用处远不仅仅如此，我们可以通过`Webpack`来帮我们做一些自动化的事情。首先我们要了解`require.context()`这个API
+`Webpack`是实现我们前端项目工程化的基础，但其实她的用处远不仅仅如此，我们可以通过`Webpack`来帮我们做一些自动化的事情。首先我们要了解`require.context()`这个API
 
 ### `require.context()`
 > 您可以使用[require.context（）](https://webpack.js.org/guides/dependency-management/#require-context)函数创建自己的上下文。 它允许您传入一个目录进行搜索，一个标志指示是否应该搜索子目录，还有一个正则表达式来匹配文件。
