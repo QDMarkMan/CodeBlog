@@ -299,6 +299,8 @@ process.stdin.on('end', () => {
 
 
 比如我们的大量的表格页面，仔细一扒拉你发现非常多的东西都是可以复用的例如`分页`，`表格高度`，`加载方法`， `laoding声明`等一大堆的东西。下面我们来整理出来一个简单的`list.vue`
+
+### 表格业务使用mixins
 ```js
 const list = {
   data () {
@@ -395,7 +397,63 @@ export default {
 ```
 使用了`mixins`之后一个简单的有`loadoing`, `分页`,`数据`的表格大概就只需要上面这些代码。
 
+### mixins做公共数据的管理
+
+有些时候我们有一些公共的数据它可能3，4个模块取使用但是又达不到全局的这种规模。这个时候我们就可以用`mixins`去管理他们，比如我们有几个模块要使用用户类型这个列表，我们来看使用`mixins`来实现共享。
+```js
+// types.js
+import {getTypes} from '@/api/demo' // ajax
+export default {
+  data () {
+    return {
+      types: [] // ==>  {name: '', value: ''}
+    }
+  },
+  methods: {
+    // 获取列表
+    getAllTypesList () {
+      getApiList().then((result) => {
+        // todo
+        this.types = result // 假设result就是我们需要使用的数据
+      }).catch((err) => {
+        console.error(err)
+      })
+    }
+  },
+  created() {
+    // 在需要使用这个mixins的时候取自动请求数据  这个可要可不要  你想在父组件中执行也是ok的
+    this.getAllTypesList()
+  }
+}
+```
+在组件中引用
+```js
+import typeMixin from '@/mixins/types'
+export default {
+  name: 'template',
+  mixins: [typeMixin],
+  data () {
+    return {
+      // types这个数组在使用组件中不用多余的定义，直接拿来用就行
+      type: ''
+    }
+  },
+  methods: {
+  }
+}
+```
+直接使用
+```html
+<!--  -->
+<el-select v-model="type" clearable placeholder="请选择类型">
+    <el-option v-for="item in types" :key="item.id" :label="item.templateName" :value="item.id"></el-option>
+  </el-select>
+```
+我们这样就可以不用`vuex`来去管理那些只有在模块间复用几次的数据，**而且非常方便得去取我们想要得数据，连定义都省了**。但是这有一个缺点。就是每次都会去重新请求这些数据。如果你不在乎这一点点瑕疵的话，我觉得用起来是完全ok得。
+
+
 **注意：** <font color="red">`mixins`它固然是简单的，但是注释和引用一定要做好，不然的话新成员进入团队大概是一脸的懵逼，而且也不利于后期的维护。也是一把双刃剑。另外：全局`mixins`一定要慎用，如果不是必须要用的话我还是不建议使用。</font>
+
 
 ## 进一步对组件进行封装
 
