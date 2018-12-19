@@ -1,5 +1,5 @@
 # 服务器发布Vue项目指南(更新中)
-> 正在完善状态，还剩下Nginx
+> 正在完善状态，还剩下Nginx。 Apache和Tomcat的配置亲测有效。
 
 ## 1：Apache服务器
 1. *修改Apache默认配置*
