@@ -1111,6 +1111,16 @@ console.log(Reflect.ownKeys(keysReflect)) // ["key", Symbol(key)]
 - `Reflect.setPrototypeOf(target, prototype)`: 基本等同于`Object.setPrototypeOf`,它返回一个布尔值
 
 ## Promise
+> 所谓Promise，简单说就是一个容器，里面保存着某个未来才会结束的事件（通常是一个异步操作）的结果。从语法上说，Promise 是一个对象，从它可以获取异步操作的消息。`Promise` 提供统一的 `API`，各种异步操作都可以用同样的方法进行处理。
+
+我自己理解得话:`Promise`就是一个承诺,无论如何都会回应. 毕竟一诺千金. 这个回应有三种状态:`pending（进行中）`, `fulfilled（已成功）`, `rejected（已失败）`. 但是对与`Promise`来说,只有结果才可以决定是哪一种状态.一旦状态改变，就不会再变.
+
+`Promise`也有一些缺点。首先，无法取消`Promise`，一旦新建它就会立即执行，无法中途取消。其次，如果不设置回调函数，`Promise`内部抛出的错误，不会反应到外部。第三，当处于`pending`状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）。
+
+
+`Promise`我相信大家已经使用得非常熟悉了，那基本的部分我们就不说了。 在这里我们来探讨一下如何实现一个`Promise`.
+
+
 
 ## Iterator
 
@@ -1118,6 +1128,4 @@ console.log(Reflect.ownKeys(keysReflect)) // ["key", Symbol(key)]
 > 许多面向对象的语言都有修饰器（`Decorator`）函数，用来修改类的行为。目前，有一个`提案`将这项功能，引入了 ECMAScript。
 注意：`Decorator`其实是个函数。 而且目前在`ES`中这只是个提案。
 
-基本用处
-```js
-```
+这一部分暂时不讨论.

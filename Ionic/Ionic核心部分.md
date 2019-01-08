@@ -412,7 +412,7 @@ import {CONFIG} from "@app/env"
     1. `navCtrl.push(OtherPage, param)`： 跳转页面
     2. `navCtrl.pop()`: `Removing a view` 移除当前View，相当于返回上一个页面
   
-  3. 路由中参参数相关
+  3. **路由中参参数相关**
     - `push(Page, param)`传参： 这个很简单也很明白
     ```ts
     this.navCtrl.push(NewsPage, {
@@ -453,7 +453,8 @@ import {CONFIG} from "@app/env"
       this.para = navParams.data
     }
     ```
-- 路由拦截
+  4. 跨层级跳转
+  
 
 ## provider(service)使用
 > 当重复的需要一个类中的方法时，可封装它为服务类，以便重复使用，如http。
@@ -479,7 +480,7 @@ export class StorageService {
   }
 }
 ```
-- 使用provider 
+- 使用`provider` 
 
 正常的应用，注入，然后使用
 ```js
