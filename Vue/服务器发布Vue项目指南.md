@@ -84,7 +84,7 @@ DocumentRoot "/usr/local/apache/demo"
   
   <!-- <display-name>webapp</display-name> -->
   <description>
-     webapp
+    webapp
   </description>
   <error-page>  
     <!-- 重写404页面 -->
@@ -95,3 +95,5 @@ DocumentRoot "/usr/local/apache/demo"
 ```
 
 这就配置完了，可以说是贼简单了。
+
+## Nuxt项目发布指南
