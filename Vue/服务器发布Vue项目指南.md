@@ -181,3 +181,53 @@ npm i
 ![成功启动](./images/nuxtstart.png '成功启动')
 
 ### `pm2`使用
+
+既然使用了`Node`服务，那我们最好是使用[pm2](https://pm2.io/doc/en/runtime/overview/?utm_source=pm2&utm_medium=website&utm_campaign=rebranding)做进程守护，至于`pm2`是什么，以及`pm2`是干什么的，这篇文章我们不过多的赘述，有兴趣可以自己看看。
+
+首先安装`pm2`
+```bash
+npm i nuxt -g
+# 建立软连接
+ln -s /usr/local/node/node10.13.0/bin/pm2  /usr/local/bin/nuxt 
+```
+
+然后在`package.json`中加入`pm`启动指令或者直接像下面这样启动
+```bash
+# package.json
+"scripts": {
+    "pm2:nuxt": "pm2 start npm --name 'XXX' -- run nuxt:start", # 启动名字为xxx的进程
+    "nuxt:start": "PORT=xxxx nuxt start",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "pm2:stop:all": "pm2 stop all" # 停止所有进程
+
+  }
+# 直接启动命令
+pm2 start npm --name 'XXX' -- run nuxt:start
+```
+出现这样的日志就表示成功
+
+![成功启动](./images/pm2.png '成功启动')
+
+下面是一些常用的`pm2`命令
+```bash
+pm2 start 0        # 启动 id为 0的指定应用程序
+pm2 restart 0      # 重启 id为 0的指定应用程序
+pm2 stop 0         # 停止 id为 0的指定应用程序
+pm2 delete 0       # 删除 id为 0的指定应用程序
+
+pm2 list           # 查看当前正在运行的进程
+pm2 start all      # 启动所有应用
+pm2 restart all    # 重启所有应用
+pm2 stop all       # 停止所有的应用程序
+pm2 delete all     # 关闭并删除所有应用
+pm2 logs           # 控制台显示所有日志
+ 
+pm2 logs 0         # 控制台显示编号为0的日志
+pm2 show 0         # 查看执行编号为0的进程
+pm2 monit xxx      # 监控名称为xxxx的进程
+```
+
+至此，一个`Nuxt`应用就算是部署完成了。
+
+### 出现过的问题
