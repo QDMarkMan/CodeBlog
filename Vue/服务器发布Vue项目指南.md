@@ -97,3 +97,87 @@ DocumentRoot "/usr/local/apache/demo"
 这就配置完了，可以说是贼简单了。
 
 ## Nuxt项目发布指南
+
+发布`SSR`项目的时候官方推荐了两种方式**服务端渲染应用部署** 和 **静态应用部署**。静态应用部署的话基本上就失去了`SSR`的优势，而且部署方式也和上面讲的大同小异。这里着重来讲服务端渲染应用部署。
+
+服务端渲染应用部署的话不同于静态部署，我们同时要在服务器上部署上`Node`环境。
+
+### `Node环境部署`
+
+1. cd到`/usr/local`文件夹并在这个文件夹下新建一个存放安装环境的文件夹`node`后进入`node`文件夹（名字可以随便起，这里做demo就用node了）
+```bash
+cd /usr/local
+mkdir -p node
+```
+2. 下载`Node`我这里采用的是最新的长期服务版本，你想安装其他的版本，可以在[这里](https://nodejs.org/dist/)查找，还可以使用`nvm`来管理你的`Node`,简单[教程](https://www.jianshu.com/p/d0e0935b150a)
+```bash
+wget https://nodejs.org/dist/v10.13.0/node-v10.13.0-linux-x64.tar.gz
+```
+3. 下载完成之后解压并且为文件夹改名
+```bash
+# 解压
+tar -zxvf node-v10.13.0-linux-x64.tar.gz -C ../
+# 改名
+mv node-v10.13.0-linux-x64/ ./node10.13.0
+```
+4. 建立软连接，为`node,npm`注册环境变量(其他的`npm`全局包也要这样注册)
+```bash
+# 软链接指向到node npm
+ln -s /usr/local/node/node10.13.0/bin/node  /usr/local/bin/node
+ln -s /usr/local/node/node10.13.0/bin/npm  /usr/local/bin/npm 
+```
+5. 查看软链接建立是否成功
+```bash
+ls -al /usr/local/bin
+```
+显示如下就表示成功了
+
+![node建立链接](./images/nodeinstall1.png 'node建立链接')
+接着使用`node -v`
+```bash
+node -v
+# 出现版本号就是安装成功了
+v10.13.0
+```
+
+到这里为止我们的`Node`环境就安装成功了，接下来进行`nuxt`部署
+
+### `Nuxt`部署
+1. 全局安装`nuxt`，然后按照上面的方式建立软连接
+```bash
+# 安装
+npm i nuxt -g
+# 建立软连接
+ln -s /usr/local/node/node10.13.0/bin/nuxt  /usr/local/bin/nuxt 
+```
+2. 代码部署
+
+回到`/local`文件夹下，我们建立一个`nuxt`文件用来存放我的`nuxt`项目。然后进入`nuxt`文件夹
+```bash
+# 回到loacal
+cd ../
+mkdir nuxt
+cd nuxt
+```
+在本地环境中执行`nuxt build`,然后会生成一个`.nuxt`文件夹。
+
+然后修改`package.json`,为它加上新的内容，`nuxt`应用会根据下面的配置自动配置服务的端口号和地址。
+```bash
+"config": {
+  "nuxt": {
+    "host": "0.0.0.0", # 通过IPV4访问
+    "port": xxxx
+  }
+},
+```
+然后将项目中的`.nuxt文件夹 static文件夹 package.json nuxt.config.js`上传到服务器的`nuxt`文件夹中，
+
+然后在`nuxt`文件夹中执行
+```bash
+npm i
+```
+下载完成之后执行`nuxt start`出现下面的日志就表示成功启动了我们的`nuxt`应用
+
+![成功启动](./images/nuxtstart.png '成功启动')
+
+### `pm2`使用
