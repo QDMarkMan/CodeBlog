@@ -1068,3 +1068,7 @@ target=android-26
 <!-- 和platforms/android/CordovaLib/project.properties  -->
 target=android-26
 ```
+
+- 关于`SDK`和`cordova`插件中的坑
+  
+  这个东西真的是坑的一塌糊涂，以`cordova-plugin-file-opener2`为例
