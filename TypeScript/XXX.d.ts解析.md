@@ -266,3 +266,5 @@ namespace MyNameSpace {
     }
 }
 ```
+
+### 发布一个.d.ts
