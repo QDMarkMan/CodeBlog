@@ -982,6 +982,42 @@ constructor(private statusBar: StatusBar) {
 
 ## 优化部分
 项目写完了，不优化一下 心里怪难受的。
+- `App`启动页体验优化
+
+`Ionic App`毕竟是个混合App,毕竟还没有达到秒开级别。所以这个时候我们需要启动页来帮助我们提升用户体验,首先在`config.xml`种配子我们的启动页相关配置
+```xml
+<preference name="ShowSplashScreenSpinner" value="false" /> <!-- 隐藏加载时的loader -->
+<preference name="ScrollEnabled" value="false" /> <!-- 禁用启动屏滚动 -->
+<preference name="SplashMaintainAspectRatio" value="true" /> <!-- 如果值设置为 true，则图像将不会伸展到适合屏幕。如果设置为 false ，它将被拉伸 -->
+<preference name="FadeSplashScreenDuration" value="1000" /><!-- fade持续时长 -->
+<preference name="FadeSplashScreen" value="true" /><!-- fade动画 -->
+<preference name="SplashShowOnlyFirstTime" value="false" /><!-- 是否只第一次显示 -->
+<preference name="AutoHideSplashScreen" value="false" /><!-- 自动隐藏SplashScreen -->
+<preference name="SplashScreen" value="screen" />
+<platform name="android">
+    <allow-intent href="market:*" />
+    <icon src="resources/android/icon/icon.png" />
+    <splash src="resources/android/splash/screen.png" /><!-- 启动页路径 -->
+    <!-- 下面是各个分辨率的兼容 -->
+    <splash height="800" src="resources/android/splash/screenh.png" width="480" />
+    <splash height="1280" src="resources/android/splash/screenm.png" width="720" />
+    <splash height="1600" src="resources/android/splash/screenxh.png" width="960" />
+    <splash height="1920" src="resources/android/splash/screenxxh.png" width="1280" />
+    <splash height="2048" src="resources/android/splash/screenxxxh.png" width="1536" />
+</platform>
+```
+我在这里关闭了自动隐藏`SplashScreen`，因为她的判定条件是一旦`App`出事还完毕就隐藏，这显然不符合我们的要求。我们需要的是我们的`Ionic WebView`程序启动之后再隐藏。所以我们在`app.component.ts`中借助`@ionic-native/splash-screen`来进行这个操作.
+```ts
+platform.ready().then(() => {
+      // 延迟1s隐藏启动屏幕
+      setTimeout(() => { 
+        splashScreen.hide()
+      }, 1000)
+    })
+```
+这样一来我们就可以完美的欺骗用户，体验能好点。
+
+
 ### 组件懒加载
 
 ### 打包优化
@@ -995,6 +1031,8 @@ constructor(private statusBar: StatusBar) {
   - 最小化：移除不必要的空格、注释和可选令牌（Token）。
   - 混淆：使用短的、无意义的变量名和函数名来重写代码。
   - 消除死代码：移除未引用过的模块和未使用过的代码.
+
+
 ### webpack配置修改
 ```js
 // 拿到webpack 的默认配置 剩下的还不是为所欲为
@@ -1009,6 +1047,17 @@ defaultConfig.dev.resolve.alias = {
 ```
 ## App打包
 > 还没时间写
+
+## 简单APP服务器更新
+
+由于`Android`的要求不如苹果那么严，我们也可以通过自己的服务器进行程序的更新。下面就是实现一个比较简单的更新`Service`
+
+更新我们主要是使用到下面几个`Cordova`插件
+- `cordova-plugin-file-transfer / @ionic-native/file-transfer`: 线上文件的下载和存储（官方推荐使用`XHR2`，有兴趣的可以看一看）
+- `cordova-plugin-file-opener2 / @ionic-native/file-opener`: 用于打开APK文件
+- `cordova-plugin-app-version / @ionic-native/app-version`： 用于获取app的版本号
+- `cordova-plugin-file / @ionic-native/file`：操作app上的文件系统
+- `cordova-plugin-device / @ionic-native/device`：获取当前设备信息，主要用于平台的区分
 
 ## App真机调试
 
