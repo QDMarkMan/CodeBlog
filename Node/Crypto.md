@@ -6,9 +6,7 @@ crypto是Node.js 提供的加密模块，包括各种的可逆以及不可逆的
 ``` js
 const crypto = require('crypto');
 const secret = 'abcdefg';
-const hash = crypto.createHmac('sha256', secret)
-                   .update('I love cupcakes')
-                   .digest('hex');
+const hash = crypto.createHmac('sha256', secret).update('I love cupcakes').digest('hex');
 console.log(hash);
 ```
 
@@ -18,8 +16,8 @@ console.log(hash);
 
 这个类可以用在以下两种方法中的一种:
 
-1. 作为stream，既可读又可写，未加密数据的编写是为了在可读的方面生成加密的数据.
-2. 使用cipher.update()和cipher.final()方法产生加密的数据
+1. 作为`stream`，既可读又可写，未加密数据的编写是为了在可读的方面生成加密的数据.
+2. 使用`cipher.update()`和`cipher.final()`方法产生加密的数据
 
 
 

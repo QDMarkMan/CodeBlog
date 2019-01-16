@@ -10,7 +10,7 @@
 ```ts
 // Type definitions formyLib
 
-/*~ 这是模块模板文件。 您应该将其重命名为index.d.ts 并将其放在与模块同名的文件夹中。
+/*~ 这是模块模板文件。 使用的时候将其重命名为index.d.ts 并将其放在与模块同名的文件夹中。
  *~ 
  *~ 例如，如果您正在为“super-greeter”编写文件，文件应该是'super-greeter / index.d.ts'
  */
@@ -161,7 +161,108 @@ declare namespace myLib {
 ```
 2. **模块化库**
 
-一些库只能工作在模块加载器的环境下。 比如，像 `express`只能在`Node.js`里工作所以必须使用`CommonJS`的`require`函数加载。
+一些库只能工作在模块加载器的环境下。 比如，像 `express`只能在`Node.js`里工作所以必须使用`CommonJS`的`require`函数加载。模块化的库一般很少对`window`或`global`进行赋值。这个一般用的不是特别的多。这种库一般不暴露全局变量，需要通过特定加载机制（如`require/define/import`）引用的模块形式的类库
+
+3. `UMD(plugin)`
+
+`UMD`的库会检查是当前模块加载器环境，至于`UMD`是什么，可以看[这篇文章](https://github.com/QDMarkMan/CodeBlog/blob/master/Javascript/JavaScript%E4%B8%AD%E7%9A%84%E6%A8%A1%E5%9D%97.md),大多数流行的库比如 `Moment.js,lodash`现在都能够被当成`UMD`包, `UMD`的写法其实全局库基本上是一样的。
+
+所以我们各种类库分为3类(这里非原创，在公众号看的我忘记是哪个了)
+- `global`：暴露出全局变量的类库
+- `module`：不暴露全局变量，需要通过特定加载机制（如require/define/import）引用的模块形式的类库
+- `plugin`：会影响其它类库功能的类库（当然，也可能会影响原声明，比如添个新`API`）
+
+### TS给的模板
+
+TS的[官网](https://www.tslang.cn/docs/handbook/declaration-files/templates.html)给出了7种官方模板文件
+
+- `global-modifying-module.d.ts`: 全局修改模块文件
+- `global-plugin.d.ts`：适用于module plugin类库
+- `global.d.ts`： 适用于全局库
+- `module-class.d.ts`：暴露一个`class`的类库
+- `module-function.d.ts`： 暴露一个`function`的类库
+- `module-plugin.d.ts`：适用于module plugin类库
+- `module.d.ts`：适用于模块库
+
+### 具体语法
+
+这里来看一下具体的语法是什么。
+
+- **全局变量**
+```ts
+// const/let 都可以用在这里
+declare var foo: number;
+```
+- **全局函数**
+```ts
+declare function demo(a: string): void;
+```
+- **全局对象**
+```ts
+// declare namespace声明了一个对象myLib
+declare namespace myLib {
+    function a(s: string): string;
+    let s: number;
+}
+```
+- **函数重载**
+我感觉这个用的好像不是很多
+```ts
+// 根据不同的入参执行不同的操作
+declare function getWidget(n: number): Widget;
+declare function getWidget(s: string): Widget[];
+```
+- **接口**
+接口基本上算是比较常用的可复用类型了
+```ts
+interface MyInterface {
+  a: string;
+  b?: number;
+  c?: string;
+}
+declare function demo(demo: MyInterface): void;
+```
+- **类型别名**
+`type`也是一种可复用类型。
+```ts
+//　生命一种类型
+type TypeDemo = string | (() => string) | MyInterface;
+declare function typeDemo(g: TypeDemo): void;
+```
+- **类型“模块”**
+类似于`namespace`能够组织代码模块（把一组相关代码放在一起），`declare namespace`能用来组织类型“模块”（把一组相关类型声明放在一起）
+```ts
+declare namespace NameModule {
+    interface Space1 {
+        verbose?: boolean;
+    }
+    interface Space2 {
+        modal: boolean;
+        title?: string;
+        color?: string;
+    }
+}
+```
 
 
+- **类**
+定义一个类然后直接抛出
+```ts
+declare class Demo {
+    constructor(demo: string);
 
+    demo: string;
+    showDemo(): void;
+}
+```
+- **命名空间**
+有时候声明文件也存在全局声明冲突的问题，那么我们通过`namespace`解决
+```ts
+// 使用命名空间
+namespace MyNameSpace {
+    // 命名空间内代码不会被外部污染产生变量重复的情况
+    export interface DemoInterface {
+        demo(s: string): boolean;
+    }
+}
+```
