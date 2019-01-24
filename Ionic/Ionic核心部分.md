@@ -1059,6 +1059,269 @@ defaultConfig.dev.resolve.alias = {
 - `cordova-plugin-file / @ionic-native/file`：操作app上的文件系统
 - `cordova-plugin-device / @ionic-native/device`：获取当前设备信息，主要用于平台的区分
 
+在下载完插件之后我们来实现一个**比较简陋**的版本更新`service`,具体解释我会写在代码注释中,主要分成两部分，一部分是具体的更新操作`update.service.ts`, 另一部分是用于存放数据的`data.service.ts`
+**`data.service.ts`**
+```ts
+/*
+ * @Author: etongfu
+ * @Description: 设备信息
+ * @youWant: add you want info here
+ */
+import { Injectable } from '@angular/core';
+import { Device } from '@ionic-native/device';
+import { File } from '@ionic-native/file';
+import { TokenServie } from './token.service';
+import { AppVersion } from '@ionic-native/app-version';
+
+@Injectable()
+export class DataService {
+  /******************************APP数据模块******************************/
+  // app 包名
+  private packageName: string = '' 
+  // app 版本号
+  private appCurrentVersion: string =  '---'
+  // app 版本code
+  private appCurrentVersionCode:number = 0
+  // 当前程序运行平台
+  private currentSystem: string
+  // 当前userId
+  // app 下载资源存储路径
+  private savePath: string
+  //  当前app uuid
+  private uuid: string
+
+  /******************************通用数据模块******************************/
+  constructor (
+    public device: Device,
+    public file: File,
+    public app: AppVersion,
+    public token: TokenServie,
+    public http: HttpService
+  ) {
+    // 必须在设备准备完之后才能进行获取
+    document.addEventListener("deviceready", () => {
+      // 当前运行平台
+      this.currentSystem = this.device.platform
+      // console.log(this.device.platform)
+      // app版本相关信息
+      this.app.getVersionNumber().then(data => {
+        //当前app版本号  data，存储该版本号
+        if (this.currentSystem) {
+          // console.log(data)
+          this.appCurrentVersion = data
+        }
+      }, error => console.error(error))
+      this.app.getVersionCode().then((data) => {
+        //当前app版本号数字代码 
+        if (this.currentSystem) {
+          this.appCurrentVersionCode = Number(data)
+        }
+      }, error => console.error(error))
+      // app 包名
+      this.app.getPackageName().then(data => {
+          //当前应用的packageName：data，存储该包名
+          if (this.currentSystem) {
+            this.packageName = data;
+          }
+      }, error => console.error(error))
+      // console.log(this.currentSystem)
+      // file中的save path 根据平台进行修改地址
+      this.savePath = this.currentSystem === 'iOS' ? this.file.documentsDirectory : this.file.externalDataDirectory;
+
+    }, false);
+  }
+  /**
+   * 获取app 包名
+   */
+  public getPackageName () {
+    return this.packageName
+  }
+  /**
+   * 获取当前app版本号
+   * @param hasV 是否加上V标识
+   */
+  public getAppVersion (hasV: boolean = true): string {
+    return hasV ? `V${this.appCurrentVersion}` : this.appCurrentVersion
+  }
+  /**
+   * 获取version 对应的nuamber 1.0.0 => 100
+   */
+  public getVersionNumber ():number {
+    const temp = this.appCurrentVersion.split('.').join('')
+    return Number(temp)
+  }
+  /**
+   * 获取app version code 用于比较更新使用
+   */
+  public getAppCurrentVersionCode (): number{
+    return this.appCurrentVersionCode
+  }
+  /**
+   * 获取当前运行平台
+   */
+  public getCurrentSystem (): string {
+    return this.currentSystem
+  }
+  /**
+   * 获取uuid
+   */
+  public getUuid ():string {
+    return this.uuid
+  }
+  /**
+   * 获取存储地址
+   */
+  public getSavePath ():string {
+    return this.savePath
+  }
+}
+```
+**`update.service.ts`**
+```ts
+/*
+ * @Author: etongfu
+ * @Email: 13583254085@163.com
+ * @Description: APP简单更新服务
+ * @youWant: add you want info here
+ */
+import { HttpService } from './../providers/http.service';
+import { Injectable, Inject } from '@angular/core'
+import { AppVersion } from '@ionic-native/app-version';
+import { PopSerProvider } from './pop.service';
+import { DataService } from './data.service';
+import {Config} from '@interface/index'
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
+import { FileOpener } from '@ionic-native/file-opener';
+import { LoadingController } from 'ionic-angular';
+
+@Injectable()
+export class AppUpdateService {
+
+  constructor (
+    @Inject("CONFIG") public CONFIG:Config, 
+    public httpService: HttpService,
+    public appVersion: AppVersion,
+    private fileOpener: FileOpener,
+    private transfer: FileTransfer,
+    private popService: PopSerProvider, // 这就是个弹窗的service
+    private dataService: DataService,
+    private loading:LoadingController
+  ) {
+
+  }
+  /**
+   * 通过当前的字符串code去进行判断是否有更新
+   * @param currentVersion 当前app version
+   * @param serverVersion 服务器上版本
+   */
+  private hasUpdateByCode (currentVersion: number, serverVersion:number):Boolean {
+    return serverVersion > currentVersion
+  }
+  /**
+   * 查询是否有可更新程序
+   * @param noUpdateShow  没有更新时显示提醒
+   */
+  public checkForUpdate (noUpdateShow: boolean = true) {
+    // 拦截平台
+    return new Promise((reslove, reject) => {
+      // http://appupdate.ymhy.net.cn/appupdate/app/findAppInfo?appName=xcz&regionCode=370000
+      // 查询app更新
+      this.httpService.get(this.CONFIG.CHECK_URL, {}, true).then((result: any) => {
+        reslove(result)
+        if (result.succeed) {
+          const data = result.appUpload
+          const popObj = {
+            title: '版本更新',
+            content: ``
+          }
+          console.log(`当前APP版本：${this.dataService.getVersionNumber()}`)
+          // 存在更新的情况下
+          if (this.hasUpdateByCode(this.dataService.getVersionNumber(), data.versionCode)) {
+          // if (this.hasUpdateByCode(101, data.versionCode)) {
+            let title = `新版本<b>V${data.appVersion}</b>可用，是否立即下载?<h5 class="text-left">更新日志</h5>`
+            // 更新日志部分
+            let content = data.releaseNotes
+            popObj.content = title + content
+            // 生成弹窗
+            this.popService.confirmDIY(popObj, data.isMust === '1' ? true: false, ()=> {
+              this.downLoadAppPackage(data.downloadPath)
+            }, ()=> {
+              console.log('取消');
+            })
+          } else {
+            popObj.content = '已是最新版本！'
+            if(!noUpdateShow) {
+              this.popService.confirmDIY(popObj, data.isMust === '1' ? true: false)
+            }
+          }
+        } else {
+          // 接口响应出现问题 直接提醒默认最新版本
+          if(!noUpdateShow) {
+            this.popService.alert('版本更新', '已是最新版本！')
+          }
+        }
+        }).catch((err) => {
+          console.error(err)
+          reject(err)
+        })
+      })
+  }
+  /**
+   * 下载新版本App
+   * @param url: string 下载地址
+   */
+  public downloadAndInstall (url: string) {
+    let loading = this.loading.create({
+      spinner: 'crescent',
+      content: '下载中'
+    })
+    loading.present()
+    try {
+      if (this.dataService.getCurrentSystem() === 'iOS') {
+        // IOS跳转相应的下载页面
+        // window.location.href = 'itms-services://?action=download-manifest&url=' + url;
+      } else {
+        const fileTransfer: FileTransferObject = this.transfer.create();
+        fileTransfer.onProgress(progress =>{
+          // 展示下载进度
+          const present = new Number((progress.loaded / progress.total) * 100);
+          const presentInt = present.toFixed(0);
+          if (present.toFixed(0) === '100') {
+            loading.dismiss()
+          } else {
+            loading.data.content = `已下载 ${presentInt}%`
+          }
+        })
+        const savePath = this.dataService.getSavePath() + 'xcz.apk';
+        // console.log(savePath)
+        // 下载并且保存
+        fileTransfer.download(url,savePath).then((entry) => {
+          //
+          this.fileOpener.open(entry.toURL(), "application/vnd.android.package-archive")
+          .then(() => console.log('打开apk包成功！'))
+          .catch(e => console.log('打开apk包失败！', e))
+        }).catch((err) => {
+          console.error(err)
+          console.log("下载失败");
+          loading.dismiss()
+          this.popService.alert('下载失败', '下载异常')
+        })
+      }
+    } catch (error) {
+      this.popService.alert('下载失败', '下载异常')
+      // 有异常直接取消dismiss
+      loading.dismiss()
+    }
+  }
+}
+```
+以上我们就可以根据直接调用`service`去进行更新
+**`app.component.ts`**
+```ts
+// 调用更新
+this.appUpdate.checkForUpdate()
+```
+
 ## App真机调试
 
 说实在的，`Hybird`真机调试是真的痛苦。目前比较流行的方式是以下两种调试方式
