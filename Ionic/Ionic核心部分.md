@@ -1369,7 +1369,6 @@ this.appUpdate.checkForUpdate()
 /*scss文件中要使用绝对路径*/
 .bg{
   background-image: url("../assets/xxx.jpg")
-
 }
 ```
 - `Android API版本修改`
@@ -1381,6 +1380,36 @@ target=android-26
 target=android-26
 ```
 
-- 关于`SDK`和`cordova`插件中的坑
+- 关于`SDK`和`cordova`插件中的坑(暂时不写)
   
-  这个东西真的是坑的一塌糊涂，以`cordova-plugin-file-opener2`为例
+这个东西真的是坑的一塌糊涂，以`cordova-plugin-file-opener2`为例
+
+- `AS3.0`打包之后`Android7.0`以下的手机无法安装
+  
+这个不能算是`Ionic`的坑，要算也得是`Android Studio3.0`的坑，之前因为不了解在打包的时候下面的选项并没有勾选上
+
+![打包1](./pack1.png '打包1')
+
+不加上的时候一直在`Android7.0`以下都没法安装，一直以为是项目代码的问题，没想到是编辑器的问题（没想到编辑器对工程的影响这么大），加上了V1选项之后打也就可以了，所以查了一下原因如下。
+
+上图中提供的选项其实是`签名版本选择`，在AS3.0的时候新增的选项。
+
+`Android 7.0`中引入了`APK Signature Scheme v2`，`v1`呢是`jar Signature`来自`JDK`
+V1：应该是通过ZIP条目进行验证，这样APK 签署后可进行许多修改 - 可以移动甚至重新压缩文件。
+V2：验证压缩文件的所有字节，而不是单个 ZIP 条目，因此，在签名后无法再更改(包括 `zipalign`)。正因如此，现在在编译过程中，我们将压缩、调整和签署合并成一步完成。好处显而易见，更安全而且新的签名可缩短在设备上进行验证的时间（不需要费时地解压缩然后验证），从而加快应用安装速度。
+
+如果不勾选V1,**那么在7.0以下会直接安装完显示未安装，7.0以上则使用了V2的方式验证**。如果勾选了V1，**那么7.0以上就不会使用更加安全的快速的验证方式。**
+
+也可以在app目录下的`build.gradle`中进行配置
+```gradle
+signingConfigs {
+    debug {
+        v1SigningEnabled true
+        v2SigningEnabled true
+    }
+    release {
+        v1SigningEnabled true
+        v2SigningEnabled true
+    }
+}
+```
