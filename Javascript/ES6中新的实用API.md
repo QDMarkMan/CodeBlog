@@ -1,5 +1,5 @@
 # ES6中新的实用API
-> ES6中更新了非常多的API，一大部分还是非常的强大。这次来吃透这些新的API。
+> ES6中更新了非常多的API，一大部分还是非常的强大。在我们的日常开发中可以为我们带来很大的便利。 这次来吃透这些新的API。
 
 ## Symbol
 > ES6 引入了一种新的原始数据类型Symbol，表示独一无二的值。
@@ -1121,9 +1121,71 @@ console.log(Reflect.ownKeys(keysReflect)) // ["key", Symbol(key)]
 - 第三，当处于`pending`状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）。
 
 
-`Promise`我相信大家已经使用得非常熟悉了，那基本的部分我们就不说了。 在这里我们来探讨一下如何实现一个`Promise`.
-
-
+`Promise`我相信大家已经使用得非常熟悉了，那基本的部分我们就不说了。 在这里我们来探讨一下如何实现一个`Promise`。接下来我们来实现一个简单的`Promise`对象来帮助我们理解。
+```js
+class EasePromise {
+  // 调用相应方法
+  constructor (fn) {
+    this.status = 'Pending'
+    setTimeout (() => {
+      fn((data) => {
+        this.resolve(data)
+      }, (error) => {
+        this.reject(error)
+      })
+    })
+  }
+  /**
+   * reslove 处理函数
+   * @param {*} data 
+   */
+  resolve(data) {
+    if (this.status = 'Pending') {
+      this.success (data)
+      this.status = 'Fulfilled'
+    }
+  }
+  /**
+   * 错误处理页面
+   * @param {*} data 
+   */
+  reject(error) {
+    if (this.status = 'Pending') {
+      this.error(error)
+      this.status = 'Rejected'
+    }
+  }
+  /**
+   * 传递处理函数
+   * @param {*function} success 
+   * @param {*function} reject 
+   */
+  then(success, reject) {
+    this.success = success
+    this.reject = reject
+  }
+  /**
+   * 错误捕捉
+   * @param {*} err 
+   */
+  catch(reject) {
+    return this.then(null, reject);
+  }
+}
+// 测试
+let easePromoise = new EasePromise((reslove, reject) => {
+  setTimeout(() => {
+    reslove('hello ease promise')
+  }, 1000)
+})
+easePromoise.then((result) => {
+  debugger
+  console.log(result)
+}, (err) => {
+  console.error(error)
+})
+```
+下一步我们就实现一个复杂的遵循`Promise/A+`规范的`Promise`对象
 
 ## Iterator
 
