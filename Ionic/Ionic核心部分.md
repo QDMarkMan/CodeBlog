@@ -5,10 +5,10 @@
 
 ### 为什么选了`Ionic` ?
 
-有些朋友说`Angular/Ionic`不大行，但是我觉的技术没有好坏之分，只有适合不适合。首先在我看来`Ionic`已经在`Hybird App`开发领域立足多年，已经相当的成熟了，我觉的比大部分的解决方案都要好。其次因为我们的App是一个若交互多展示类型的，`Ionic`
+有些朋友说`Angular/Ionic`不大行，但是我觉的技术没有好坏之分，只有适合不适合。首先在我看来`Ionic`已经在`Hybird App`开发领域立足多年，已经相当的成熟了，我觉的比大部分的解决方案都要好。其次因为我们的App是一个弱交互多展示类型的，`Ionic`
 满足我们的需求。最后是因为**如果你想在没有`Android`团队和`IOS`团队支持的情况下独立完成一款APP，那么`Ionic`我觉的是不二之选**。
 
-注意：**非基础入门教程**，所以在读这篇文章之前建议你最好先了解`Angular, TS, Ionic`的基础知识，主要是这里希望大家在使用`Ionic`的时候能少走一些弯路。
+注意：**非基础入门教程**，所以在读这篇文章之前建议你最好先了解`Angular, TS, Ionic`的基础知识，这里主要是希望大家在使用`Ionic`的时候能少走一些弯路。
 
 **由于我自己用的不是很熟练`Rxjs`这一块就没有写，等以后对`Rxjs`的理解更加深刻了再加上**
 
@@ -210,11 +210,11 @@ app.module.ts
     └───providers                   // 服务配置
 ```
 
-`entryComponents`:`Angular`使用`entryComponents`来启用“树震动”，即只编译项目中实际使用的组件，而不是编译所有在`ngModule`中声明但从未使用的组件。离线模板编译器`（OTC）`只生成实际使用的组件。如果组件不直接用于模板，`OTC`不知道是否需要编译。有了`entryComponents`，你可以告诉`OTC`也编译这些组件，以便在运行时可用。
+`entryComponents`:`Angular`使用`entryComponents`来启用`tree-shaking`，即只编译项目中实际使用的组件，而不是编译所有在`ngModule`中声明但从未使用的组件。离线模板编译器`（OTC）`只生成实际使用的组件。如果组件不直接用于模板，`OTC`不知道是否需要编译。有了`entryComponents`，你可以告诉`OTC`也编译这些组件，以便在运行时可用。
 ## Ionic工程目录结构
 首先来看项目目录
 ```js
-ymhy-bussiness-books
+Ionic-frame
 │   build                   // 打包扩展
 │   platforms               // Android/IOS 平台代码
 │   plugins                 // cordova插件
@@ -487,10 +487,9 @@ defaultConfig.dev.resolve.alias = {
     }
   }
   ```
-  相关常用API
-    1. `navCtrl.push(OtherPage, param)`： 跳转页面
-    2. `navCtrl.pop()`: `Removing a view` 移除当前View，相当于返回上一个页面
-  
+- 相关常用API
+  1. `navCtrl.push(OtherPage, param)`： 跳转页面
+  2. `navCtrl.pop()`: `Removing a view` 移除当前View，相当于返回上一个页面
   3. **路由中参参数相关**
     - `push(Page, param)`传参： 这个很简单也很明白
     ```ts
@@ -532,16 +531,13 @@ defaultConfig.dev.resolve.alias = {
       this.para = navParams.data
     }
     ```
-  
-  4. 跨层级跳转
-    
 
 ## provider(service)使用
 > 当重复的需要一个类中的方法时，可封装它为服务类，以便重复使用，如http。
 
 `provider`，也叫`service`。前者是`ionic`的叫法，后者是`ng`的叫法。建议仔细得学一下`Angular`
-- 创建Provider
-Ionic提供了创建指令
+- 创建`Provider`
+`Ionic`提供了创建指令
 ```bash
 ionic g provider http 
 ```
