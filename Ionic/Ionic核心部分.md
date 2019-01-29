@@ -1199,7 +1199,7 @@ npm i cordova -g
 ```bash
 ionic cordova platform add android
 ```
-![platform](./platform.png 'platform')
+![platfrom](./platfrom.png 'platfrom')
 
 这可能是一个很漫长的过程，你要耐心等待，毕竟曙光就在眼前了。
 
