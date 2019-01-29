@@ -1,9 +1,20 @@
 # 构建一个Ionic3.X Hybrid App
-通过`Ionic3 + Angular5`构建一个`Hybird App`需要注意的地方。注意：**非基础入门教程**
+
+## 写在前面
+`APP`赶在了新年之前上线了，所以这次我们分享一下使用`Ionic3 + Angular5`构建一个`Hybird App`过程中的经验。什么是`Hybird App`以及一些技术的选型这里就不讨论了，毕竟我觉的技术没有好坏之分，只有适合不适合。
+
+### 为什么选了`Ionic` ?
+
+首先在我看来`Ionic`已经在`Hybird App`开发领域立足多年，已经相当的成熟了，我觉的比大部分的解决方案都要好。其次因为我们的App是一个若交互多展示类型的，`Ionic`
+满足我们的需求。最后是因为**如果你想在没有`Android`团队和`IOS`团队支持的情况下独立完成一款APP，那么`Ionic`我觉的是不二之选**。
+
+注意：**非基础入门教程**，所以在读这篇文章之前建议你最好先了解`Angular, TS, Ionic`的基础知识，主要是这里希望大家在使用`Ionic`的时候能少走一些弯路。
+
+**由于我自己用的不是很熟练`Rxjs`这一块就没有写，等以后对`Rxjs`的理解更加深刻了再加上**
 
 ## Angular汇总部分
 
-既然是基于`Angular`那我们也是需要很重视的，这个地方会积累起来`Angular`中零散的部分。<small>如果内容多的话后期会拆分为单独的部分</small>
+既然是基于`Angular`那我们首先来了解一下`Angular`，这个地方积累的是`Angular`中零散的部分。<small>如果内容多的话后期会拆分为单独的部分</small>
 
 ### Angular中内容映射(插槽)的实现
 
@@ -159,7 +170,7 @@
 
   ```
 
-## **Module**
+## **Angular中的Module**
 首先我们来看看`NgModule`
 ```ts
 interface NgModule {
@@ -189,7 +200,7 @@ interface NgModule {
 }
 ```
 - `app.module.ts`
-```
+```js
 app.module.ts
 └───@NgModule
     └───declarations                // 告诉Angular哪些模块属于NgModule
@@ -200,26 +211,50 @@ app.module.ts
 ```
 
 `entryComponents`:`Angular`使用`entryComponents`来启用“树震动”，即只编译项目中实际使用的组件，而不是编译所有在`ngModule`中声明但从未使用的组件。离线模板编译器`（OTC）`只生成实际使用的组件。如果组件不直接用于模板，`OTC`不知道是否需要编译。有了`entryComponents`，你可以告诉`OTC`也编译这些组件，以便在运行时可用。
+## Ionic工程目录结构
+首先来看项目目录
+```js
+ymhy-bussiness-books
+│   build                   // 打包扩展
+│   platforms               // Android/IOS 平台代码
+│   plugins                 // cordova插件
+│   resources
+└───src                     // 业务逻辑代码
+│   │   app                 // 启动组件
+│   │   assets              // 资源
+│   │   components          // 公共组件
+│   │   config              // 配置文件
+│   │   directive           // 公共指令
+│   │   interface           // interface配置中心
+│   │   pages               // 页面
+│   │   providers           // 公共service
+│   │   service             // 业务逻辑service
+│   │   shared              // 共享模块
+│   │   theme               // 样式模块
+│   │   index.d.ts          // 声明文件
+└───www                     // 打包后静态资源
+```
 
 ## Ionic生命周期
 
 生命周期的重要性不用多说，这是`Ionic`官网的[介绍](https://ionicframework.com/docs/api/navigation/NavController/)
-- `constrctor => void`: 构造函数启动，构造函数在ionViewDidLoad之前被触发
-- `ionViewDidLoad => void`：资源加载完毕时触发。ionViewDidLoad只在第一次进入页面时触发**只触发一次**
-- `ionViewWillEnter => void`：页面即将给进入时触发**每次都会触发**
-- `ionViewDidEnter => void`：进入页面之后出发**每次都会触发**
-- `ionViewWillLeave => void`：即将离开（仅仅是触发要离开的动作）时触发**每次都会触发**
-- `ionViewDidLeave => void`：已经离开页面时触发**每次都会触发**
+- `constrctor => void`:         构造函数启动，构造函数在ionViewDidLoad之前被触发
+- `ionViewDidLoad => void`：    资源加载完毕时触发。ionViewDidLoad只在第一次进入页面时触发**只触发一次**
+- `ionViewWillEnter => void`：  页面即将给进入时触发**每次都会触发**
+- `ionViewDidEnter => void`：   进入视图之后出发**每次都会触发**
+- `ionViewWillLeave => void`：  即将离开（仅仅是触发要离开的动作）时触发**每次都会触发**
+- `ionViewDidLeave => void`：   已经离开页面时触发**每次都会触发**
 - `ionViewWillUnload => void`： 在页面即将被销毁并删除其元素时触发
 - `ionViewCanEnter => boolean`：在视图可以进入之前运行。 这可以在经过身份验证的视图中用作一种“保护”，您需要在视图可以进入之前检查权限
 - `ionViewCanLeave => boolean`：在视图可以离开之前运行。 这可以在经过身份验证的视图中用作一种“防护”，您需要在视图离开之前检查权限
+
+**注意： 当你想使用`ionViewCanEnter/ionViewCanLeave`进行对路由的拦截时，你需要返回一个`Boolen`。返回`true`进入下一个视图，返回`fasle`留在当前视图。**
+
+可以按照下面的代码感受一下生命周期的顺序
 ```js
 constructor(public navCtrl: NavController) {
   console.log('触发构造函数')
 }
-/**
- * 关于Ionic3.X的声明
- */
 
 /**
  * 页面加载完成触发，这里的“加载完成”指的是页面所需的资源已经加载完成，但还没进入这个页面的状态（用户看到的还是上一个页面）。全程只会调用一次
@@ -292,10 +327,12 @@ ionViewCanLeave(){
   return true
 }
 ```
+
 ## 项目配置文件设置
+
 `Ionic3.X`中并没有提供相应的的配置文件，所以我们需要自己按照下面步骤手动去添加配置文件来对项目进行配置。
 1. 新增`config`目录
-```
+```js
 src
   |__config
       |__config.dev.ts
@@ -304,7 +341,7 @@ src
 `config.dev.ts` / `config.prod.ts`
 ```js
 export const CONFIG = {
-  BASE_URL            : 'http://172.16.255.254:3000/api', // API地址
+  BASE_URL            : 'http://XXXXX/api', // API地址
   VERSION             : '1.0.0'
 }
 ```
@@ -312,11 +349,16 @@ export const CONFIG = {
 ```js
 const fs = require('fs')
 const chalk =require('chalk')
+const webpack = require('webpack')
 const path = require('path')
-// ionic default option
-const defaultConfig = require('@ionic/app-scripts/config/webpack.config.js');
+const defaultConfig = require('@ionic/app-scripts/config/webpack.config.js')
+
 const env = process.env.IONIC_ENV
-function environmentPath(env) {
+/**
+ * 获取配置文件
+ * @param {*} env 
+ */
+function configPath(env) {
   const filePath = `./src/config/config.${env}.ts`
   if (!fs.existsSync(filePath)) {
     console.log(chalk.red('\n' + filePath + ' does not exist!'));
@@ -324,20 +366,44 @@ function environmentPath(env) {
     return filePath;
   }
 }
-console.log("当前环境为："+env)
-// 设置环境变量别名
+// 定位当前文件
+const resolveDir = filename => path.join(__dirname, '..', filename)
+// 其他文件夹别名
+let alias ={
+  "@": resolveDir('src'),
+  "@components": resolveDir('src/components'),
+  "@directives": resolveDir('src/directives'),
+  "@interface": resolveDir('src/interface'),
+  "@pages": resolveDir('src/pages'),
+  "@service": resolveDir('src/service'),
+  "@providers": resolveDir('src/providers'),
+  "@theme": resolveDir('src/theme')
+}
+console.log("当前APP环境为："+process.env.APP_ENV)
+let definePlugin =  new webpack.DefinePlugin({
+  'process.env': {
+    APP_ENV: '"'+process.env.APP_ENV+'"'
+  }
+})
+// 设置别名
 defaultConfig.prod.resolve.alias = {
-  "@app/env": path.resolve(environmentPath('prod'))
+  "@config": path.resolve(configPath('prod')), // 配置文件
+  ...alias
 }
 defaultConfig.dev.resolve.alias = {
-  "@app/env": path.resolve(environmentPath('dev'))
+  "@config": path.resolve(configPath('dev')),
+  ...alias
 }
+
+// 其他环境
 if (env !== 'prod' && env !== 'dev') {
   defaultConfig[env] = defaultConfig.dev
   defaultConfig[env].resolve.alias = {
-    "@app/env": path.resolve(environmentPath(env))
+    "@config": path.resolve(configPath(env))
   }
 }
+// 删除sourceMaps
+
 module.exports = function () {
   return defaultConfig
 }
@@ -362,7 +428,20 @@ module.exports = function () {
 import {CONFIG} from "@app/env"
 ```
 
-## Ionic路由部分
+如果过我们想修改`Ionic`中其他的`webpack`配置， 那么可以像上面那种形式来进行修改。
+```js
+// 拿到webpack 的默认配置 剩下的还不是为所欲为
+const defaultConfig = require('@ionic/app-scripts/config/webpack.config.js');
+// 像这样去修改配置
+defaultConfig.prod.resolve.alias = {
+  "@config": path.resolve(configPath('prod'))
+}
+defaultConfig.dev.resolve.alias = {
+  "@config": path.resolve(configPath('dev'))
+}
+```
+
+## Ionic路由
 - 首页设置
   有时候我们需要设置我们第一次显示得页面。那这样我们就需要使用`NavController`来设置
   ```ts
@@ -453,8 +532,9 @@ import {CONFIG} from "@app/env"
       this.para = navParams.data
     }
     ```
-  4. 跨层级跳转
   
+  4. 跨层级跳转
+    
 
 ## provider(service)使用
 > 当重复的需要一个类中的方法时，可封装它为服务类，以便重复使用，如http。
@@ -476,14 +556,14 @@ export class StorageService {
     console.log('Hello StorageService');
   }
   myAlert(){
-    alert(“服务类的方法”)
+    alert("服务类的方法")
   }
 }
 ```
 - 使用`provider` 
 
-正常的应用，注入，然后使用
-```js
+如果是顶级的服务(全局通用服务)，需要在`app.module.ts`的`providers`中注册后然后使用
+```ts
 import { StorageService } from './../../service/storage.service';
 export class LoginPage {
 
@@ -510,6 +590,7 @@ export class LoginPage {
   }
 }
 ```
+
 ## Ionic事件系统
 > Events是一个`发布-订阅`样式事件系统，用于在您的应用程序中发送和响应应用程序级事件。
 
@@ -539,7 +620,7 @@ constructor(public event: Events ) {
   })
 }
 ```
-**注意点**: <font color="red">1： 订阅必须再发布之前，不然接收不到。打个比喻：比如微信公众号，你要先关注才能接收到它的推文，不然它再怎么发推文，你也收不到。2： `subscribe`中得`this`指向是有点问题的。</font>
+**注意点**: <font color="red">1： 订阅必须再发布之前，不然接收不到。打个比喻：比如微信公众号，你要先关注才能接收到它的推文，不然它再怎么发推文，你也收不到。2： `subscribe`中得`this`指向是有点问题的，这里需要注意一下。</font>
 
 
 ## 用户操作事件
@@ -547,7 +628,7 @@ constructor(public event: Events ) {
 
 Ionic对手势事件的解释基本是一笔带过。
 
-## **Angular组件间通信**
+## **组件间通信**
 组件之间的通信：要把一个组件化的框架给玩6了。组件之前的通信搞明白了是个前提。在`Ionic`中，我们使用`Angular`中的方式来实现。
 - `父 => 子`： `@Input()`
   - **通过`输入型绑定`把数据从父组件传到子组件**：这个用途最广泛和常见，和`recat`中的props非常相似
@@ -687,7 +768,7 @@ constructor(
 ```
 - `父 <=> 子`：**父子组件通过服务来通信**
   
-  如果我们`把一个服务实例的作用域被限制在父组件和其子组件内，这个组件子树之外的组件将无法访问该服务或者与它们通讯`。父子共享一个服务，那么我们可以利用该服务在家庭内部实现双向通讯。
+  如果我们`把一个服务实例的作用域被限制在父组件和其子组件内，这个组件子树之外的组件将无法访问该服务或者与它们通讯`。父子共享一个服务，那么我们可以利用该服务在**家庭内部**实现**双向通讯**。
   ```ts
   // service
   import { Injectable } from '@angular/core'; // 标记元数据
@@ -801,8 +882,10 @@ constructor(
 
   ```
 ## Shared组件
-公共组件设置
-这个地方可以根据`Angular`提供的`CommonModule`共享模块，我们要知道他干了什么事儿
+公共组件设置，`Angular`倡导的是模块化开发，所以公共组件的注册可能稍有不同。
+
+在这里我们根据`Angular`提供的`CommonModule`共享模块，我们要知道他干了什么事儿：
+
 1. 它导入了 `CommonModule`，因为该模块需要一些常用指令。
 2. 它声明并导出了一些工具性的管道、指令和组件类。
 3. 它重新导出了 `CommonModule` 和 `FormsModule`
@@ -814,6 +897,7 @@ constructor(
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
+
 // 通过重新导出 CommonModule 和 FormsModule，任何导入了这个 SharedModule 的其它模块，就都可以访问来自 CommonModule 的 NgIf 和 NgFor 等指令了，也可以绑定到来自 FormsModule 中的 [(ngModel)] 的属性了。
 // 自定义的模块和指令
 import { ComponentsModule } from './../components/components.module';
@@ -840,14 +924,33 @@ export class SharedModule {}
 ```
 注意： **服务要通过单独的依赖注入系统进行处理，而不是模块系统**
 
+使用了`shared`模块仅仅需要在`xxx.module.ts`中引用即可,然后又就可以使用`shared`中所有引入的公共模块。
+```ts
+import { NgModule } from '@angular/core';
+import { IonicPageModule } from 'ionic-angular';
+import { XXXPage } from './findings';
+import { SharedModule } from '@shared/shared.module';
+
+@NgModule({
+  declarations: [
+    XXXPage,
+  ],
+  imports: [
+    SharedModule,
+    IonicPageModule.forChild(FindingsPage),
+  ]
+})
+export class XXXPageModule {}
+```
+
 ## http部分
-`Ionic`中的http模块是直接采用的`HttpClient`这个模块。这个没什么可说的，我们只需要根据我们的需求对`service`进行修改即可，例如我就把`http`改成了更加灵活的`Promise模式`
+`Ionic`中的http模块是直接采用的`HttpClient`这个模块。这个没什么可说的，我们只需要根据我们的需求对`service`进行修改即可，例如可以把`http`改成了更加灵活的`Promise模式`。你也可以用`Rxjs`的模式来实现。**下面这个是个简单版本的实现**：
 ```ts
 import { TokenServie } from './token.service';
 import { StorageService } from './storage.service';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { Injectable, Inject } from '@angular/core'
-import {ReturnObject, Config} from '../interface/index'
+import {ReturnObject, Config} from '../interface/index' // 返回数据类型和配置文件
 /*
 Generated class for the HttpServiceProvider provider.
 */
@@ -951,23 +1054,19 @@ export class HttpService{
       })
     })
   }
-  // user has token or not
-  public load () {
-    if (this.tokenService.getToken()) {
-      console.log('存在token')
-    } else {
-      console.log('用户还没登录')
-    }
-  }
 }
 ```
 
 ## `Cordova插件使用`
+
+`Ionic`提供了丰富的基于`cordova`的插件,[官网介绍](https://ionicframework.com/docs/native)，使用起来也很简单。
+
 下载`Cordova`插件
 ```bash
 cordova add plugin plugin-name -D
+npm install @ionic-native/plugin-name
 ```
-使用(`Ionic Native`中的插件)示例
+使用插件(**从`@ionic-native/plugin-name`中导入**)
 ```ts
 import { StatusBar } from '@ionic-native/status-bar';
 constructor(private statusBar: StatusBar) {
@@ -1032,23 +1131,105 @@ platform.ready().then(() => {
   - 混淆：使用短的、无意义的变量名和函数名来重写代码。
   - 消除死代码：移除未引用过的模块和未使用过的代码.
 
-
-### webpack配置修改
-```js
-// 拿到webpack 的默认配置 剩下的还不是为所欲为
-const defaultConfig = require('@ionic/app-scripts/config/webpack.config.js');
-// 像这样去修改配置
-defaultConfig.prod.resolve.alias = {
-  "@config": path.resolve(configPath('prod'))
-}
-defaultConfig.dev.resolve.alias = {
-  "@config": path.resolve(configPath('dev'))
-}
-```
 ## App打包
-> 还没时间写
 
-## 简单APP服务器更新(待完善...)
+我认为打包`APK`对于一些不了解服务端和`Android`的前端工程师来说还是比较费劲的。下面我们来仔细的说一说这个部分。
+
+### 环境配置
+第一步进行各个环境的配置
+
+1. `Node`安装/配置环境变量（我相信这个你已经弄完了）
+2. `jdk`安装 (无需配置环境变量)
+   
+   jdk是`java`的开发环境支持，你可以在[这里](https://pan.baidu.com/s/1MtZDLklTr7nn_kyPseJU3Q)下载， 提取码：`9p74`。
+
+   下载完成后，解压，直接按照提示安装，全局点确定，不出意外，最后的安装路径为：`C:\Program Files\Java`jdk安装完成，在cmd中，输入`java -version`验证是否安装成功。我这边是修改了安装路径，如果你不熟悉的话还是不要修改安装路径。出现了下面的`log`表示安装成功
+   
+   ![jdk](./jdk.png 'jdk')
+
+3. **`SDK`安装/配置环境变量**：这一部分是重点，稍微麻烦一些。
+  
+  先[下载](https://pan.baidu.com/s/1MtZDLklTr7nn_kyPseJU3Q)。
+  
+  解压后将重命名的文件夹，跟`jdk`放在一个父目录，便于查找：`C:\Program Files\SDK`
+
+  接着配置环境变量，**我的电脑——右键属性——-高级系统设置——-环境变量**。
+
+  在下面的**系统变量(s)**中，新建，键值对如下：
+  ```bash
+  name: ANDROID_HOME
+  key: C:\Program Files\SDK
+  ```
+  ![sdk](./sdk.png 'sdk')
+  
+  新建完系统变量之后在`path`中加入全局变量。
+
+  ![sdk_path](./sdk_path.png 'sdk_path')
+
+  在控制台中输入`android -h`，出现下面的日志，表示`sdk`安装成功
+
+  ![sdk_ok](./sdk_ok.png 'sdk_ok')
+
+  接下来我们使用`Android Studio进行SDK下载`，`Adnroid Studio`[下载地址](http://www.android-studio.org/)，`studio`安装完之后就要安装`Android SDK Tools,Android SDK platform-tools,Android SDK Build-tools`这些工具包和`SDK platform`
+
+
+  ![studio](./studio.png 'studio')
+
+  ![studio_sdk](./studio_sdk.png 'studio_sdk')
+
+4. **`gradle`安装/配置环境变量**
+  
+  在`SDK`都安装完了之后我们再进行`gradle`的安装和配置。
+
+  先在[官网](http://services.gradle.org/distributions/)或者在[这里](https://pan.baidu.com/s/1MtZDLklTr7nn_kyPseJU3Q)下载
+
+  然后同样安装在`JDK,SDK`的目录下，便于查找。
+  和`SDK`同样的配置环境变量：
+  ```
+  GRADLE_HOME=C:\Program Files\SDK\gradle-4.1
+  ;%GRADLE_HOME%\bin
+  ```
+  测试命令（查看版本）：`gradle -v` 出现下面的日志，表示安装成功
+
+  ![gradle](./gradle.png 'gradle')
+
+### 进行打包
+打包之前的环境准备工作都已经做完了，接下来我们进行打包`apk。
+1. 安装`cordova`
+```bash
+npm i cordova -g
+```
+2. 在项目中创建`Android`工程，在`Ionic`项目中执行下面命令
+```bash
+ionic cordova platform add android
+```
+![platform](./platform.png 'platform')
+
+这可能是一个很漫长的过程，你要耐心等待，毕竟曙光就在眼前了。
+
+3. 创建完`Android`项目之后项目的`platform`文件夹下会多出来一个`android`文件夹。这下接着执行打包命令。
+```
+ionic cordova build android
+```
+然后你会看到控制台疯狂输出，最后出现下图表明你已经打包出来一个**未签名**的安装包
+
+4. `APK`签名
+`APK`不签名是没法发布的。这个有两种方法
+
+ - 使用`jdk`签名，这里不多说，想了解的可以看[这篇文章](https://blog.csdn.net/u013254166/article/details/79290351)
+ - 使用`Android Studio`打签名包。
+  
+  在`AS`上方工具栏`build`中选取`Generate Signed APK`首先创建一个签名文件
+  
+  ![key](./key.png 'key')
+  
+  生成完之后可以直接用`AS`打签名包
+
+  ![apk](./apk.png 'apk')
+
+  点击`locate`就能看到我们的`apk`包了~ 至此我们的`Android`就ok了，IOS的之后再补上。
+
+## 简单APP服务器更新（简单示例）
 
 由于`Android`的要求不如苹果那么严，我们也可以通过自己的服务器进行程序的更新。下面就是实现一个比较简单的更新`Service`
 
@@ -1390,9 +1571,9 @@ target=android-26
 
 ![打包1](./pack1.png '打包1')
 
-不加上的时候一直在`Android7.0`以下都没法安装，一直以为是项目代码的问题，没想到是编辑器的问题（没想到编辑器对工程的影响这么大），加上了V1选项之后打也就可以了，所以查了一下原因如下。
+不加上的时候一直在`Android7.0`以下都没法安装，一直以为是项目代码的问题，没想到是设置的问题，加上了`V1`选项之后打也就可以了，查了一下原因如下。
 
-上图中提供的选项其实是`签名版本选择`，在AS3.0的时候新增的选项。
+上图中提供的选项其实是`签名版本选择`，在`AS3.0`的时候新增的选项。
 
 `Android 7.0`中引入了`APK Signature Scheme v2`，`v1`呢是`jar Signature`来自`JDK`
 V1：应该是通过ZIP条目进行验证，这样APK 签署后可进行许多修改 - 可以移动甚至重新压缩文件。
@@ -1413,3 +1594,4 @@ signingConfigs {
     }
 }
 ```
+
