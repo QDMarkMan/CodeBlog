@@ -1,4 +1,4 @@
-# 构建一个Ionic3.X Hybrid App
+# 使用Ionic构建一个HybridApp
 
 ## 写在前面
 `APP`赶在了新年之前上线了，所以这次我们分享一下使用`Ionic3 + Angular5`构建一个`Hybird App`过程中的经验。什么是`Hybird App`以及一些技术的选型这里就不讨论了。
@@ -15,6 +15,20 @@
 ## Angular汇总部分
 
 既然是基于`Angular`那我们首先来了解一下`Angular`，这个地方积累的是`Angular`中零散的部分。<small>如果内容多的话后期会拆分为单独的部分</small>
+
+### Angular组件生命周期
+
+`Angular`的生命周期
+
+`Hooks`[官方介绍](https://www.angular.cn/guide/lifecycle-hooks)
+- `ngOnChanges(changes: SimpleChanges) => void`：    当被绑定的输入属性的值发生变化时调用，**首次调用一定会发生在 `ngOnInit()` 之前**
+- `ngOnInit() => void`：  在第一轮 `ngOnChanges()` 完成之后调用。**只调用一次**
+- `ngDoCheck() => void`：   在每个变更检测周期中调用，`ngOnChanges()` 和 `ngOnInit()` 之后
+- `ngAfterContentInit() => void`： `Angular` 把外部内容投影进组件/指令的视图之后调用。可以认为是外部内容初始化
+- `ngAfterContentChecked() => void`：  `Angular` 完成被投影组件内容的变更检测之后调用。可以认为是外部内容更新
+- `ngAfterViewInit() => void`： 每当 `Angular` 初始化完**组件视图及其子视图**之后调用。**只调用一次。**
+- `ngAfterViewChecked() => void`：每当 `Angular` 做完组件视图和子视图的变更检测之后调用, `ngAfterViewInit()` 和每次 `ngAfterContentChecked()` 之后都会调用。
+- `ngOnDestroy() => void`：在 Angular 销毁指令/组件之前调用。
 
 ### Angular中内容映射(插槽)的实现
 
@@ -235,7 +249,7 @@ Ionic-frame
 └───www                     // 打包后静态资源
 ```
 
-## Ionic生命周期
+## Ionic视图生命周期
 
 生命周期的重要性不用多说，这是`Ionic`官网的[介绍](https://ionicframework.com/docs/api/navigation/NavController/)
 - `constrctor => void`:         构造函数启动，构造函数在ionViewDidLoad之前被触发
