@@ -97,7 +97,7 @@
 
 - `ng-content`有一个`@ContentChild`装饰器，可以用来调用和投影内容。但是要注意：只有在`ngAfterContentInit`声明周期中才能成功获取到通过`ContentChild`查询的元素。
 
-既然提到了<ng-content>那我们就来聊一聊<ng-template>和<ng-container>
+既然提到了`ng-content`那我们就来聊一聊`ng-template`和`ng-container`
 - `ng-template`
   
   <ng-template> 元素是动态加载组件的最佳选择，因为它**不会渲染任何额外的输出**
