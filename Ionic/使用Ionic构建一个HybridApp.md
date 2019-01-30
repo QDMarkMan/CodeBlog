@@ -8,7 +8,7 @@
 有些朋友说`Angular/Ionic`不大行，但是我觉的技术没有好坏之分，只有适合不适合。首先在我看来`Ionic`已经在`Hybird App`开发领域立足多年，已经相当的成熟了，我觉的比大部分的解决方案都要好。其次因为我们的App是一个弱交互多展示类型的，`Ionic`
 满足我们的需求。最后是因为**如果你想在没有`Android`团队和`IOS`团队支持的情况下独立完成一款APP，那么`Ionic`我觉的是不二之选**。
 
-注意：**非基础入门教程**，所以在读这篇文章之前建议你最好先了解`Angular, TS, Ionic`的基础知识，这里主要是希望大家在使用`Ionic`的时候能少走一些弯路。
+注意：**非基础入门教程**，所以在读这篇文章之前建议你最好先了解`[Angular](https://www.angular.cn/guide/quickstart), [TS](https://www.tslang.cn/docs/home.html), [Ionic](https://ionicframework.com/docs/)`的基础知识，这里主要是希望大家在使用`Ionic`的时候能少走一些弯路。
 
 **由于我自己用的不是很熟练`Rxjs`这一块就没有写，等以后对`Rxjs`的理解更加深刻了再加上**
 
@@ -21,6 +21,7 @@
 `Angular`的生命周期
 
 `Hooks`[官方介绍](https://www.angular.cn/guide/lifecycle-hooks)
+- `constructor() `： 在任何其它生命周期钩子之前调用。可以用它来注入依赖项，**但不要在这里做正事**。
 - `ngOnChanges(changes: SimpleChanges) => void`：    当被绑定的输入属性的值发生变化时调用，**首次调用一定会发生在 `ngOnInit()` 之前**
 - `ngOnInit() => void`：  在第一轮 `ngOnChanges()` 完成之后调用。**只调用一次**
 - `ngDoCheck() => void`：   在每个变更检测周期中调用，`ngOnChanges()` 和 `ngOnInit()` 之后
@@ -98,7 +99,26 @@
 
 既然提到了<ng-content>那我们就来聊一聊<ng-template>和<ng-container>
 - `ng-template`
+  
+  <ng-template> 元素是动态加载组件的最佳选择，因为它**不会渲染任何额外的输出**
+  ```html
+  <div class="ad-banner-example">
+    <h3>Advertisements</h3>
+    <ng-template ad-host></ng-template>
+  </div>
+  ```
+
 - `ng-container`
+  <ng-container> 是一个由 `Angular` 解析器负责识别处理的语法元素。 它不是一个指令、组件、类或接口，更像是  `JavaScript` 中 `if` 块中的花括号。一般用来把一些兄弟元素归为一组,它不会污染样式或元素布局，因为 Angular 压根不会把它放进 DOM 中。
+  ```html
+  <p>
+    I turned the corner
+    <ng-container *ngIf="hero"><!-- ng-container不会被渲染 -->
+      and saw {{hero.name}}. I waved
+    </ng-container>
+    and continued on my way.
+  </p>
+  ```
   
 ### Angular指令
 `Angular`中的指令分为`组件`,`属性指令`和`结构形指令`。`属性型指令`用于改变一个 `DOM` 元素的外观或行为，例如`NgStyle`。`结构型指令`的职责是 `HTML` 布局。 它们塑造或重塑 `DOM` 的结构，比如添加、移除或维护这些元素，例如`NgFor`和`NgIf`。
