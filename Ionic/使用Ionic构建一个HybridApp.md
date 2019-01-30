@@ -1,7 +1,7 @@
 # 使用Ionic构建一个HybridApp
 
 ## 写在前面
-`APP`赶在了新年之前上线了，所以这次我们分享一下使用`Ionic3 + Angular5`构建一个`Hybird App`过程中的经验。什么是`Hybird App`以及一些技术的选型这里就不讨论了。
+`APP`赶在了春节之前上线了，所以这次我们分享一下使用`Ionic3 + Angular5`构建一个`Hybird App`过程中的经验。什么是`Hybird App`以及一些技术的选型这里就不讨论了。
 
 ### 为什么选了`Ionic` ?
 
