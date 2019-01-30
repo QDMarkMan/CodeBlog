@@ -6,7 +6,7 @@
 ### 为什么选了`Ionic` ?
 
 有些朋友说`Angular/Ionic`不大行，但是我觉的技术没有好坏之分，只有适合不适合。首先在我看来`Ionic`已经在`Hybird App`开发领域立足多年，已经相当的成熟了，我觉的比大部分的解决方案都要好。其次因为我们的App是一个弱交互多展示类型的，`Ionic`
-满足我们的需求。最后是因为**如果你想在没有`Android`团队和`IOS`团队支持的情况下独立完成一款APP，那么`Ionic`我觉的是不二之选**。
+满足我们的需求。最后是因为**如果你想在没有`Android`团队和`IOS`团队支持的情况下独立完成一款APP，那么`Ionic`我觉的是不二之选**。因为`Ionic4`还在`beta`版本，并且是公司项目所以依然选用了稳定的`3.X`版本。
 
 注意：**非基础入门教程**，所以在读这篇文章之前建议你最好先了解`[Angular](https://www.angular.cn/guide/quickstart), [TS](https://www.tslang.cn/docs/home.html), [Ionic](https://ionicframework.com/docs/)`的基础知识，这里主要是希望大家在使用`Ionic`的时候能少走一些弯路。
 
