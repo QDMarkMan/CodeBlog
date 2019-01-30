@@ -1146,8 +1146,7 @@ platform.ready().then(() => {
 ```
 这样一来我们就可以完美的欺骗用户，体验能好点。
 
-
-### 组件懒加载
+<!-- ### 组件懒加载 -->
 
 ### 打包优化
 - **新增--prod参数**
@@ -1625,3 +1624,10 @@ signingConfigs {
 }
 ```
 
+# 总结 
+
+这么一番折腾下来，越到了不少坑。但是也都一一解决了。使用`Ionic`最大的感触就是`TS`+`Angular`的模块化开发模式很舒服。而且开发速度上也不至于太慢，对`Angular`感兴趣的朋友我认为还是可以一试的。
+
+示例代码请稍后
+
+[原文地址](https://github.com/QDMarkMan/CodeBlog/blob/master/Ionic/%E4%BD%BF%E7%94%A8Ionic%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AAHybridApp.md)  如果觉得有用得话给个⭐吧
