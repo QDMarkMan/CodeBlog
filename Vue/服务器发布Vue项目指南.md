@@ -1,5 +1,6 @@
 # 服务器发布Vue项目指南(更新中)
 > 正在完善状态，还剩下Nginx。 Apache和Tomcat的配置亲测有效。
+下面所有的例子`vue-router`的`history`模式下。
 
 ## 1：Apache服务器
 1. *修改Apache默认配置*
@@ -186,9 +187,9 @@ npm i
 
 首先安装`pm2`
 ```bash
-npm i nuxt -g
+npm i pm2 -g
 # 建立软连接
-ln -s /usr/local/node/node10.13.0/bin/pm2  /usr/local/bin/nuxt 
+ln -s /usr/local/node/node10.13.0/bin/pm2  /usr/local/bin/pm2 
 ```
 
 然后在`package.json`中加入`pm`启动指令或者直接像下面这样启动
@@ -235,3 +236,12 @@ pm2 monit xxx      # 监控名称为xxxx的进程
 1. 启动`koa server.js`的时候外网无法访问。
    
    这个问题的具体出现原因我暂时还没找到，只是后来换了`nuxt start`外网才可以顺利访问。这算是我自己提的一个`issue`。
+
+2. 权限不足使用`sudo su`找不到`node npm`等命令
+   
+   这个很简单， 我们再重新建立一边软链接就行了
+  ```bash
+  sudo ln -s /usr/local/bin/node /usr/bin/node
+  sudo ln -s /usr/local/lib/node /usr/lib/node
+  sudo ln -s /usr/local/bin/npm /usr/bin/npm
+  ```
