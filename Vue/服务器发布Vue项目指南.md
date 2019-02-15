@@ -116,8 +116,8 @@ wget https://nodejs.org/dist/v10.13.0/node-v10.13.0-linux-x64.tar.gz
 ```
 3. 下载完成之后解压并且为文件夹改名
 ```bash
-# 解压
-tar -zxvf node-v10.13.0-linux-x64.tar.gz -C ../
+# 解压到当前文件夹
+tar -zxvf node-v10.13.0-linux-x64.tar.gz -C ./
 # 改名
 mv node-v10.13.0-linux-x64/ ./node10.13.0
 ```
