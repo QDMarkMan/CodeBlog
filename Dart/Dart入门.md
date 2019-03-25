@@ -40,7 +40,26 @@
   
 
 - `Dart`中`..`操作符的作用？
+  
 
+- `Dart`中`Object`和`dynamic `有什么区别 ？
+  
+  在`Dart`中有两种类型: `Object` 和 `dynamic`。
+  **`Object`**  适合表示可以是任何**对象**的场景。
+  **`dynamic`**  适用于更复杂的场景，可以表示更多的类型， 如意味着 `Dart` 的类型系统已经不足以表示的一系列允许的类型，或者值来自 `interop` 或 其他超过静态类型系统范围的类型，或者你想明确地声明运行时动态处理的变量, 也可以理解为是一种任意的类型。
+
+  ```dart
+  void log(Object object) {
+    print(object.toString());
+  }
+  /// Returns a Boolean representation for [arg], which must
+  /// be a String or bool.
+  bool convertToBool(dynamic arg) {
+    if (arg is bool) return arg;
+    if (arg is String) return arg == 'true';
+    throw new ArgumentError('Cannot convert $arg to a bool.');
+  }
+  ```
 
 - `Dart`中的闭包是什么样的 ？
 
