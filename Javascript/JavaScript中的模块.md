@@ -168,5 +168,5 @@ UMD的目标很简单，先判断是否支持`AMD`（`define`是否存在），�
 # 总结
 `AMD`和`CMD`迟早会是过去，`CommonJS`注重服务端，是同步的。`ES6 Module`是官方标准，推荐使用。`UMD`是为了兼容客户端和服务端提出的一种折中方案。
 
-[原文地址](https://github.com/QDMarkMan/CodeBlog/blob/master/Javascript/JavaScript中的模块.md)  如果觉得有用得话给个⭐吧
+[原文地址](https://github.com/QDMarkMan/CodeBlog/blob/master/Javascript/JavaScript中的模块.md)  如果觉得有帮助的得话给个⭐吧😁
 
