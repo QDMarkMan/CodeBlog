@@ -211,4 +211,4 @@ window.onload = function(){
 - [JS进阶系列之内存空间](https://www.cnblogs.com/mcray/p/7002089.html)
 - [【译】JavaScript是如何工作的：内存管理 + 如何处理4个常见的内存泄露](https://segmentfault.com/a/1190000011411121)
 
-如果觉得有用得话给个⭐吧
+如果觉得有帮助的得话给个⭐吧😁
