@@ -95,3 +95,13 @@ var performance = {
     }
 };
 ```
+
+## 各项性能指标的获取
+
+- `DNS` 查询耗时 ：domainLookupEnd - domainLookupStart
+- `TCP` 链接耗时 ：connectEnd - connectStart
+- `request` 请求耗时 ：responseEnd - responseStart
+- 解析 `dom` 树耗时 ： domComplete - domInteractive
+- 白屏时间 ：responseStart - navigationStart
+- `domready` 时间 ：domContentLoadedEventEnd - navigationStart
+- `onload` 时间 ：loadEventEnd – navigationStart
