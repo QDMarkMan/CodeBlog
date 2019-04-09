@@ -145,6 +145,8 @@ console.log(elems);
 
 参考资料： 《JavaScript忍者秘籍》
 
+关于函数我之前还写过一篇[JavaScript中高阶函数的魅力](https://juejin.im/post/5b8c8a6951882542ee717c86), 有兴趣的话可以看一看。
+
  [代码地址](https://github.com/QDMarkMan/usually-accumulated/blob/master/src/func_width_obj.js)
 
  [原文地址](https://github.com/QDMarkMan/CodeBlog/blob/master/Javascript/Javascript中函数作为对象的魅力.md) 如果觉得有帮助的得话给个⭐吧😁
