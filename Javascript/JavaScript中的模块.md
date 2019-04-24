@@ -82,6 +82,18 @@ define(function(require, exports, module) {
 
 有一点要注意：`CommonJS`规范加载模块是同步的，也就是说，只有加载完成，才能执行后面的操作
 
+### `exports`和`module.exports`的区别和联系
+
+`exports`是`module.exports`的引用， 作为引用，如果我们修改它的值，实际上修改的是它对应的引用对象的值。我认为`exports`默认就导出了一个对象，而`modules.exports`可以导出任意类型的模块。
+
+```js
+exports.a = 1
+// 等同于
+modules.exports = {
+   a: 1
+}
+```
+
 ### AMD规范与CommonJS规范的兼容性
 `CommonJS`规范加载模块是同步的,`AMD`规范则是非同步加载模块，允许指定回调函数。由于`Node.js`主要用于服务器编程，模块文件一般都已经存在于本地硬盘，所以加载起来比较快，不用考虑非同步加载的方式，所以`CommonJS`规范比较适用。但是，如果是浏览器环境，要从服务器端加载模块，这时就必须采用非同步模式，因此浏览器端一般采用AMD规范。
 
