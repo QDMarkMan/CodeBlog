@@ -1,4 +1,4 @@
-# Node.js Crypto模块
+# Node.js Crypto模块(未完成)
 crypto是Node.js 提供的加密模块，包括各种的可逆以及不可逆的加密
 > crypto 模块提供了加密功能，包含对 OpenSSL 的哈希、HMAC、加密、解密、签名、以及验证功能的一整套封装。
 
