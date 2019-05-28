@@ -102,5 +102,28 @@ module.exports = {
 　　entry: ["babel-polyfill", "./app/js"]
 }
 ```
+
+## `browserslist` 
+
+我感觉很多人不知道这个怎么配置
+
+根据提供的目标浏览器的环境来，智能添加`css`前缀，`js`的`polyfill`垫片,来兼容旧版本浏览器，而不是一股脑的添加。避免不必要的兼容代码，以提高代码的编译质量。
+
+我们接下来看看下面的参数代表什么意思，下面的参数看会了，基本就会配置了，这里是[官方文档](https://github.com/browserslist/browserslist#queries)
+
+| 配置 | 说明 |
+| :------ | :------ |
+| `> 1%` | 全球超过1%人使用的浏览器 |
+| `last 2 versions` | 所有浏览器兼容到最后两个版本根据CanIUse.com追踪的版本 |
+| `> 5% in US	` | 指定国家使用率覆盖 |
+| `Firefox ESR` | 火狐最新版本 |
+| `Firefox > 20` | 指定浏览器的版本范围 |
+| `not ie <=8` | 方向排除部分版本 |
+| `Firefox 12.1	` | 指定浏览器的兼容到指定版本 |
+| `unreleased versions	` | 所有浏览器的beta测试版本 |
+| `unreleased Chrome versions	` | 指定浏览器的测试版本 |
+| `since 2013	` | 2013年之后发布的所有版本 |
+
+
 # 总结
 `Babel`很强大，但是我希望有一天能够不再需要了😁
