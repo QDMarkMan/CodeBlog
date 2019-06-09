@@ -123,7 +123,7 @@ const {ipcRenderer} = require('electron')
 ipcRenderer.send('maximize')
 ```
 ## 在Electron中使用Node.js
-> Electron 同样也支持 Node 原生模块，但由于和官方的 Node 相比使用了不同的 V8 引擎，如果你想编译原生模块，则需要手动设置 Electron 的 headers 的位置。  在这一步的时候一般很少会遇到问题
+> Electron 同样也支持 Node 原生模块，但由于和官方的 Node 相比使用了不同的 V8 引擎，如果你想编译原生模块，则需要手动设置 Electron 的 headers 的位置。  这一步配置好环境之后一般没什么大问题
 
 有三种方法去安装原生模块
 1. **通过 npm 安装**
@@ -156,7 +156,7 @@ npm install --save-dev electron-rebuild
 .\node_modules\.bin\electron-rebuild.cmd
 ```
 3. **为 Electron 手动编译**
-如果你是一个原生模块的开发人员，想在 Electron 中进行测试， 你可能要手动编译 Electron 模块。 你可以 使用 node-gyp 直接编译（这个我们一般很少用）：
+如果你是一个原生模块的开发人员，想在 Electron 中进行测试， 你可能要手动编译 Electron 模块。 你可以 使用 `node-gyp` 直接编译：
 ```bash
 cd /path-to-module/
 HOME=~/.electron-gyp node-gyp rebuild --target=1.2.3 --arch=x64 --dist-url=https://atom.io/download/electron
@@ -202,6 +202,7 @@ HOME=~/.electron-gyp node-gyp rebuild --target=1.2.3 --arch=x64 --dist-url=https
 ```
 <font face="微软雅黑" color="yellow">注意：在程序打包得这一项中复杂得地方不在代码，是在我们环境的配置中，有一部分的包我们要科学上网之后才能下载，例如nsis-resources-3.3.0：翻墙后下载两次才成功，这个过程中一定耐性</font>
 
+这里有一个更加详细的[教程](https://github.com/QDMarkMan/CodeBlog/blob/master/Electron/electron-builder%E6%89%93%E5%8C%85%E8%AF%A6%E8%A7%A3.md)
 
 ## 程序更新
 > 在Electron的整个开发中，程序的更新可能是相对麻烦点的一部分
