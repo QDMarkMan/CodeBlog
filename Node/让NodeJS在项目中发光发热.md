@@ -259,7 +259,7 @@ export default [
 ]
 ```
 
-在`template`中最重要的要属`index.js`了， 这个文件主要是包含了**模板文件的读取和重新生成出我们需要的模板字符串, 以及生成我们需要的特定路由代码**。`template/index.js`
+在`template`中最重要的要属`index.js`了， 这个文件主要是包含了**模板文件的读取和重新生成出我们需要的模板字符串, 以及生成我们需要的特定路由代码**。`template/index.js`,文件模板的生成主要是通过读取各个模板文件并转化成字符串，并把的**指定的字符串用我们期望的变量去替换**， 然后返回新的字符串给生成文件使用。
 
 ```js
 const fs = require('fs')
@@ -465,7 +465,6 @@ module.exports.LOCAL = class  {
    */
   static buildEnvFile (config = {AUTHOR: ''}) {
     if (!fs.existsSync(this.envPath)) {
-      console.log(this.envPath)
       // create a open file
       fs.openSync(this.envPath, 'w')
     }
@@ -503,11 +502,42 @@ module.exports.StringUtil = class {
 // 文件操作Util
 module.exports.FileUtil = class {
   // TODO
+  /**
+   * If module is Empty then create dir and file
+   * @param {*} filePath .vue/.js 文件路径
+   * @param {*} content 内容
+   * @param {*} dirPath 文件夹目录
+   */
+  static createDirAndFile (filePath, content, dirPath = '') {
+    try {
+      // create dic if file not exit
+      if (dirPath !== '' && ! fs.existsSync(dirPath)) {
+        // mkdir new dolder
+        fs.mkdirSync(dirPath)
+        Log.success(`created ${dirPath}`)
+      }
+      if (!fs.existsSync(filePath)) {
+        // create a open file
+        fs.openSync(filePath, 'w')
+        Log.success(`created ${filePath}`)
+      }
+      // write content to file
+      fs.writeFileSync(filePath, content, 'utf8')
+    } catch (error) {
+      Log.error(error)
+    }
+  }
 }
 // 日期操作Util
 module.exports.DateUtil = class {
   // TODO
 }
+```
+在`Util`文件中需要注意的部分可能是`.env`文件的生成和读取这一部分和`FileUtil`中`createDirAndFile`, 这个是我们用来生成文件夹和文件的方法，全部使用`node`文件系统完成。熟悉了`API`之后不会有难度。
+
+
+这里`ROOTPATH`要注意一下指的是我们的**路由，views, api的根目录配置**, 这个配置的话我建议不要写死， 因为如果你的项目有多入口或者是子项目,这些可能都会变。
+```js
 // root path
 const reslove = (file = '.') => path.resolve(__dirname, '../src', file)
 const ROOTPATH = Object.freeze({
@@ -519,7 +549,7 @@ const ROOTPATH = Object.freeze({
 module.exports.ROOTPATH = ROOTPATH
 ```
 
-这里`ROOTPATH`要注意一下指的是我们的**路由，views, api的根目录配置**, 这个配置的话我建议不要写死， 因为如果你的项目有多入口或者是子项目,这些可能都会变。
+- 预览
 
 这样的话我们就能愉快的通过命令行快速的创建模块了, 效果如下
 
