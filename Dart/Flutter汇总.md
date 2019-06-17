@@ -139,3 +139,19 @@ class AnimateHeart extends AnimatedWidget {
 ### 内置的动画组件
 
 `Flutter`本身也内置了大量的动画组件
+
+- `ScaleTransition`：缩放过渡组件
+
+  `ScaleTransition`(
+    `Animation<double> scale` 过渡动画 
+    `child`
+  )
+
+- `AnimatedOpacity`：透明度过渡组件
+
+  `ScaleTransition`(
+    `opacity`: 透明度
+    `curve`: 过渡动画 
+    `duration`: 动画持续时长
+    `child`
+  )
