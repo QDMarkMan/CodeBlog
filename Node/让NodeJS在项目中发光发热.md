@@ -331,7 +331,7 @@ module.exports.buildApiFile = comment => {
 在这个文件夹中，需要额外注意的是`RouteHelper`这个`class`，这个是对已存在的路由文件进行新模块的路由注入操作，主要通过了[stream（流）](http://nodejs.cn/api/stream.html),[readline（逐行读取）](http://nodejs.cn/api/readline.html)来实现的。
 
 
-接下来是干货部分 ==> 首先通过参数找到我们的目标路由文件，然后通过`generateRouter()`来拼接生成我们需要注入的路由。通过`injectRoute`方法开始注入路由，在`injectRoute`中我们首先来生成一个名字为`_root`临时路径的文件并根据这个路径创建一个`writeStream`， 然后根据旧的路由文件地址`root`创建一个`readStream`并通过`readline`读写接口去读取原来的路由文件，用一个数组收集旧的路由每一行的数据。读取完毕之后开始遍历`temp`这个数组并找到第一个`children`然后把`generateRouter()`方法返回的数组插入到这个位置。最后使用拼接完成的`temp`遍历逐行写入`writeStream`中。最后把原来的`root`文件删除，把`_root`重命名为`root`。一个路由注入的流程就完了。大体的流程就是这样， 关于代码细节不懂得朋友们可以私信我😁。
+接下来是干货部分: 在进行路由注入时首先通过参数找到我们的目标路由文件，然后通过`generateRouter()`来拼接生成我们需要注入的路由。通过`injectRoute`方法开始注入路由，在`injectRoute`中我们首先来生成一个名字为`_root`临时路径的文件并根据这个路径创建一个`writeStream`， 然后根据旧的路由文件地址`root`创建一个`readStream`并通过`readline`读写接口去读取原来的路由文件，用一个数组收集旧的路由每一行的数据。读取完毕之后开始遍历`temp`这个数组并找到第一个`children`然后把`generateRouter()`方法返回的数组插入到这个位置。最后使用拼接完成的`temp`遍历逐行写入`writeStream`中。最后把原来的`root`文件删除，把`_root`重命名为`root`。一个路由注入的流程就完了。大体的流程就是这样， 关于代码细节不懂得朋友们可以私信我😁。
 
 ```js
 
