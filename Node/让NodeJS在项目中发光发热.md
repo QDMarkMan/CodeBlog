@@ -1,6 +1,6 @@
 # 让NodeJS在项目中发光发热
 
-近些年来接着`NodeJS`的春风，前端经历了一波大洗牌式得的发展。使得前端开发在效率，质量上有了质的飞跃。可以说`NodeJS`已经是前端不可欠缺的技能了。但是是事实上大部分的前端对于本地安装的`NodeJS`的使用可能仅限于`node -v`和`npm`了😂。其实`NodeJS`作为真正意义上的服务端语言，在我们开发的时候可以运用`NodeJS`强大的模块和众多的`npm`包来为我们自己服务。
+近些年来借着`NodeJS`的春风，前端经历了一波大洗牌式得的发展。使得前端开发在效率，质量上有了质的飞跃。可以说`NodeJS`已经是前端不可欠缺的技能了。但是是事实上大部分的前端对于本地安装的`NodeJS`的使用可能仅限于`node -v`和`npm`了😂。其实`NodeJS`作为真正意义上的服务端语言，在我们开发的时候可以运用`NodeJS`强大的模块和众多的`npm`包来为我们自己服务。
 
 ## 写在前面
 
@@ -229,7 +229,7 @@ function buildDirAndFiles (folder, module, comment) {
 ```
 注： 这里我用了一个`generates`这个`Map`去管理了所有的操作，因为上一个版本是这么写我懒得换了，你也可以用一个二维数组或者是对象去管理， 也省的写条件选择了。
 
-- `template`: 管理着生成文件使用的模板文件（`vue文件，路由文件， api文件`），我们只看其中的一种例如`route.template.js`
+- `template`: 管理着生成文件使用的模板文件（`vue文件，路由文件， api文件`），我们只看其中的`route.template.js`，其他的部分可以参考项目
 ```js
 /*
  * @Author: _author_
@@ -783,4 +783,4 @@ inquirer.prompt([
 
 [示例代码](https://github.com/QDMarkMan/vue-base-template)
 
-[原文地址](https://github.com/QDMarkMan/CodeBlog/blob/master/Vue/%E5%8A%A0%E5%BF%ABVue%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BC%80%E5%8F%91%E9%80%9F%E5%BA%A6.md)  如果觉得有用得话给个⭐吧
+[原文地址](https://github.com/QDMarkMan/CodeBlog/blob/master/Node/%E8%AE%A9NodeJS%E5%9C%A8%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%8F%91%E5%85%89%E5%8F%91%E7%83%AD.md)  如果觉得有用得话给个⭐吧
