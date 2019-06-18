@@ -8,7 +8,10 @@
 
 ## 快速创建模块
 
-这个部分我之前在[加快Vue项目的开发速度](https://github.com/QDMarkMan/CodeBlog/blob/master/Vue/%E5%8A%A0%E5%BF%ABVue%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BC%80%E5%8F%91%E9%80%9F%E5%BA%A6.md)中提到过，不过那个版本写的比较简单(糙)，像一个Demo一样，我自己不是很满意，于是重新开发了一边。这个脚本说白了就是用`NodeJS`去代替我们生成需要复制粘贴的文件和代码。
+这个部分我之前在[加快Vue项目的开发速度](https://github.com/QDMarkMan/CodeBlog/blob/master/Vue/%E5%8A%A0%E5%BF%ABVue%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BC%80%E5%8F%91%E9%80%9F%E5%BA%A6.md)中提到过，不过那个版本写的比较简单(糙)，像一个Demo一样，我自己不是很满意，于是重新开发了一边。这个脚本说白了就是用`NodeJS`去代替我们生成需要复制粘贴的文件和代码。 就像下面这样一条命令创建一个模块。
+
+![创建成功](./images/build.png '创建成功')
+
 
 在大型的项目中，尤其是中后台项目在开发一个新的业务模块的时候可能离不开大量的复制粘贴，像中后台项目中可能很多模块都是标准的`CURD`模块，包括了`列表，新增，详情，编辑`这些页面。那么这就意味着有大量的重复代码存在，每次复制粘贴完之后还有修修改改删删等一大堆麻烦事儿，最重要的是复制粘贴很容易忘记哪一部分就忘记改了，导致项目做的很糙而且也会浪费不少时间。那我们的需求就是把人工复制粘贴的那部分交给`Node`去做，力求`时间和质量`得到双重的保障。
 
@@ -328,7 +331,12 @@ module.exports.buildApiFile = comment => {
 }
 ```
 
-在这个文件夹中，需要额外注意的是`RouteHelper`这个`class`，这个是对已存在的路由文件进行新模块的路由注入操作，主要通过了[stream（流）](http://nodejs.cn/api/stream.html),[readline（逐行读取）](http://nodejs.cn/api/readline.html)来实现的。
+**路由注入**, 当输入的目录已存在的时候就不会新建目录文件， 这个时候就会把新模块的路由注入到已存在的目录的路由文件中，效果如下
+
+![路由注入](./images/inject.png '路由注入')
+
+
+这里我们通过`RouteHelper`来完成对已存在的路由文件进行新模块的路由注入操作，主要通过了[stream（流）](http://nodejs.cn/api/stream.html),[readline（逐行读取）](http://nodejs.cn/api/readline.html)来实现的。
 
 
 接下来是干货部分: 在进行路由注入时首先通过参数找到我们的目标路由文件，然后通过`generateRouter()`来拼接生成我们需要注入的路由。通过`injectRoute`方法开始注入路由，在`injectRoute`中我们首先来生成一个名字为`_root`临时路径的文件并根据这个路径创建一个`writeStream`， 然后根据旧的路由文件地址`root`创建一个`readStream`并通过`readline`读写接口去读取原来的路由文件，用一个数组收集旧的路由每一行的数据。读取完毕之后开始遍历`temp`这个数组并找到第一个`children`然后把`generateRouter()`方法返回的数组插入到这个位置。最后使用拼接完成的`temp`遍历逐行写入`writeStream`中。最后把原来的`root`文件删除，把`_root`重命名为`root`。一个路由注入的流程就完了。大体的流程就是这样， 关于代码细节不懂得朋友们可以私信我😁。
