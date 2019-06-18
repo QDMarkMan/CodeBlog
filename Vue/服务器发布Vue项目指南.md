@@ -1,16 +1,21 @@
-# 服务器发布Vue项目指南(更新中)
+# 服务器发布Vue/Nuxt项目指南(图文版本)
+
+很多前端朋友可能不是那么了解服务器配置。这篇文章我们一起大致了解一些简单的服务器配置。注: **都是基础**
+
 > 正在完善状态，还剩下Nginx。 Apache和Tomcat的配置亲测有效。
-下面所有的例子`vue-router`的`history`模式下。
+**下面所有的例子`vue-router`的`history`模式下。**
 
 ## 1：Apache服务器
 1. *修改Apache默认配置*
 
 首先要重新修改`\conf\httpd.conf`文件让文件支持`rewrite`
+
 ![引入模块](apacheconfig2.jpg '引入模块')
+
 找到
 ```bash
 // 这一行需要解开注释 引入这个模块
-LoadModule rewrite_module modules/mod_rewrite.so
+LoadModule rewrite_module modules/mod_rewrite.so 
 ```
 
 然后新增或者修改下面得代码
@@ -42,7 +47,7 @@ DocumentRoot "/usr/local/apache/demo"
 
 2. *新增htacces规则*
 
-上面操作时修改服务器得默认配置让服务器支持Rewrite，下面来创建Rewrite规则
+上面操作时修改服务器得默认配置让服务器支持`Rewrite`，下面来创建`Rewrite`规则
 
 首先在和`index.html`同级得地方新建`.htacces`文件，具体内容可以参照`Vue-Router`官网给得[例子](https://router.vuejs.org/zh/guide/essentials/history-mode.html#%E5%90%8E%E7%AB%AF%E9%85%8D%E7%BD%AE%E4%BE%8B%E5%AD%90)
 
@@ -65,13 +70,33 @@ DocumentRoot "/usr/local/apache/demo"
 
 ## 2：Nginx服务器
 
-## 3：Tomcat下SpringMVC中发布
+## 3：Tomcat服务器部署
+这个配置相对来说就比较简单了。
 
-这个发布到SpringMVC中的配置相对来说就比较简单了。
+### 配置`server.xml`
+
+首先找到`Tomcat`服务器目录中`tomcat/conf/server.xml`文件，找到`Host`，修改成你想要的配置。主要是`appBase`，它决定了静态文件查询的基础目录。
+
+```xml
+<Host name="localhost"  appBase="webapps"
+      unpackWARs="true" autoDeploy="true">
+  <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
+          prefix="localhost_access_log." suffix=".txt"
+          pattern="%h %l %u %t &quot;%r&quot; %s %b" />
+
+</Host>
+```
+
+![tomcatxml](./images/tomcat_xml.png 'tomcatxml')
+
+
+### 配置支持History模式
+
 只需要在发布的文件夹中新增`WEB-INF`配置文件夹中就行。如下图
 ![tomcat中配置](tomcat.png 'tomcat中文件')
 
-`WEB-INF` 文件夹放在项目中那么`tomcat`会自动扫描文件夹中的`web.xml`然后重写web配置
+
+`WEB-INF` 文件夹放在项目中那么`tomcat`会自动扫描文件夹中的`web.xml`然后添加配置。
 ![tomcat中配置](webxml.png 'xml')
 
 ```xml
@@ -95,7 +120,7 @@ DocumentRoot "/usr/local/apache/demo"
 </web-app>
 ```
 
-这就配置完了，可以说是贼简单了。
+这就配置完了，可以说是贼简单了。至于怎么启动和配置`Tomcat`服务器
 
 ## Nuxt项目发布指南
 
@@ -175,6 +200,7 @@ cd nuxt
 
 然后在`nuxt`文件夹中执行
 ```bash
+# 为了方便我这这里服务器上执行了install，正式项目不建议这么干
 npm i
 ```
 下载完成之后执行`nuxt start`出现下面的日志就表示成功启动了我们的`nuxt`应用
