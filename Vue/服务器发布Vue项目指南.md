@@ -157,6 +157,7 @@ gzip_http_version 1.1;
 ### 配置支持History模式
 
 只需要在发布的文件夹中新增`WEB-INF`配置文件夹中就行。如下图
+
 ![tomcat中配置](tomcat.png 'tomcat中文件')
 
 
@@ -184,7 +185,7 @@ gzip_http_version 1.1;
 </web-app>
 ```
 
-这就配置完了，可以说是贼简单了。至于怎么安装`Tomcat`服务器，大家自行解决吧
+这就配置完了，可以说是贼简单了。至于怎么安装`Tomcat`服务器，大家自行解决吧😁
 
 ## Nuxt项目（服务端渲染）
 
@@ -244,7 +245,7 @@ ln -s /usr/local/node/node10.13.0/bin/nuxt  /usr/local/bin/nuxt
 
 回到`/local`文件夹下，我们建立一个`nuxt`文件用来存放我的`nuxt`项目。然后进入`nuxt`文件夹
 ```bash
-# 回到loacal
+# 回到local
 cd ../
 mkdir nuxt
 cd nuxt
