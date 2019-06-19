@@ -1,11 +1,14 @@
 # 服务器发布Vue/Nuxt项目指南(图文版本)
 
-很多前端朋友可能不是那么了解服务器配置。这篇文章我们一起大致了解一些简单的服务器配置。注: **都是基础**
+很多前端朋友可能不是那么了解服务器配置。这篇文章我们一起大致了解一些常见的的Web服务器部署项目的方式。
 
-> 正在完善状态，还剩下Nginx。 Apache和Tomcat的配置亲测有效。
-**下面所有的例子`vue-router`的`history`模式下。**
+## 写在前面
 
-## 1：Apache服务器
+下面讲的每一种服务器深入进去都很复杂，在这篇文章**只是讨论一下基本的部署和使用**。更高级的知识和用法还需要各位朋友自行去探索和发现
+
+<font color="red">注</font>: **下面所有的例子都是基于`vue-router`的`history`模式下打包生成的静态文件，其他框架也都大同小异**
+
+## Apache服务器
 1. *修改Apache默认配置*
 
 首先要重新修改`\conf\httpd.conf`文件让文件支持`rewrite`
@@ -68,10 +71,71 @@ DocumentRoot "/usr/local/apache/demo"
 /usr/local/apache/bin/apxs -i -c -n -a mod_deflate.so
 ```
 
-## 2：Nginx服务器
+## Nginx服务器
 
-## 3：Tomcat服务器部署
-这个配置相对来说就比较简单了。
+### Nginx安装
+
+这里就不讲这个了吧， 有需要的朋友可以看[这个](http://www.nginx.cn/install)
+
+### 配置修改
+
+为了支持`history`模式， 我们要修改`nginx/conf/nginx.conf`文件
+
+```bash
+location / {
+    root   html;
+    try_files $uri $uri/ /index.html; # 只需要加上这么一行
+    index  index.html index.htm;
+}
+```
+![nginx](./images/nginx.png 'nginx')
+
+然后把静态资源放在`html`文件夹内
+
+![nginx_html](./images/nginx_html.png 'nginx_html')
+
+
+然后启动`Nginx`服务器
+```bash
+cd usr/local/nginx/sbin
+./nginx
+```
+接着访问你的服务器就行OK了。
+
+### GZip支持
+
+`nginx`实现资源压缩的原理是通过`ngx_http_gzip_module`模块拦截请求，并对需要做`gzip`的类型做`gzip`压缩，该模块是默认基础的，不需要重新编译，直接开启即可。大体配置如下
+```bash
+#开启和关闭gzip模式
+gzip on|off;
+
+#gizp压缩起点，文件大于1k才进行压缩
+gzip_min_length 1k;
+
+# gzip 压缩级别，1-9，数字越大压缩的越好，也越占用CPU时间
+gzip_comp_level 1;
+
+# 进行压缩的文件类型。
+gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript ;
+
+#nginx对于静态文件的处理模块，开启后会寻找以.gz结尾的文件，直接返回，不会占用cpu进行压缩，如果找不到则不进行压缩
+gzip_static on|off
+
+# 是否在http header中添加Vary: Accept-Encoding，建议开启
+gzip_vary on;
+
+# 设置压缩所需要的缓冲区大小，以4k为单位，如果文件为7k则申请2*4k的缓冲区 
+gzip_buffers 2 4k;
+
+# 设置gzip压缩针对的HTTP协议版本
+gzip_http_version 1.1;
+```
+
+
+`Nginx`配置虽然简单，但是它本身是非常强大的，代理，负载等等都是非常具有实用性的。
+
+## Tomcat服务器部署
+现在这种前后端分离的大环境下，一般不会有太多人用`Tomcat`作`web`服务器。有的企业可能会配合着`SpringMVC`来一起使用，这里也来写一下。配置起来也很简单。
 
 ### 配置`server.xml`
 
@@ -120,11 +184,11 @@ DocumentRoot "/usr/local/apache/demo"
 </web-app>
 ```
 
-这就配置完了，可以说是贼简单了。至于怎么启动和配置`Tomcat`服务器
+这就配置完了，可以说是贼简单了。至于怎么安装`Tomcat`服务器，大家自行解决吧
 
-## Nuxt项目发布指南
+## Nuxt项目（服务端渲染）
 
-发布`SSR`项目的时候官方推荐了两种方式**服务端渲染应用部署** 和 **静态应用部署**。静态应用部署的话基本上就失去了`SSR`的优势，而且部署方式也和上面讲的大同小异。这里着重来讲服务端渲染应用部署。
+发布`SSR`项目的时候官方推荐了两种方式**服务端渲染应用部署** 和 **静态应用部署**。静态应用部署的话基本上就失去了`SSR`的优势，而且部署方式也和上面讲的大同小异。这里只讲服务端渲染应用部署。
 
 服务端渲染应用部署的话不同于静态部署，我们同时要在服务器上部署上`Node`环境。
 
@@ -227,7 +291,6 @@ ln -s /usr/local/node/node10.13.0/bin/pm2  /usr/local/bin/pm2
     "start": "nuxt start",
     "generate": "nuxt generate",
     "pm2:stop:all": "pm2 stop all" # 停止所有进程
-
   }
 # 直接启动命令
 pm2 start npm --name 'XXX' -- run nuxt:start
@@ -271,3 +334,9 @@ pm2 monit xxx      # 监控名称为xxxx的进程
   sudo ln -s /usr/local/lib/node /usr/lib/node
   sudo ln -s /usr/local/bin/npm /usr/bin/npm
   ```
+
+# 总结
+
+项目做完了，总要整整齐齐的发布了才有成就感对吧😁
+
+[原文地址](https://github.com/QDMarkMan/CodeBlog/blob/master/Vue/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8F%91%E5%B8%83Vue%E9%A1%B9%E7%9B%AE%E6%8C%87%E5%8D%97.md)  如果觉得有用得话给个⭐吧
