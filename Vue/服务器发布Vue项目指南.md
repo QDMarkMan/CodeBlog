@@ -8,9 +8,74 @@
 
 <font color="red">注</font>: **下面所有的例子大多基于`vue-router`的`history`模式下打包生成的静态文件，其他框架也都大同小异**
 
+
+## Nginx服务器
+
+`Nginx` 是一个高性能的`HTTP`和反向代理`web`服务器，在连接高并发的情况下，`Nginx`表现相当出色。
+
+### Nginx安装
+
+这里就不讲这个了吧， 有需要的朋友可以看[这个](http://www.nginx.cn/install)
+
+### 配置修改
+
+为了支持`history`模式， 我们要修改`nginx/conf/nginx.conf`文件
+
+```bash
+location / {
+    root   html;
+    try_files $uri $uri/ /index.html; # 只需要加上这么一行
+    index  index.html index.htm;
+}
+```
+![nginx](./images/nginx.png 'nginx')
+
+然后把静态资源放在`html`文件夹内
+
+![nginx_html](./images/nginx_html.png 'nginx_html')
+
+
+然后启动`Nginx`服务器
+```bash
+cd usr/local/nginx/sbin
+./nginx
+```
+接着访问你的服务器就行OK了。
+
+### GZip支持
+
+`nginx`实现资源压缩的原理是通过`ngx_http_gzip_module`模块拦截请求，并对需要做`gzip`的类型做`gzip`压缩，该模块是默认基础的，不需要重新编译，直接开启即可。大体配置如下
+```bash
+#开启和关闭gzip模式
+gzip on|off;
+
+#gizp压缩起点，文件大于1k才进行压缩
+gzip_min_length 1k;
+
+# gzip 压缩级别，1-9，数字越大压缩的越好，也越占用CPU时间
+gzip_comp_level 1;
+
+# 进行压缩的文件类型。
+gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript ;
+
+#nginx对于静态文件的处理模块，开启后会寻找以.gz结尾的文件，直接返回，不会占用cpu进行压缩，如果找不到则不进行压缩
+gzip_static on|off
+
+# 是否在http header中添加Vary: Accept-Encoding，建议开启
+gzip_vary on;
+
+# 设置压缩所需要的缓冲区大小，以4k为单位，如果文件为7k则申请2*4k的缓冲区 
+gzip_buffers 2 4k;
+
+# 设置gzip压缩针对的HTTP协议版本
+gzip_http_version 1.1;
+```
+
+`Nginx`配置虽然简单，但是它本身是非常强大的，代理，负载等等都是非常具有实用性的。
+
 ## Apache服务器
 
-`Apache`是世界使用排名第一的Web服务器软件, 那我们就先来说它吧。
+`Apache`是世界使用排名第一的Web服务器软件, 使用非常广泛。由于VueRouter的`hash`模式本质上和静态资源没什么区别，在`Apache`上发布又比较简单，这里就跳过了发布直接进入配置支持History模式
 
 1. *修改Apache默认配置*
 
@@ -73,69 +138,6 @@ DocumentRoot "/usr/local/apache/demo"
 ```bash
 /usr/local/apache/bin/apxs -i -c -n -a mod_deflate.so
 ```
-
-## Nginx服务器
-
-### Nginx安装
-
-这里就不讲这个了吧， 有需要的朋友可以看[这个](http://www.nginx.cn/install)
-
-### 配置修改
-
-为了支持`history`模式， 我们要修改`nginx/conf/nginx.conf`文件
-
-```bash
-location / {
-    root   html;
-    try_files $uri $uri/ /index.html; # 只需要加上这么一行
-    index  index.html index.htm;
-}
-```
-![nginx](./images/nginx.png 'nginx')
-
-然后把静态资源放在`html`文件夹内
-
-![nginx_html](./images/nginx_html.png 'nginx_html')
-
-
-然后启动`Nginx`服务器
-```bash
-cd usr/local/nginx/sbin
-./nginx
-```
-接着访问你的服务器就行OK了。
-
-### GZip支持
-
-`nginx`实现资源压缩的原理是通过`ngx_http_gzip_module`模块拦截请求，并对需要做`gzip`的类型做`gzip`压缩，该模块是默认基础的，不需要重新编译，直接开启即可。大体配置如下
-```bash
-#开启和关闭gzip模式
-gzip on|off;
-
-#gizp压缩起点，文件大于1k才进行压缩
-gzip_min_length 1k;
-
-# gzip 压缩级别，1-9，数字越大压缩的越好，也越占用CPU时间
-gzip_comp_level 1;
-
-# 进行压缩的文件类型。
-gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript ;
-
-#nginx对于静态文件的处理模块，开启后会寻找以.gz结尾的文件，直接返回，不会占用cpu进行压缩，如果找不到则不进行压缩
-gzip_static on|off
-
-# 是否在http header中添加Vary: Accept-Encoding，建议开启
-gzip_vary on;
-
-# 设置压缩所需要的缓冲区大小，以4k为单位，如果文件为7k则申请2*4k的缓冲区 
-gzip_buffers 2 4k;
-
-# 设置gzip压缩针对的HTTP协议版本
-gzip_http_version 1.1;
-```
-
-
-`Nginx`配置虽然简单，但是它本身是非常强大的，代理，负载等等都是非常具有实用性的。
 
 ## Tomcat服务器部署
 现在这种前后端分离的大环境下，一般不会有太多人用`Tomcat`作`web`服务器。有的企业可能会配合着`SpringMVC`来一起使用，这里也来写一下。配置起来也很简单。
@@ -341,6 +343,6 @@ pm2 monit xxx      # 监控名称为xxxx的进程
 
 # 总结
 
-项目做完了，总要整整齐齐的发布了才有成就感对吧😁
+项目做完了，总要整整齐齐的发布了才有成就感对吧😁， 文中的服务器种类有点多，不过多学点也不吃亏😭
 
 [原文地址](https://github.com/QDMarkMan/CodeBlog/blob/master/Vue/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8F%91%E5%B8%83Vue%E9%A1%B9%E7%9B%AE%E6%8C%87%E5%8D%97.md)  如果觉得有用得话给个⭐吧
