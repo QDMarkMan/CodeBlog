@@ -1,5 +1,41 @@
 # Webpack基础部分合集
 
+## `splitChunks`
+```js
+module.exports = {
+  //...
+  optimization: {
+    splitChunks: {
+      chunks: 'async', //这表示将选择哪些块进行优化。  必须三选一： "initial" | "all"(推荐) 提供all可以特别强大，因为这意味着即使在异步和非异步块之间也可以共享 | "async" (默认就是async)
+      minSize: 30000, // (默认是30000)：形成一个新代码块最小的体积
+      maxSize: 0, // 在分割之前，这个代码块最小应该被引用的次数（译注：保证代码块复用性，默认配置的策略是不需要多次引用也可以被分割）
+      minChunks: 1, // 
+      maxAsyncRequests: 5, // 按需加载时候最大的并行请求数。
+      maxInitialRequests: 3, // 一个入口最大的并行请求数
+      automaticNameDelimiter: '~',
+      name: true, // 字符串或者函数(函数可以根据条件自定义名字)
+      cacheGroups: { // 这里开始设置缓存的 chunks
+        vendors: {
+          chunks: "initial", // 必须三选一： "initial" | "all" | "async"(默认就是async) 
+            test: /react|lodash/, // 正则规则验证，如果符合就提取 chunk
+            name: "vendor", // 要缓存的 分隔出来的 chunk 名称 
+            minSize: 30000,
+            minChunks: 1,
+            enforce: true,
+            maxAsyncRequests: 5, // 最大异步请求数， 默认1
+            maxInitialRequests : 3, // 最大初始化请求书，默认1
+            reuseExistingChunk: true // 可设置是否重用该chunk
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true
+        }
+      }
+    }
+  }
+};
+```
 
 ## 打包一个库相关的东西
 
