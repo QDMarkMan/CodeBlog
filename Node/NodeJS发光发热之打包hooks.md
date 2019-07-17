@@ -298,4 +298,4 @@ module.exports = Backup
 
 [示例代码](https://github.com/QDMarkMan/vue-base-template)
 
-[原文地址](https://github.com/QDMarkMan/CodeBlog/blob/master/Node/%E8%AE%A9NodeJS%E5%9C%A8%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%8F%91%E5%85%89%E5%8F%91%E7%83%AD.md)  如果觉得有用得话给个⭐吧
+[原文地址](https://github.com/QDMarkMan/CodeBlog/blob/master/Node/NodeJS%E5%8F%91%E5%85%89%E5%8F%91%E7%83%AD%E4%B9%8B%E6%89%93%E5%8C%85hooks.md)  如果觉得有用得话给个⭐吧
