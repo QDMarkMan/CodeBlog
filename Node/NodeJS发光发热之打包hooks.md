@@ -1,6 +1,7 @@
 # NodeJS发光发热之打包hooks
 
-[让NodeJS在项目中发光发热](https://github.com/QDMarkMan/CodeBlog/blob/master/Node/%E8%AE%A9NodeJS%E5%9C%A8%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%8F%91%E5%85%89%E5%8F%91%E7%83%AD.md)系列文章
+[让NodeJS在项目中发光发热](https://github.com/QDMarkMan/CodeBlog/blob/master/Node/%E8%AE%A9NodeJS%E5%9C%A8%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%8F%91%E5%85%89%E5%8F%91%E7%83%AD.md)系列文章, 没看过这个的朋友建议先看一下，不然直接这个可能会有点吃力。
+
 
 ## 写在前面
 
