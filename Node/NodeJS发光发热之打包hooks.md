@@ -14,7 +14,7 @@
 
 ## 准备工作
 
-准备一个项目，`Vue/React/Angular`的都可以，我们这里以`vue-base-template`为项目模板
+准备一个项目，`Vue/React/Angular`的都可以，我们这里以[vue-base-template](https://github.com/QDMarkMan/vue-base-template)为项目模板
 
 
 ## 改造打包命令
