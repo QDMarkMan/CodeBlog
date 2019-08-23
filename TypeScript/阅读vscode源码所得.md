@@ -10,7 +10,11 @@
 
 ## 骚操作
 
-- 数组复制方式 
-  ```js 
+- 数组复制方式
+  ```js
   const configurations = configRegistry.getConfigurations().slice(); // 返回一个新的数组
   ```
+
+- `document.documentElement!`
+
+  后面的感叹号是非null和非undefined的类型断言
