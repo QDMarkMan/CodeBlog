@@ -10,7 +10,8 @@
 
 ## 骚操作
 
-- 数组复制方式 
-  ```js 
+- 数组复制方式
+  ```js
   const configurations = configRegistry.getConfigurations().slice(); // 返回一个新的数组
   ```
+- `Node.insertBefore(newNode, referenceNode)`: 在参考节点之前插入一个拥有指定父节点的子节点。
