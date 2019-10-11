@@ -14,4 +14,7 @@
   ```js
   const configurations = configRegistry.getConfigurations().slice(); // 返回一个新的数组
   ```
-- `Node.insertBefore(newNode, referenceNode)`: 在参考节点之前插入一个拥有指定父节点的子节点。
+
+- `document.documentElement!`
+
+  后面的感叹号是非null和非undefined的类型断言
