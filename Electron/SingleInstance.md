@@ -1,4 +1,4 @@
-# Electron 实例检测
+# Electron 实例检测（废弃 仅仅针对V2.X版本，新版本已经废弃使用的API）
 > 这个功能学名叫什么我也不太清楚，暂且就叫她实例检测吧。有时候我们想点击了快捷方式之后只打开一个应用程序，但是显示总是残酷的，electron默认的是完成打包之后每次点击快捷方式都会生成一个进程实例（除了mac），这个时候稳住不要慌，别人实现了我们肯定也能实现而且还很简单。
 
 - 首先 我们需要了解Electron的基本知识，<small> [点击看基础](https://github.com/QDMarkMan/CodeBlog/tree/master/Electron) </small>。这里就不赘述了，然后我们就需要知道我们用Elenton中提供的API了。
