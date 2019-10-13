@@ -50,7 +50,7 @@
 
 ## Element.getBoundingClientRect()
 
-说到尺寸就不得不说哟说一说她
+说到尺寸就不得不说说一说她
 > Element.getBoundingClientRect()方法返回元素的大小及其相对于视口的位置。
 
 在获取的元素的位置的这一方面，这个`API`是极其的好用。
