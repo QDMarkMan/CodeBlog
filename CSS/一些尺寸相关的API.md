@@ -70,6 +70,17 @@
 }
 ```
 
+## Window.getComputedStyle(element, pseudoElt)
+
+`pseudoElt`: 指定一个要匹配的伪元素的字符串。必须对普通元素省略（或`null`）。
+
+这个方法方法返回一个在应用活动样式表并解析这些值可能包含的任何基本计算后报告元素的所有CSS属性的值的对象。 私有的CSS属性值可以通过对象提供的API或通过简单地使用CSS属性名称进行索引来访问。
+
+返回的`style`是一个实时的 [CSSStyleDeclaration(CSS属性键值对集合)](https://developer.mozilla.org/zh-CN/docs/Web/API/CSSStyleDeclaration)只读对象，当元素的样式更改时，它会自动更新本身。
+
+![style](./images/getComputedStyle.png 'style')
+
+
 ## JavaScript窗口属性
 
 其实和上面的都是一样的，不过这里总结一下看的更清晰
