@@ -593,7 +593,6 @@ module.exports.ROOTPATH = ROOTPATH
   - [`ora`](https://www.npmjs.com/package/ora): 命令行`loading`
   - [`shelljs`](https://www.npmjs.com/package/shelljs): 执行`shell`命令
   - [`node-ssh`](https://www.npmjs.com/package/node-ssh): `node SSH`
-  - [`node-ssh`](https://www.npmjs.com/package/node-ssh): `node SSH`
   - [`zip-local`](https://www.npmjs.com/package/node-ssh): `zip`压缩
 
 #### 开始撸
