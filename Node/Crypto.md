@@ -19,5 +19,3 @@ console.log(hash);
 1. 作为`stream`，既可读又可写，未加密数据的编写是为了在可读的方面生成加密的数据.
 2. 使用`cipher.update()`和`cipher.final()`方法产生加密的数据
 
-
-

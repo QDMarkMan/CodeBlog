@@ -1,6 +1,7 @@
 # Koa2中相关技术集锦
 
 ## CORS设置
+
 ```js
 // 我们可以用下面的中间件理解app.use(cors({}))
 app.use(async (ctx, next) => {
