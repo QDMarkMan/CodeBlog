@@ -15,6 +15,7 @@ console.log(hash);
 ## API
 
 - Class: **Cipher**
+
 > Cipher类的实例用于加密数据。
 
 这个类可以用在以下两种方法中的一种:
