@@ -26,6 +26,8 @@
 
 操作命令
 
+<small>备注： 下面命令中的`name`指的是容器名称， `image`指的是镜像名称。</small>
+
 - 创建： `docker create --name name image`
 - 启动： `docker start name`
 - 创建+启动： `docker run --name name --detach image `   --detach: 启动后将程序和控制台分离，使之进入后台模式。
@@ -33,7 +35,7 @@
 - 停止：`docker stop name` (沙盒系统还存在，修改的内容也都保存)
 - 删除： `docker rm name --force`
 - 进入容器： `docker exec -it name bash`   其中 `-i` ( `--interactive` ) 表示保持我们的输入流。 `-t` ( `--tty` ) 表示启用一个伪终端，形成我们与 bash 的交互 。
-- 衔接容器： `docker attach nginx` 这个命令最直观的效果可以理解为我们将容器中的主程序转为了“前台”运行 ( 与 `docker run` 中的 `-d` 选项有相反的意思 )。
+- 衔接容器： `docker attach name` 这个命令最直观的效果可以理解为我们将容器中的主程序转为了“前台”运行 ( 与 `docker run` 中的 `-d` 选项有相反的意思 )。
 
 
 
