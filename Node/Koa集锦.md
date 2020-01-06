@@ -1,6 +1,58 @@
-# Koa2中相关技术集锦
+## 使用Koa开发API Server
 
-## CORS设置
+写作中（）
+
+## 写在前面
+
+
+
+## 初始化项目
+
+### 文件结构介绍
+
+本项目是通过`koa-generator`创建的工程，非常的简单。希望对`koa`了解更深一点的朋友可以自己尝试着手动搭建一下，也不是很麻烦。下面是经过改造之后的文件目录结构。
+
+```js
+koa-server
+│   config                  // 配置文件 包括 日志/项目配置
+│   error                   // 错误处理
+│   middlewares             // koa中间件
+│   models                  // MySQL数据模型
+│   public                  // koa2保留文件（后来会删除）
+└───routes                  // API抛出层/ controller层
+│   │   index               // route自动注入文件
+└───service                 // 业务逻辑层（承上启下， 操作models为controller层服务）
+└───sql                     // MySQL Helper文件 初始化/导出/倒入表
+│   │   sql_file            // sql文件
+│   │   async.js            // 数据库同步脚本文件
+│   │   index.js            // MySQL 使用SQL语句
+│   │   utils               // 工具类
+│   │   validators          // 验证器
+│   │   views               // koa2保留文件（后来会删除）
+│   utils                   // 帮助文件
+│   views                   // MySQL数据模型
+│   app.js                  // koa项目初始化
+│   main.js                 // 项目启动文件
+
+```
+
+
+
+### 配置文件
+
+
+
+## 中间件
+
+### 日志中间件
+
+
+
+### JWT
+
+
+
+### CORS
 
 ```js
 // 我们可以用下面的中间件理解app.use(cors({}))
@@ -46,3 +98,24 @@ app.use(async (ctx, next) => {
     await next();
 })
 ```
+
+
+
+## 开发分层
+
+
+
+### Route
+
+### Service
+
+### Dao
+
+
+
+## MySQL 使用
+
+
+
+
+
