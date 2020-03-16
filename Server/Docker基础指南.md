@@ -124,6 +124,90 @@ nginx
 - 能够更轻松的实现自动部署等自动化流程。
 - 修改环境仅仅修改文件，要比从新提交镜像要简单的多。
 
+**指令**
+
+- **基础指令**：用于定义新镜像的基础和性质。
+- **控制指令**：指导镜像构建的核心部分，用于描述镜像在构建过程中需要执行的命令。
+- **引入指令**：用于将外部文件直接引入到构建镜像内部。
+- **执行指令**：能够为基于镜像所构建的的容器，指定在启动时需要执行的脚本或命令。
+- **配置指令**：对镜像以及基于镜像所创建的容器，可以通过配置指令对其网络用户等内容进行配置。
+
+**常见指令**
+
+- **FROM**：指定一个基础镜像，接下来的指令都是基于这个镜像所展开的。
+
+  ```dockerfile
+  FROM <image> [AS <name>]
+  FROM <image>[:<tag>] [AS <name>]
+FROM <image>[@<digest>] [AS <name>]
+  ```
+  
+  `Dockerfile`第一条指令必须是`FROM`指令，因为一切构建过程都基于基础镜像。
+  
+  `FROM`可以多次出现，当 FROM 第二次或者之后出现时，表示在此刻构建时，要将当前指出镜像的内容合并到此刻构建镜像的内容里。
+  
+- **RUN**：指令本质上来说只是一种引导作用，`RUN`指令用于向控制台发送命令的指令。
+
+  ```dockerfile
+  RUN <command>
+  RUN ["executable", "param1", "param2"]
+  ```
+
+- **ENTRYPOINT/CMD**：用来启动容器在运行时会根据镜像所定义的一条命令来启动容器中进程号为1的进程。
+
+  ```dockerfile
+  ENTRYPOINT ["executable", "param1", "param2"]
+  ENTRYPOINT command param1 param2
+  
+  CMD ["executable","param1","param2"]
+  CMD ["param1","param2"]
+  CMD command param1 param2
+  ```
+
+  这两个命令用法类似，都可以为空。当两个命令同时给出的时候，`CMD`中的内容会作为`ENTRYPOINT`中的参数去执行`ENTRYPOINT`指令。
+
+- **EXPOSE**：为镜像指定要暴露的端口。
+
+  ```dockerfile
+  EXPOSE <port> [<port>/<protocol>...]
+  ```
+
+- **VOLUME**：用来定义基于此镜像的的容器所自动建立的容器卷。
+
+  ```dockerfile
+  VOLUME ["/data"]
+  ```
+
+- **COPY/ADD**：从宿主机器中将一些配置文件，程序代码，执行脚本等文件内容**直接导入到镜像内的文件系统中**。
+
+  ```dockerfile
+  COPY [--chown=<user>:<group>] <src>... <dest>
+  # ADD 能够支持使用网络端的 URL 地址作为 src 源，并且在源文件被识别为压缩包时，自动进行解压，而 COPY 没有这两个能力
+  ADD [--chown=<user>:<group>] <src>... <dest>
+  
+  #COPY 与 ADD 指令的定义方式完全一样，需要注意的仅是当我们的目录中存在空格时，可以使用下面的格式避免空格产生歧义。
+  COPY [--chown=<user>:<group>] ["<src>",... "<dest>"]
+  ADD [--chown=<user>:<group>] ["<src>",... "<dest>"]
+  ```
+
+
+
+**构建镜像**
+
+在编写完`dockerfile`之后，就可以对我们的镜像进行构建了。 构建命令为 `docker build <src>`
+
+`docker build` 可以接收一个参数，需要特别注意的是，**这个参数为一个目录路径 ( 本地路径或 URL 路径 )，而并非 Dockerfile 文件的路径**。在 `docker build` 里，这个我们给出的目录会作为构建的环境目录，我们很多的操作都是基于这个目录进行的。
+
+```shell
+$ sudo docker build -t webapp:latest -f ./webapp/a.Dockerfile ./webapp
+```
+
+**-t webapp:latest** 指定镜像名称。
+
+**-f ./webapp/a.Dockerfile** 指定dockerfile地址，如果dockerfile不在./webapp中，那么你需要这个选项。
+
+
+
 ## 基础进阶
 
 ## 总结
