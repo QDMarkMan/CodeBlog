@@ -1,4 +1,56 @@
-# Webpack基础部分合集
+# Webpack合集
+
+> Webpack中重要的东西其实不多，大部分都是基础的东西。
+
+## `exclude/include`
+
+`Rule.exclude/include`是 `Rule.resource.exclude/include`的缩写，通过在`loader`中的配置，我们可以转译尽可能少的文件。
+
+**value**: 绝对路径数组
+
+- `exclude`: 指定排除文件。
+- `include`: 指定要包含的文件。
+
+demo:
+
+```js
+module.exports = {
+    //...
+    module: {
+        rules: [
+            {
+                test: /\.js?$/,
+                use: ['babel-loader'],
+                include: [path.resolve(__dirname, 'src')]
+            }
+        ]
+    },
+}
+```
+
+## `noParse`
+
+可以用来标识一些没有`AMD/CommonJS`规范版本的模块。忽略的文件中不应该含有 `import, require, define` 的调用，或任何其他导入机制。忽略大型的 `library` 可以提高构建性能, 比如`jquery`。
+
+**value**：`[RegExp] | function`
+
+demo:
+
+```js
+module.exports = {
+    //...
+    module: {
+        noParse: /jquery|lodash/
+    },
+    // 3.0 开始
+    noParse: function(content) {
+      return /jquery|lodash/.test(content);
+    }
+}
+```
+
+## `Cache`
+
 
 ## `splitChunks`
 ```js
