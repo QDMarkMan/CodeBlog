@@ -51,8 +51,62 @@ module.exports = {
 
 ## `Cache`
 
+`cache`主要是应对一些开销较大的`loader`。将缓存结果保存在本地。
+
+启用cache有两种方式
+
+- `cache-loader`：安装之后在其他loader之前使用。
+
+  ```js
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: ['cache-loader','babel-loader']
+      }
+    ]
+  }
+  ```
+
+- `babel-loader`的`cacheDirectory`选项。
+
+  ```js
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: {
+          loader: 'babel-loader‘,
+          options: {
+            cacheDirectory: true
+          }
+        }
+      }
+    ]
+  }
+  ```
+
+
+
+## `resolve`
+
+配置模块如何解析。例如，当在 ES2015 中调用 `import "lodash"`，`resolve` 选项能够对 webpack 查找 `"lodash"` 的方式去做修改。
+
+如果我们要确定模块都从根目录下查找可以这么配置，但是如果你的依赖中还存在 `node_modules` 目录，那就会出现找不到的情况，一定要慎重使用。
+
+```js
+//webpack.config.js
+const path = require('path');
+module.exports = {
+    //...
+    resolve: {
+        modules: [path.resolve(__dirname, 'node_modules')],
+    }
+}
+```
 
 ## `splitChunks`
+
 ```js
 module.exports = {
   //...
@@ -64,16 +118,16 @@ module.exports = {
       minChunks: 1, // 
       maxAsyncRequests: 5, // 按需加载时候最大的并行请求数。
       maxInitialRequests: 3, // 一个入口最大的并行请求数
-      automaticNameDelimiter: '~',
+      automaticNameDelimiter: '~',//默认情况下，webpack将使用块的来源和名称生成名称（例如vendor〜main.js）。 可以指定用于生成名称的定界符。
       name: true, // 字符串或者函数(函数可以根据条件自定义名字)
       cacheGroups: { // 这里开始设置缓存的 chunks
         vendors: {
           chunks: "initial", // 必须三选一： "initial" | "all" | "async"(默认就是async) 
-            test: /react|lodash/, // 正则规则验证，如果符合就提取 chunk
+            test: /node_modules/, // 正则规则验证，如果符合就提取 chunk
             name: "vendor", // 要缓存的 分隔出来的 chunk 名称 
-            minSize: 30000,
-            minChunks: 1,
-            enforce: true,
+            minSize: 30000, // 大小操作30000字节
+            minChunks: 1, //最少引用了一次
+            enforce: true, // 告诉webpack忽略splitChunks.minSize，splitChunks.minChunks，splitChunks.maxAsyncRequests和splitChunks.maxInitialRequests选项，并始终为此缓存组创建块。
             maxAsyncRequests: 5, // 最大异步请求数， 默认1
             maxInitialRequests : 3, // 最大初始化请求书，默认1
             reuseExistingChunk: true // 可设置是否重用该chunk
@@ -89,7 +143,7 @@ module.exports = {
 };
 ```
 
-## 打包一个库相关的东西
+## 如何打包一个库
 
 当我们使用`webpack`来开发啊我们自己的库文件的时候有一些东西是必须要理解的，下面就来一起看看。
 
