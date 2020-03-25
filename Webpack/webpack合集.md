@@ -87,7 +87,6 @@ module.exports = {
   ```
 
 
-
 ## `resolve`
 
 配置模块如何解析。例如，当在 ES2015 中调用 `import "lodash"`，`resolve` 选项能够对 webpack 查找 `"lodash"` 的方式去做修改。
@@ -142,6 +141,41 @@ module.exports = {
   }
 };
 ```
+
+## `node`
+
+> 这些选项可以配置是否 polyfill 或 mock 某些 Node.js 全局变量和模块。这可以使最初为 Node.js 环境编写的代码，在其他环境（如浏览器）中运行。 此功能由 webpack 内部的 NodeStuffPlugin 插件提供。如果 target 是 "web"（默认）或 "webworker"，那么 NodeSourcePlugin 插件也会被激活。
+
+当你需要在某些环境使用`Node`的一些特性，比如`fs, path, __dirname`等等，那么就要配置该选项了。
+
+注意： **只有当`target`是未指定、`web` 或 `webworker` 这三种情况时，此选项才会被激活（通过 `NodeSourcePlugin`）。**
+
+默认值
+
+```js
+module.exports = {
+  //...
+  node: {
+    // 以下每个属性都是node中的某个模块或者全局变量
+    console: false,
+    global: true,
+    process: true,
+    __filename: 'mock',
+    __dirname: 'mock',
+    Buffer: true,
+    setImmediate: true
+    // ...
+  }
+};
+```
+
+属性的取值有以下几种
+
+- `true`: `webpack`提供`polyfill`。
+- `mock`: 提供 mock 实现预期接口，但功能很少或没有。
+- `empty`: 提供空对象。
+- `false`:  什么都不提供。预期获取此对象的代码，可能会因为获取不到此对象，触发 ReferenceError 而崩溃。
+
 
 ## 如何打包一个库
 
