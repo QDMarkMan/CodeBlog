@@ -36,7 +36,7 @@
 
 - 在插入数据时可以指定部分列。
 
-  ```mssql
+  ```mysql
   -- 插入一行first_column值为2的数据， 其他的数据一般都为null
   INSERT INTO first_table(first_column) VALUES(2);
   
@@ -46,7 +46,7 @@
 
   有时候我们可以通过某个列或者某些列确定唯一的一条记录，我们把这些列成为`候选键`。**一个表可能有多个候选键，我们可以选择一个作为表的主键，主键的值不能重复，通过主键可以找到唯一的一条记录**。我们通过以下的方式来指定主键。主键默认是有`NOT NULL`属性的。
 
-  ```mssql
+  ```mysql
   -- 1:单列：直接在列的后面声明PRIMARY KEY
   CREATE TABLE student_info (
       number INT PRIMARY KEY,
