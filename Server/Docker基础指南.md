@@ -62,9 +62,13 @@ docker run -d -rm -p 8800:80 -v /home/nginx/html:/usr/share/nginx/html --name ng
 --volume/-v /home/nginx/html :/usr/share/nginx/html
 ```
 
-也可以看下面这张图
+### 常用命令一览
+
+下面图中列出来的是一些`docker`的高频使用命令。
 
 ![Docker命令](./images/docker.jpg 'Docker命令')
+
+
 
 ### 容器网络
 
