@@ -62,6 +62,10 @@ docker run -d -rm -p 8800:80 -v /home/nginx/html:/usr/share/nginx/html --name ng
 --volume/-v /home/nginx/html :/usr/share/nginx/html
 ```
 
+也可以看下面这张图
+
+![Docker命令](./images/docker.jpg 'Docker命令')
+
 ### 容器网络
 
 > 容器网络实质上也是由 Docker 为应用程序所创造的虚拟环境的一部分，它能让应用从宿主机操作系统的网络环境中独立出来，形成容器自有的**网络设备、IP 协议栈、端口套接字、IP 路由表、防火墙等等与网络相关的模块**。
