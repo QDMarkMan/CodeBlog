@@ -2,9 +2,9 @@
 
 [toc]
 
-以下是在学习`MySQL`的过程中的一些基础但是重要的记录。
+以下是在学习`MySQL`的过程中的一些**基础但是重要**的记录。
 
-## 表
+## 表相关
 
 - 查看表结构时的列属性
 
@@ -149,6 +149,28 @@
   SELECT * FROM 表名 ORDER BY 列1 ASC|DESC, 列2 ASC|DESC ...
   ```
 
-  
+- 查询`NULL`:  不能用普通操作符来与`Null`值进行比较，必须用`IS NULL`或者`IS NOT NULL`。
 
-  
+  ```mysql
+  // 示例
+  SELECT name from student WHERE name IS NOT NULL;
+  ```
+
+- `AND/OR`：在进行复杂的组合查询的时候，<font color="red">`AND`操作符的优先级会高于`OR`, 也就是在说对条件进行判断的时候的时候会先检测`AND`操作符两边的内容。</font>例如下面的情况。
+
+  ```mysql
+  -- bad
+  number > 95 OR number < 55 AND name = '测试AND';
+  -- good
+  (number > 95 OR number < 55) AND name = '测试AND';
+  ```
+
+  上面的这条语句 可以看作`number` < 95  或者 `number < 55 AND name = '测试AND'`任意一条成立。为了避免这种尴尬的情况出现， **建议加上小括号来显性的指定各个搜索的检测条件**。
+
+- 通配符： <font color=red>`LIKE`和`NOT LIKE`操作符只用于字符串匹配，通配符不能代表`NULL`。</font>
+
+  `%`:  表示任意一个**字符串**。 `张%`： 以张开头的字符串,  `%张%`： 包含张的字符串。
+
+  `-`：表示任意一个**字符**。`%`匹配范围太大，这个时候我们就使用这个。
+
+  如果字符串中本身就包含`%, _`字符， 那这个时候要匹配他们就要用`\%,\_`进行转义。

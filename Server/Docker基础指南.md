@@ -110,7 +110,7 @@ docker container run
 -v /home/nginx/html:/usr/share/nginx/html 
 nginx
 
-# 命令解读
+# 命令解释
 -d：在后台运行
 -p ：容器的80端口映射到127.0.0.2:8080
 --rm：容器停止运行后，自动删除容器文件
@@ -174,6 +174,28 @@ FROM <image>[@<digest>] [AS <name>]
 
   这两个命令用法类似，都可以为空。当两个命令同时给出的时候，`CMD`中的内容会作为`ENTRYPOINT`中的参数去执行`ENTRYPOINT`指令。
 
+  ****
+
+  这两个指令的区别：
+
+  **ENTRYPOINT**： 主要对容器进行一些初始化，常见的使用方式是使用外部引入的一个脚本文件。
+
+  **CMD**：用于定义真正容器中的主程序的启动命令。
+
+  例如`Redis`中对于中对于这两个命令的使用
+
+  ```dockerfile
+  ## ......
+  COPY docker-entrypoint.sh /usr/local/bin/
+  ENTRYPOINT ["docker-entrypoint.sh"]
+  ## ......
+  CMD ["redis-server"]
+  ```
+
+  
+
+  
+
 - **EXPOSE**：为镜像指定要暴露的端口。
 
   ```dockerfile
@@ -216,7 +238,44 @@ $ sudo docker build -t webapp:latest -f ./webapp/a.Dockerfile ./webapp
 
 
 
+### 高频容器
+
+- `Nginx`
+
+  ```dockerfile
+  docker container run 
+  -d 
+  -p 8800:80 
+  --rm 
+  --name nginx
+  -v /home/nginx/html:/usr/share/nginx/html 
+  nginx
+  ```
+
+- `MySQL`
+
+  ```dockerfile
+  docker container run 
+  -d
+  -p 3306:3306 
+  -v /home/mysql/conf.d:/etc/mysql/conf.d # 配置文件
+  -v /home/mysql/data:/var/lib/mysql # 数据文件
+  -e MYSQL_ROOT_PASSWORD=123456
+  --rm
+  --name mysql 
+  mysql:5.7.21
+  ```
+
+  
+
 ## 基础进阶
+
+基础弄完了总要来点高级的
+
+### Docker Compose
+
+
 
 ## 总结
 
+话不多说，`Docker`是真香。
