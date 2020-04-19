@@ -79,11 +79,6 @@ docker run -d -rm -p 8800:80 -v /home/nginx/html:/usr/share/nginx/html --name ng
 - **沙盒 ( Sandbox )**: 提供容器网络栈，主要是隔离了容器网络和宿主机网络，形成完全独立的容器网络环境。
 - **网络 ( Network )**: `Docker`内部的虚拟子网，与宿主机网络存在隔离关系，主要目的是形成容器间的安全通讯环境。
 - **端点 ( Endpoint )**: 主要目的是形成一个可以控制的突破封闭网络环境的出入口。当容器的端点与网络的断点匹配之后，就如同在两者之间搭建了桥梁，就能进行数据传输了。
-  
-### 数据管理
-
-**数据卷**: 是一个可供一个或者多个容器使用的特殊目录, 可以在多个容器之前共享和重用,修改之后马上更新,且数据卷的更新不会影响镜像,数据卷会一直存在,即使容器被删除.
-
 ### 数据管理
 
 数据是应用程序的重要产出，数据可以说是最重要的资产。但是在`docker`中容器运行的文件系统处在于沙盒之中，与外界是隔离的，所以必须是有合理的方式与外界进行数据交换。
@@ -220,7 +215,7 @@ FROM <image>[@<digest>] [AS <name>]
   ADD [--chown=<user>:<group>] ["<src>",... "<dest>"]
   ```
 
-
+- **WORKDIR**：使用 `WORKDIR` 指令可以来指定工作目录（或者称为当前目录），以后各层的当前目录就被改为指定的目录，如该目录不存在，`WORKDIR` 会帮你建立目录。
 
 **构建镜像**
 
@@ -273,6 +268,56 @@ $ sudo docker build -t webapp:latest -f ./webapp/a.Dockerfile ./webapp
 基础弄完了总要来点高级的
 
 ### Docker Compose
+
+`Docker Compose` 是 Docker 官方编排（Orchestration）项目之一，负责快速的部署分布式应用。
+
+先了解一下专业术语：
+
+- 服务（`service`）：一个应用容器，实际上可以运行多个相同镜像的实例。
+- 项目（`project`）: 由一组关联的应用容器组成的一个完整业务单元。
+
+一个项目可以由多个服务（容器）关联而成，`Compose`是面向项目进行管理。
+
+**使用**：
+
+使用基本上就分为三步
+
+1. 准备好容器。如果需要的话就编写容器所需镜像的`Dockerfile`。
+
+2. 编写用于配置容器的`docker-compose.yml`。例如：
+
+   ```yaml
+   # 版本标识
+   version: '3'
+   # 服务内容器的细节
+   services:
+   	# 一个service是配置的最小单元
+     webapp:
+       build: ./image/webapp
+       ports:
+         - "5000:5000"
+       volumes:
+         - ./code:/code
+         - logvolume:/var/log
+       links:
+         - mysql
+         - redis
+   
+     redis:
+       image: redis:3.2
+     
+     mysql:
+       image: mysql:5.7
+       environment:
+         - MYSQL_ROOT_PASSWORD=my-secret-pw
+   
+   volumes:
+     logvolume: {}
+   ```
+
+   
+
+3. 启动项目/应用。
 
 
 
