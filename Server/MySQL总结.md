@@ -332,3 +332,35 @@
   2. 该列有`DEFAULT`值，给出了默认值。
 
   `INSERT IGNORE`用于对于那些是主健或者具有`UNIQUE`约束的的列或者列组合来说，如果表中已存在的记录中没有与待插入记录在这些列或者列组合上重复的值，那么就把待插入的记录插入到表中，否则忽略此次操作。
+
+  **INSERT ON DUPLICATE KEY UPDATE**:  在key重复的时候我们可以通过这种方法来指定我们的插入策略。例如：
+
+  ```sql
+  -- 单独数据写法
+  INSERT INTO first_table (first_column, second_column) VALUES(1, 'old') ON DUPLICATE KEY UPDATE second_column = 'new';
+  -- 批量数据写法
+  
+  ```
+
+  上面条语句的意思是对于要插入的数据`(1, 'old')`, 如果表中已经存在了主键位为1的记录， 那么就把这条记录的`second_column`更新为“new”。
+
+- 数据删除
+
+  语法：
+
+  ```mysql
+  DELETE FROM 表名 [WHERE 表达式];
+  ```
+
+  <font color="red">删除语句的`WHERE`虽然是可选的，如果不加的话会删除表中全部的记录，这是非常危险的，一定要慎重使用。</font>
+
+- 更新数据
+
+  语法： 
+
+  ```sql
+  UPDATE 表名 SET 列1=值1, 列2=值2, ...,  列n=值n [WHERE 布尔表达式];
+  ```
+
+  <font color="red">虽然更新语句的WHERE子句是可选的，但是如果不加WHERE子句的话将更新表中所有的记录，这是玩火的行为！超级危险！十分危险！请慎重使用</font>
+
