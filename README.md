@@ -44,6 +44,7 @@
 - `服务端相关`
   - [1千行MySQL学习笔记](https://github.com/QDMarkMan/CodeBlog/blob/master/Server/1%E5%8D%83%E8%A1%8CMySQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.md)
   - [Docker笔记(更新中)](https://github.com/QDMarkMan/CodeBlog/blob/master/Server/Docker基础指南.md)
+  - [MySQL基础总结笔记]([https://github.com/QDMarkMan/CodeBlog/blob/master/Server/MySQL%E6%80%BB%E7%BB%93.md](https://github.com/QDMarkMan/CodeBlog/blob/master/Server/MySQL总结.md))
 - [MD写作模版](https://github.com/QDMarkMan/CodeBlog/blob/master/MDDemo.md)
 
 ## 相关好文(分享🎉)
@@ -64,3 +65,5 @@
 - [从VSCode 看大型IDE技术架构](https://zhuanlan.zhihu.com/p/96041706)
 - [带你深度解锁Webpack系列(基础篇)](https://juejin.im/post/5e5c65fc6fb9a07cd00d8838)
 - [带你深度解锁Webpack系列(进阶篇)](https://juejin.im/post/5e6518946fb9a07c820fbaaf)
+- [The Missing Semester of Your CS Education 中文版](https://missing-semester-cn.github.io/)
+
