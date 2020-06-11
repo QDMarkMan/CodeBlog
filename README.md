@@ -44,7 +44,7 @@
 - `服务端相关`
   - [1千行MySQL学习笔记](https://github.com/QDMarkMan/CodeBlog/blob/master/Server/1%E5%8D%83%E8%A1%8CMySQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.md)
   - [Docker笔记(更新中)](https://github.com/QDMarkMan/CodeBlog/blob/master/Server/Docker基础指南.md)
-  - [MySQL基础总结笔记]([https://github.com/QDMarkMan/CodeBlog/blob/master/Server/MySQL%E6%80%BB%E7%BB%93.md](https://github.com/QDMarkMan/CodeBlog/blob/master/Server/MySQL总结.md))
+  - [MySQL基础总结笔记](https://github.com/QDMarkMan/CodeBlog/blob/master/Server/MySQL总结.md)
 - [MD写作模版](https://github.com/QDMarkMan/CodeBlog/blob/master/MDDemo.md)
 
 ## 相关好文(分享🎉)
