@@ -224,9 +224,9 @@ context.doSomeLogic()
 3. 算法在上下文的逻辑中不是特别重要，使用策略模式可以把算法细节和业务逻辑隔离开。
 4. 当类中使用了复杂条件运算符以在同一算法的不同变体中切换时。
 
-### 观察者模式
+###  观察者模式
 
-重要程度：⭐️⭐️⭐️
+重要程度：⭐️⭐️⭐️⭐️
 
 **观察者模式**是一种行为设计模式， 允许你定义一种订阅机制，可在对象事件发生时通知多个“观察”该对象的其他对象。
 
@@ -241,3 +241,83 @@ context.doSomeLogic()
 
 简易代码：
 
+```ts
+interface Observer {
+  update (ObserverSubject: ObserverSubject): void; 
+}
+// The ObserverSubject interface declares a set of methods for managing subscribers.ß
+interface ObserverSubject {
+  attach (observer: Observer): void;
+  detach (observer: Observer): void;
+  notify ():void;
+}
+class ConcreteSubject implements ObserverSubject {
+  public state:number;
+  private observers: Observer[] = [];
+
+  /**
+   * attach
+   */
+  public attach(observer: Observer): void {
+    const isExit = this.observers.includes(observer)
+    if (isExit) {
+      return console.log('ObserverSubject: Observer has been attached already.');
+    }
+    this.observers.push(observer)
+  }
+
+  /**
+   * detach
+   */
+  public detach(observer: Observer): void {
+    const index = this.observers.indexOf(observer)
+    if (index === -1) {
+      return console.log('ObserverSubject: Nonexistent observer.');
+    }
+    this.observers.splice(index, 1)
+    console.log('ObserverSubject: Detached an observer.');
+  }
+
+  /**
+   * notify
+   */
+  public notify(): void {
+    for (const observer of this.observers) {
+      observer.update(this)
+    }
+  }
+
+  /**
+   * logic
+   */
+  public logic() {
+    this.state = Math.floor(Math.random() * (100  + 1))
+    console.log(`%c===> Put some logic here`, 'color: #409EFF;')
+    this.notify()
+  }
+}
+
+class Observer1 implements Observer {
+  update (subject: ObserverSubject): void {
+    if (subject instanceof ConcreteSubject) {
+      console.log(`%c===> Observer1 state ${subject.state}`, 'color: #409EFF;')
+    }
+  }
+}
+
+const subject = new ConcreteSubject()
+const observer1 = new Observer1()
+subject.attach(observer1) // 监听事件
+subject.logic() // notify
+subject.detach(observer1) // 卸载事件
+subject.logic() // notify
+```
+
+适用场景：
+
+1. 当一个对象的改变需要改变其他对象，或者对象是事先未知或动态变化时，可使用观察者模式。
+2. 当应用中一些对象必须观察其他对象时，但仅能在有限的时间内或者特定情况下使用。
+
+### 命令模式
+
+重要程度：
