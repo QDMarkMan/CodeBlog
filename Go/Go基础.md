@@ -215,4 +215,57 @@
   
   ```
 
-  
+
+
+## 杂项
+
+### Go mod
+
+配置`proxy`
+
+**如果您使用的 Go 版本是 1.13 及以上 （推荐）**
+
+```bash
+go env -w GO111MODULE=on
+go env -w GOPROXY=https://goproxy.io,direct
+
+# 设置不走 proxy 的私有仓库，多个用逗号相隔（可选）
+go env -w GOPRIVATE=*.corp.example.com
+
+# 设置不走 proxy 的私有组织（可选）
+go env -w GOPRIVATE=example.com/org_name
+```
+
+**如果您使用的 Go 版本是 1.12 及以下**
+
+`Bash (Linux or macOS)`
+
+```bash
+# 启用 Go Modules 功能
+export GO111MODULE=on
+# 配置 GOPROXY 环境变量
+export GOPROXY=https://goproxy.io
+```
+
+也可以把配置写入`.profile`或者`.bash_profile`文件中长期生效。
+
+`PowerShell (Windows)`
+
+```shell
+# 启用 Go Modules 功能
+$env:GO111MODULE="on"
+# 配置 GOPROXY 环境变量
+$env:GOPROXY="https://goproxy.io"
+```
+
+使用`go mod`
+
+- `go mod init`: 初始化`go mod`生成`go.mod`文件。
+- `go mod download`: 手动触发下载依赖包到本地cache（默认为`$GOPATH/pkg/mod`目录）
+- `go mod graph`: 打印项目的模块依赖结构
+- `go mod tidy`: 添加缺少的包，且删除无用的包
+- `go mod verify`: 校验模块是否被篡改。
+- `go mod why`: 查看为什么需要依赖
+- `go mod vendor`: 导出项目所有的依赖到`vendor下`.
+- `go mod edit`: 编辑go.mod文件，接 -fmt 参数格式化 go.mod 文件。
+- `go list -m -json all`: 以JSON的方式打印依赖详情。

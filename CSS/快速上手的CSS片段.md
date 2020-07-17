@@ -1,5 +1,6 @@
 # 快速上手的CSS片段
 CSS这东西说难也不难，说简单也复杂的很。其实还是主要靠一个积累。这个repo主要用来积累常用`CSS片段`(<small>动画居多</small>)
+
 ## 布局
 - 等宽高比的盒子
   给定可变宽度的元素，它将确保其高度以响应的方式保持成比例(即，其宽度与高度的比率保持恒定)。
@@ -78,3 +79,52 @@ CSS这东西说难也不难，说简单也复杂的很。其实还是主要靠�
 ```
 
 ## 其他
+
+- 兼容各个浏览器的修改`placeholder`颜色写法。
+
+```css
+/* - Chrome ≤56,
+   - Safari 5-10.0
+   - iOS Safari 4.2-10.2
+   - Opera 15-43
+   - Opera Mobile >12
+   - Android Browser 2.1-4.4.4
+   - Samsung Internet
+   - UC Browser for Android
+   - QQ Browser */
+::-webkit-input-placeholder {
+    color: #ccc;
+    font-weight: 400;
+}
+
+/* Firefox 4-18 */
+:-moz-placeholder {
+    color: #ccc;
+    font-weight: 400;
+}
+
+/* Firefox 19-50 */
+::-moz-placeholder {
+    color: #ccc;
+    font-weight: 400;
+}
+
+/* - Internet Explorer 10–11
+   - Internet Explorer Mobile 10-11 */
+:-ms-input-placeholder {
+    color: #ccc !important;
+    font-weight: 400 !important;
+}
+
+/* Edge (also supports ::-webkit-input-placeholder) */
+::-ms-input-placeholder {
+    color: #ccc;
+    font-weight: 400;
+}
+
+/* CSS Working Draft */
+::placeholder {
+    color: #ccc;
+    font-weight: 400;
+}
+```
