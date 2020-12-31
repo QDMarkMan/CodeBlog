@@ -1,5 +1,5 @@
 # Blog
-开发过程中的疑率以及学习中碰到的精华整理成的博客。（如果发现问题请提交```issue```）。最近入职了新公司，更新会慢点😁
+开发过程中的疑率以及学习中碰到的精华整理成的博客。（如果发现问题请提交```issue```😁）。
 
 ## 写在前面
 文中大部分的代码都在[usually-accumulated](https://github.com/QDMarkMan/usually-accumulated)这个rep中。也是我积累代码的地方。
@@ -66,4 +66,7 @@
 - [带你深度解锁Webpack系列(基础篇)](https://juejin.im/post/5e5c65fc6fb9a07cd00d8838)
 - [带你深度解锁Webpack系列(进阶篇)](https://juejin.im/post/5e6518946fb9a07c820fbaaf)
 - [The Missing Semester of Your CS Education 中文版](https://missing-semester-cn.github.io/)
-
+- [前端元编程——使用注解加速你的前端开发](https://zhuanlan.zhihu.com/p/274328551)
+- [一份不可多得的 TS 学习指南（1.8W字）](https://juejin.cn/post/6872111128135073806#heading-50)
+- [VSCode 源码解读-Workbench](https://zhuanlan.zhihu.com/p/59033621)
+- [lerna管理前端packages的最佳实践](http://www.sosout.com/2018/07/21/lerna-repo.html)
