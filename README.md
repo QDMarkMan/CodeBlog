@@ -53,21 +53,45 @@
 在划水的时候发现的一些高质量好文章，这些文章包含各个领域，在我看来每一篇都值得反复阅读，我自己也会反复的去看。这个就不分类了。如有侵权请马上联系我删除😀
 
 - [javascript秘密花园：五星推荐](http://bonsaiden.github.io/JavaScript-Garden/zh/#other.timeouts)
+
 - [关于JS中一些重要的api实现, 巩固你的原生JS功底](https://juejin.im/post/5d635566e51d4561e224a360#comment)
+
 - [MongoDB使用初探](https://juejin.im/post/5d0f34c7f265da1ba25268ee)
+
 - [React核心开发者Dan Abramov.的博客(中文版)](https://overreacted.io/zh-hans/)
+
 - [这一次，彻底弄懂 JavaScript 执行机制](https://juejin.im/post/59e85eebf265da430d571f89#comment)
+
 - [手刃前端监控系统](https://juejin.im/post/5bbc2695e51d4539701e7ea6#heading-6)
+
 - [手摸手，带你用vue撸后台 系列五(v4.0新版本)](https://juejin.im/post/5c92ff94f265da6128275a85)
+
 - [不要用JWT替代session管理（上）：全面了解Token,JWT,OAuth,SAML,SSO](https://juejin.im/post/5b3b870a5188251ac85826b8)
+
 - [前端想要了解的Nginx](https://juejin.im/post/5cae9de95188251ae2324ec3)
+
 - [让你的网页更丝滑（一）](https://juejin.im/post/5c860282e51d45531330e10e)
+
 - [一篇文章构建你的 NodeJS 知识体系](https://juejin.im/post/5c4c0ee8f265da61117aa527)
+
 - [从VSCode 看大型IDE技术架构](https://zhuanlan.zhihu.com/p/96041706)
+
 - [带你深度解锁Webpack系列(基础篇)](https://juejin.im/post/5e5c65fc6fb9a07cd00d8838)
+
 - [带你深度解锁Webpack系列(进阶篇)](https://juejin.im/post/5e6518946fb9a07c820fbaaf)
+
 - [The Missing Semester of Your CS Education 中文版](https://missing-semester-cn.github.io/)
+
 - [前端元编程——使用注解加速你的前端开发](https://zhuanlan.zhihu.com/p/274328551)
+
 - [一份不可多得的 TS 学习指南（1.8W字）](https://juejin.cn/post/6872111128135073806#heading-50)
+
 - [VSCode 源码解读-Workbench](https://zhuanlan.zhihu.com/p/59033621)
+
 - [lerna管理前端packages的最佳实践](http://www.sosout.com/2018/07/21/lerna-repo.html)
+
+- [鹅厂技术说 | 深入理解前端性能监控](https://zhuanlan.zhihu.com/p/65065472)
+
+- [How to Learn Software Design and Architecture - a Roadmap](https://www.freecodecamp.org/news/software-design/)
+
+  
