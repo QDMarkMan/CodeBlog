@@ -18,35 +18,52 @@
   - [Javascript中函数作为对象的魅力](https://github.com/QDMarkMan/CodeBlog/blob/master/Javascript/Javascript中函数作为对象的魅力.md)
   - [关于原型的一些东西](https://github.com/QDMarkMan/CodeBlog/blob/master/Javascript/关于原型的一些东西.md)
   - [一些尺寸相关的API](https://github.com/QDMarkMan/CodeBlog/blob/master/CSS/一些尺寸相关的API.md) 
+  
 - `NodeJS💪`
   - [让NodeJS在项目中发光发热](https://github.com/QDMarkMan/CodeBlog/blob/master/Node/%E8%AE%A9NodeJS%E5%9C%A8%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%8F%91%E5%85%89%E5%8F%91%E7%83%AD.md)
   - [NodeJS发光发热之打包hooks](https://github.com/QDMarkMan/CodeBlog/blob/master/Node/NodeJS%E5%8F%91%E5%85%89%E5%8F%91%E7%83%AD%E4%B9%8B%E6%89%93%E5%8C%85hooks.md)
+  
 - [Vue部分相关⭐](https://github.com/QDMarkMan/CodeBlog/blob/master/Vue/README.md)
   - [Vue知识集锦](https://github.com/QDMarkMan/CodeBlog/blob/master/Vue/Vue开发中问题集锦.md)
   - [Vue-cli2.9 + webpack4.0升级](https://github.com/QDMarkMan/CodeBlog/blob/master/Vue/Vue-cli2.9更新webpackV4.0.md)
   - [服务器发布Vue项目指南](https://github.com/QDMarkMan/CodeBlog/blob/master/Vue/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8F%91%E5%B8%83Vue%E9%A1%B9%E7%9B%AE%E6%8C%87%E5%8D%97.md)
   - [加快Vue项目的开发速度](https://github.com/QDMarkMan/CodeBlog/blob/master/Vue/%E5%8A%A0%E5%BF%ABVue%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%BC%80%E5%8F%91%E9%80%9F%E5%BA%A6.md)
+  
 - [Electron客户端相关💻](https://github.com/QDMarkMan/CodeBlog/tree/master/Electron)
   - [Electron入门](https://github.com/QDMarkMan/CodeBlog/tree/master/Electron)
   - [Electron-builder打包详解](https://github.com/QDMarkMan/CodeBlog/blob/master/Electron/electron-builder%E6%89%93%E5%8C%85%E8%AF%A6%E8%A7%A3.md)
   - [Electron单例检测](https://github.com/QDMarkMan/CodeBlog/blob/master/Electron/SingleInstance.md)
+  
 - [Webpack部分相关🎫](https://github.com/QDMarkMan/CodeBlog/blob/master/Webpack/webpack基础合集.md) 
   - [不得不了解的Babel](https://github.com/QDMarkMan/CodeBlog/blob/master/Webpack/%E4%B8%8D%E5%BE%97%E4%B8%8D%E4%BA%86%E8%A7%A3%E7%9A%84Babel.md)
   - [webapck合集(新)](https://github.com/QDMarkMan/CodeBlog/blob/master/Webpack/webpack合集.md)
   - [tree-shaking](https://github.com/QDMarkMan/CodeBlog/blob/master/Webpack/webpack中tree-shaking的威力.md)
+  
 - [Ionic混合开发相关📱](https://github.com/QDMarkMan/CodeBlog/blob/master/Ionic/READEME.md)
   - [Ionic开发App中重要的部分](https://github.com/QDMarkMan/CodeBlog/blob/master/Ionic/使用Ionic构建一个HybridApp.md)
+  
 - [Typescript基础以及进阶部分🎫](https://github.com/QDMarkMan/CodeBlog/blob/master/TypeScript/READEME.md)
   - [TypeScript相关](https://github.com/QDMarkMan/CodeBlog/blob/master/TypeScript/READEME.md)
   - [简单算法实现](https://github.com/QDMarkMan/CodeBlog/blob/master/TypeScript/%E7%AE%80%E5%8D%95%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0.md)
+  
 - [Flutter/Dart部分](https://github.com/QDMarkMan/CodeBlog/blob/master/Dart/Flutter汇总.md)
   - [Flutter大杂烩](https://github.com/QDMarkMan/CodeBlog/blob/master/Dart/Flutter汇总.md)
+  
 - `服务端相关`
+  
   - [1千行MySQL学习笔记](https://github.com/QDMarkMan/CodeBlog/blob/master/Server/1%E5%8D%83%E8%A1%8CMySQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.md)
   - [Docker笔记(更新中)](https://github.com/QDMarkMan/CodeBlog/blob/master/Server/Docker基础指南.md)
   - [MySQL基础总结笔记](https://github.com/QDMarkMan/CodeBlog/blob/master/Server/MySQL总结.md)
+  
+- `计算机合集`
+  
+  - [TechnologyTrends](https://github.com/QDMarkMan/CodeBlog/blob/master/Computer/TechnologyTrends.md)
+  
 - [MD写作模版](https://github.com/QDMarkMan/CodeBlog/blob/master/MDDemo.md)
+
 - [Readme模板](https://github.com/QDMarkMan/CodeBlog/blob/master/ReadmeTemplate.md)
+
+  
 
 ## 相关好文(分享🎉)
 
