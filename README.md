@@ -91,4 +91,5 @@
 - [鹅厂技术说 | 深入理解前端性能监控](https://zhuanlan.zhihu.com/p/65065472)
 - [How to Learn Software Design and Architecture - a Roadmap](https://www.freecodecamp.org/news/software-design/)
 - [架构制图：工具与方法论](https://zhuanlan.zhihu.com/p/384958911)
-
+- [架构制图：工具与方法论](https://zhuanlan.zhihu.com/p/384958911)
+- [Software-Engineering-at-Google](https://qiangmzsx.github.io/Software-Engineering-at-Google/#/?id=software-engineering-at-google)
