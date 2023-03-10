@@ -1,6 +1,11 @@
 # 不得不了解的babel
 `Babel`
 
+## 概览
+
+- `@babel/runtime`: 一个包含`Babel`模块化运行时助手的库, 主要作用是**将转译的辅助代码从在文件中硬编码方式变为运行时的模块注入方式从而达到在某些条件下（重复代码过多时）缩小编译后的代码体积**。
+- `@babel/transform-runtime`: **类库的打包如果需要注入 polyfill 的话，最好使用 @babel/transform-runtime，因为它提供了一种不污染全局作用域的方式**。
+  
 ## Preset
 > 预设，相当于编译到哪一个版本。也可以说是某一类 plugin 的集合，包含了某一类插件的所有功能。每年每个 preset 只编译当年批准的内容。 而 babel-preset-env 相当于 es2015 ，es2016 ，es2017 及最新版本。
 
@@ -170,4 +175,5 @@ module.exports = {
 
 
 # 总结
+
 `Babel`很强大，但是我希望有一天能够不再需要了😁

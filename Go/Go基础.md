@@ -55,8 +55,6 @@
 
   - `uintptr`：无符号整型，用于存放指针。
 
-    
-
   示例：
 
   ```go
@@ -67,19 +65,19 @@
 
   值：utf-8类型字符串。
 
-  示例： 
+  示例：
 
   ```go
   var strType string
   strType = "string"
   strType = `
-  	多行字符串
+   多行字符串
   `
   ```
 
 - `nil`： （空值/零值）未初始化引用
 
-  以下类型默认初始值： 
+  以下类型默认初始值：
 
   ```go
   pointers -> nil
@@ -89,8 +87,6 @@
   functions -> nil
   interfaces -> nil
   ```
-
-  
 
 - `pointer`：指针类型
 
@@ -214,8 +210,6 @@
   ```go
   
   ```
-
-
 
 ## 杂项
 

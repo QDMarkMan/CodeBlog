@@ -1,4 +1,4 @@
-# Technology Trends
+
 
 ## Front-end
 
