@@ -96,3 +96,4 @@
 - [Software-Engineering-at-Google](https://qiangmzsx.github.io/Software-Engineering-at-Google/#/?id=software-engineering-at-google)
 - [Docker Containers vs. Kubernetes Pods - Taking a Deeper Look](https://labs.iximiuz.com/tutorials/containers-vs-pods)
 - [10 Things Software Developers Should Learn about Learning](https://cacm.acm.org/research/10-things-software-developers-should-learn-about-learning/)
+- [Relational Databases Explained](https://architecturenotes.co/things-you-should-know-about-databases/)
