@@ -1,10 +1,13 @@
 # Blog
+
 开发过程中的疑率以及学习中碰到的精华整理成的博客。（如果发现问题请提交```issue```😁）。
 
 ## 写在前面
+
 文中大部分的代码都在[usually-accumulated](https://github.com/QDMarkMan/usually-accumulated)这个rep中。也是我积累代码的地方。
 
 ## 博客正文(原创)
+
 <link rel="stylesheet" href="https://at.alicdn.com/t/font_733231_nuk6orzgda.css">
 
 - [Javascript基础以及进阶部分♥](https://github.com/QDMarkMan/CodeBlog/blob/master/TypeScript/READEME.md)
@@ -17,7 +20,7 @@
   - [装箱和拆箱](https://github.com/QDMarkMan/CodeBlog/blob/master/Javascript/装箱和拆箱.md)
   - [Javascript中函数作为对象的魅力](https://github.com/QDMarkMan/CodeBlog/blob/master/Javascript/Javascript中函数作为对象的魅力.md)
   - [关于原型的一些东西](https://github.com/QDMarkMan/CodeBlog/blob/master/Javascript/关于原型的一些东西.md)
-  - [一些尺寸相关的API](https://github.com/QDMarkMan/CodeBlog/blob/master/CSS/一些尺寸相关的API.md) 
+  - [一些尺寸相关的API](https://github.com/QDMarkMan/CodeBlog/blob/master/CSS/一些尺寸相关的API.md)
   
 - `NodeJS💪`
   - [让NodeJS在项目中发光发热](https://github.com/QDMarkMan/CodeBlog/blob/master/Node/%E8%AE%A9NodeJS%E5%9C%A8%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%8F%91%E5%85%89%E5%8F%91%E7%83%AD.md)
@@ -34,7 +37,7 @@
   - [Electron-builder打包详解](https://github.com/QDMarkMan/CodeBlog/blob/master/Electron/electron-builder%E6%89%93%E5%8C%85%E8%AF%A6%E8%A7%A3.md)
   - [Electron单例检测](https://github.com/QDMarkMan/CodeBlog/blob/master/Electron/SingleInstance.md)
   
-- [Webpack部分相关🎫](https://github.com/QDMarkMan/CodeBlog/blob/master/Webpack/webpack基础合集.md) 
+- [Webpack部分相关🎫](https://github.com/QDMarkMan/CodeBlog/blob/master/Webpack/webpack基础合集.md)
   - [不得不了解的Babel](https://github.com/QDMarkMan/CodeBlog/blob/master/Webpack/%E4%B8%8D%E5%BE%97%E4%B8%8D%E4%BA%86%E8%A7%A3%E7%9A%84Babel.md)
   - [webapck合集(新)](https://github.com/QDMarkMan/CodeBlog/blob/master/Webpack/webpack合集.md)
   - [tree-shaking](https://github.com/QDMarkMan/CodeBlog/blob/master/Webpack/webpack中tree-shaking的威力.md)
@@ -62,8 +65,6 @@
 - [MD写作模版](https://github.com/QDMarkMan/CodeBlog/blob/master/MDDemo.md)
 
 - [Readme模板](https://github.com/QDMarkMan/CodeBlog/blob/master/ReadmeTemplate.md)
-
-  
 
 ## 相关好文(分享🎉)
 
@@ -93,3 +94,5 @@
 - [架构制图：工具与方法论](https://zhuanlan.zhihu.com/p/384958911)
 - [架构制图：工具与方法论](https://zhuanlan.zhihu.com/p/384958911)
 - [Software-Engineering-at-Google](https://qiangmzsx.github.io/Software-Engineering-at-Google/#/?id=software-engineering-at-google)
+- [Docker Containers vs. Kubernetes Pods - Taking a Deeper Look](https://labs.iximiuz.com/tutorials/containers-vs-pods)
+- [10 Things Software Developers Should Learn about Learning](https://cacm.acm.org/research/10-things-software-developers-should-learn-about-learning/)
