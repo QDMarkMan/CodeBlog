@@ -44,14 +44,15 @@
 
 - 创建： `docker create --name name image`
 - 启动： `docker start name`
-- 创建+启动： `docker run --name name --detach image `   --detach: 启动后将程序和控制台分离，使之进入后台模式。
-- 查看：`docker ps --all` 
+- 创建+启动： `docker run --name name --detach image`   --detach: 启动后将程序和控制台分离，使之进入后台模式。
+- 查看：`docker ps --all`
 - 停止：`docker stop name` (沙盒系统还存在，修改的内容也都保存)
 - 删除： `docker rm name --force`
 - 进入容器： `docker exec -it name bash`   其中 `-i` ( `--interactive` ) 表示保持我们的输入流。 `-t` ( `--tty` ) 表示启用一个伪终端，形成我们与 bash 的交互 。
 - 衔接容器： `docker attach name` 这个命令最直观的效果可以理解为我们将容器中的主程序转为了“前台”运行 ( 与 `docker run` 中的 `-d` 选项有相反的意思 )。
 
 以启动一个`nginx`容器服务作为示例
+
 ``` shell
 docker run -d -rm -p 8800:80 -v /home/nginx/html:/usr/share/nginx/html --name nginx nginx
 
@@ -68,8 +69,6 @@ docker run -d -rm -p 8800:80 -v /home/nginx/html:/usr/share/nginx/html --name ng
 
 ![Docker命令](./images/docker.jpg 'Docker命令')
 
-
-
 ### 容器网络
 
 > 容器网络实质上也是由 Docker 为应用程序所创造的虚拟环境的一部分，它能让应用从宿主机操作系统的网络环境中独立出来，形成容器自有的**网络设备、IP 协议栈、端口套接字、IP 路由表、防火墙等等与网络相关的模块**。
@@ -79,6 +78,7 @@ docker run -d -rm -p 8800:80 -v /home/nginx/html:/usr/share/nginx/html --name ng
 - **沙盒 ( Sandbox )**: 提供容器网络栈，主要是隔离了容器网络和宿主机网络，形成完全独立的容器网络环境。
 - **网络 ( Network )**: `Docker`内部的虚拟子网，与宿主机网络存在隔离关系，主要目的是形成容器间的安全通讯环境。
 - **端点 ( Endpoint )**: 主要目的是形成一个可以控制的突破封闭网络环境的出入口。当容器的端点与网络的断点匹配之后，就如同在两者之间搭建了桥梁，就能进行数据传输了。
+
 ### 数据管理
 
 数据是应用程序的重要产出，数据可以说是最重要的资产。但是在`docker`中容器运行的文件系统处在于沙盒之中，与外界是隔离的，所以必须是有合理的方式与外界进行数据交换。
@@ -113,7 +113,6 @@ nginx
 -v：--volume 的缩写形式
 ```
 
-
 ### `Dockerfile`
 
 这是`docker`特有的镜像构建定义文件，通过了解它就能真正体验一种秒级镜像构建的乐趣。
@@ -142,7 +141,9 @@ nginx
   ```dockerfile
   FROM <image> [AS <name>]
   FROM <image>[:<tag>] [AS <name>]
+
 FROM <image>[@<digest>] [AS <name>]
+
   ```
   
   `Dockerfile`第一条指令必须是`FROM`指令，因为一切构建过程都基于基础镜像。
@@ -187,10 +188,6 @@ FROM <image>[@<digest>] [AS <name>]
   CMD ["redis-server"]
   ```
 
-  
-
-  
-
 - **EXPOSE**：为镜像指定要暴露的端口。
 
   ```dockerfile
@@ -224,14 +221,12 @@ FROM <image>[@<digest>] [AS <name>]
 `docker build` 可以接收一个参数，需要特别注意的是，**这个参数为一个目录路径 ( 本地路径或 URL 路径 )，而并非 Dockerfile 文件的路径**。在 `docker build` 里，这个我们给出的目录会作为构建的环境目录，我们很多的操作都是基于这个目录进行的。
 
 ```shell
-$ sudo docker build -t webapp:latest -f ./webapp/a.Dockerfile ./webapp
+sudo docker build -t webapp:latest -f ./webapp/a.Dockerfile ./webapp
 ```
 
 **-t webapp:latest** 指定镜像名称。
 
 **-f ./webapp/a.Dockerfile** 指定dockerfile地址，如果dockerfile不在./webapp中，那么你需要这个选项。
-
-
 
 ### 高频容器
 
@@ -261,8 +256,6 @@ $ sudo docker build -t webapp:latest -f ./webapp/a.Dockerfile ./webapp
   mysql:5.7.21
   ```
 
-  
-
 ## 基础进阶
 
 基础弄完了总要来点高级的
@@ -291,7 +284,7 @@ $ sudo docker build -t webapp:latest -f ./webapp/a.Dockerfile ./webapp
    version: '3'
    # 服务内容器的细节
    services:
-   	# 一个service是配置的最小单元
+    # 一个service是配置的最小单元
      webapp:
        build: ./image/webapp
        ports:
@@ -315,11 +308,14 @@ $ sudo docker build -t webapp:latest -f ./webapp/a.Dockerfile ./webapp
      logvolume: {}
    ```
 
-   
-
 3. 启动项目/应用。
 
+## 最佳实践
 
+```shell
+# 1. 清理容器，镜像和缓存
+docker system prune -a --volumes
+```
 
 ## 总结
 
